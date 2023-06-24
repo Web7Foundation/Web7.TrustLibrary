@@ -2,17 +2,17 @@
 
 The Web 7.0 Trust Library is used to support all of the trust operations required to develop a Web 7.0 Trusted Personal Agent and supporting components using the .NET 6.0 development environment.
 
-## DIDDocumenter
-
-The DIDDocumenter class takes as inputs a Signer public key, an Encrypter public key, a list of service endpoints, and a list of relationships and creates an in-memory DIDDocument. In addition, a DIDDocumenter can be used to update as well as serialize an existing, in-memory DIDDocument.
-
-The Registry class is used to persist an in-memory DIDDocument to as well as retrieve a persisted DIDDocument from the DID Registry.
-
 ## DIDComm
 
 The DIDComm class is used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment. In addition the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
 
 The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a Receiver agent's inbound service endpoint using the HTTP protocol.
+
+## DIDDocumenter
+
+The DIDDocumenter class takes as inputs a Signer public key, an Encrypter public key, a list of service endpoints, and a list of relationships and creates an in-memory DIDDocument. In addition, a DIDDocumenter can be used to update as well as serialize an existing, in-memory DIDDocument.
+
+The Registry class is used to persist an in-memory DIDDocument to as well as retrieve a persisted DIDDocument from the DID Registry.
 
 ## DIDRegistrar
 
