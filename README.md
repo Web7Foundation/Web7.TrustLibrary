@@ -1,4 +1,6 @@
-﻿# Web7 Trust Libraries
+﻿# Web 7.0 Trust Libraries
+
+The Web 7.0 Trust Library is used to support all of the trust operations required to develop a Trust Personal Agent and associated components.
 
 ## DIDDocumenter
 
@@ -6,9 +8,15 @@ The DIDDocumenter class takes as inputs a Signer public key, an Encrypter public
 
 The Registry class is used to persist an in-memory DIDDocument to as well as retrieve a persisted DIDDocument from the DID Registry.
 
-## DIDRegistry
+## DIDComm
 
-The DIDRegistry class is used to persist and retrieve a DIDDocument to and from the DID Registry.
+The DIDComm class is used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment. In addition the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
+
+The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a Receiver agent's inbound service endpoint using the HTTP protocol.
+
+## DIDRegistrar
+
+The DIDRegistrar class is used to persist and retrieve a DIDDocument to and from the DID Registry.
 
 The DIDocumenter class is used to create, update and serialzied in-memory DIDDocuments
 
@@ -23,6 +31,12 @@ The Signer and Encrypter classes are used in the JWETokenier class to create JWE
 The Hasher class is used to create Hashes of arbitrary Strings and Byte arrays.
 
 This class is used primarily by the Signer class.
+
+## HTTPTransporter
+
+The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a Receiver agent's inbound service endpoint using the HTTP protocol.
+
+The DIDComm class is used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment. In addition the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
 
 ## JWETokenizer
 

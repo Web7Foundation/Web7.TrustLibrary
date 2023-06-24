@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Web7.TrustLibrary
 {
-    public class DIDRegistry
+    public class DIDRegistrar
     {
     }
 }
