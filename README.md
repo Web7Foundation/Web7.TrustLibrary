@@ -13,15 +13,19 @@ The Web 7.0 Trust Library is used to support all of the trust operations require
 
 ## DIDComm
 
-The DIDComm class is used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment. In addition the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
+The DIDComm class is used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment. 
+In addition, the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
 
-The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a Receiver agent's inbound service endpoint using the HTTP protocol.
+The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a Receiver 
+agent's inbound service endpoint using the HTTP protocol.
 
 Keywords: Secure-Messaging Authenticity Confidentiality DID DID-Communications DIDComm-Messaging
 
 ## DIDDocumenter
 
-The DIDDocumenter class takes as inputs a Signer public key, an Encrypter public key, a list of service endpoints, and a list of relationships and creates an in-memory DIDDocument. In addition, a DIDDocumenter can be used to update as well as serialize an existing, in-memory DIDDocument.
+The DIDDocumenter class takes as inputs a Signer public key, an Encrypter public key, a list of service endpoints, 
+and a list of relationships and creates an in-memory DIDDocument. 
+In addition, a DIDDocumenter can be used to update as well as serialize an existing, in-memory DIDDocument.
 
 The Registry class is used to persist an in-memory DIDDocument to as well as retrieve a persisted DIDDocument from the DID Registry.
 
@@ -37,7 +41,8 @@ Keywords: DID-Registry DID Decentralized-Identifier
 
 ## Encrypter
 
-The Encrypter class is used to support a set of public and private keys for encryption and decryption; including key generation and serialization.
+The Encrypter class is used to support a set of public and private keys for encryption and decryption; 
+including key generation and serialization.
 
 The Signer and Encrypter classes are used in the JWETokenizer class to create JWETokens.
 
@@ -49,15 +54,22 @@ The Hasher class is used to create Hashes of arbitrary Strings and Byte arrays.
 
 This class is used primarily by the Signer class.
 
-Keywords: Authenticity SHA SHA256
+Keywords: Authenticity SHA SHA256 Hash
+
+
+## Helper
+
+The Helper class contains a number of public static helper or utility methods.
 
 ## HTTPTransporter
 
-The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a Receiver agent's inbound service endpoint using the HTTP protocol.
+The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a Receiver 
+agent's inbound service endpoint using the HTTP protocol.
 
-The DIDComm class is used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment. In addition the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
+The DIDComm class is used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment. 
+In addition the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
 
-Keywords: DIDComm HTTP
+Keywords: DIDComm HTTP Transport-Protocol
 
 ## JWETokenizer
 
@@ -69,7 +81,7 @@ Keywords: Authenticated-Encryption JWE JWE-Token
 
 ## Notary
 
-THe Notary class is used to create, serialized, persist, and retrieve Signatures using a Verifiable Data Registry.
+The Notary class is used to create, serialized, persist, and retrieve Signatures using a Verifiable Data Registry.
 
 This class uses Signatures created or deserialized from the Signer class.
 
@@ -77,7 +89,7 @@ Keywords: Authenticity
 
 ## Signer
 
-The Signer class can be used to to support the creation digital Signatures for arbitrary Strings and Byte arrays; including key generation and serialization.
+The Signer class can be used to to support the creation of digital Signatures for arbitrary Strings and Byte arrays; including key generation and serialization.
 
 The Signer and Encrypter classes are used in the JWETokenizer class to create JWETokens.
 
