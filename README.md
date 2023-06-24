@@ -1,6 +1,6 @@
 ﻿# Web 7.0 Trust Library
 
-The Web 7.0 Trust Library is used to support all of the trust operations required to develop a Web 7.0 Trusted Personal Agent and supporting components.
+The Web 7.0 Trust Library is used to support all of the trust operations required to develop a Web 7.0 Trusted Personal Agent and supporting components using the .NET 6.0 development environment.
 
 ## DIDDocumenter
 
