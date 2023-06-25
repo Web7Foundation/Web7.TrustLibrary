@@ -14,6 +14,8 @@ namespace Web7.TrustLibrary
     // Keywords: Confidentiality RSA
     public class Encrypter
     {
+        public const string DID_KEYID_ENCRYPTER = "did:web7:keyid:encrypter:";
+
         private string keyID;
         private RSA keyPair;
         private RSA keyPrivate;
@@ -30,7 +32,7 @@ namespace Web7.TrustLibrary
 
         internal void Initialize()
         {
-            keyID = Helper.DID_KEYID_SIGN + Guid.NewGuid().ToString();
+            keyID = DID_KEYID_ENCRYPTER + Guid.NewGuid().ToString();
 
             keyPrivate = keyPair;
             keyPrivateSecurityKey = new RsaSecurityKey(keyPrivate) { KeyId = keyID };
@@ -56,43 +58,51 @@ namespace Web7.TrustLibrary
             return JsonWebKeyConverter.ConvertFromRSASecurityKey(keyPublicSecurityKey);
         }
 
-        public byte[] Encrypt(RSA keyPublic, byte[] bytes)
+        public void ImportJsonWebKey(JsonWebKey jsonWebKey, bool importPrivateKey)
         {
-            // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.rsacryptoserviceprovider?view=net-7.0
-            byte[] encryptedData;
-            //Create a new instance of RSACryptoServiceProvider.
-            using (RSACryptoServiceProvider rsaProvider = new RSACryptoServiceProvider())
+            // https://www.scottbrady91.com/c-sharp/rsa-key-loading-dotnet
+            RSAParameters rsaParameters = new RSAParameters();
+            // PUBLIC KEY PARAMETERS
+            // n parameter - public modulus
+            rsaParameters.Modulus = Base64UrlEncoder.DecodeBytes(jsonWebKey.N);
+            // e parameter - public exponent
+            rsaParameters.Exponent = Base64UrlEncoder.DecodeBytes(jsonWebKey.E);
+
+            if (importPrivateKey)
             {
-
-                //Import the RSA Key information. This only needs
-                //toinclude the public key information.
-                RSAParameters keyPublicParamters = keyPublic.ExportParameters(false);
-                rsaProvider.ImportParameters(keyPublicParamters);
-
-                //Encrypt the passed byte array and specify OAEP padding.  
-                //OAEP padding is only available on Microsoft Windows XP or
-                //later.  
-                encryptedData = rsaProvider.Encrypt(bytes, false);
+                // PRIVATE KEY PARAMETERS (optional)
+                // d parameter - the private exponent value for the RSA key 
+                rsaParameters.D = Base64UrlEncoder.DecodeBytes(jsonWebKey.D);
+                // dp parameter - CRT exponent of the first factor
+                rsaParameters.DP = Base64UrlEncoder.DecodeBytes(jsonWebKey.DP);
+                // dq parameter - CRT exponent of the second factor
+                rsaParameters.DQ = Base64UrlEncoder.DecodeBytes(jsonWebKey.DQ);
+                // p parameter - first prime factor
+                rsaParameters.P = Base64UrlEncoder.DecodeBytes(jsonWebKey.P);
+                // q parameter - second prime factor
+                rsaParameters.Q = Base64UrlEncoder.DecodeBytes(jsonWebKey.Q);
+                // qi parameter - CRT coefficient of the second factor
+                rsaParameters.InverseQ = Base64UrlEncoder.DecodeBytes(jsonWebKey.QI);
             }
-            return encryptedData;
+
+            keyPair = RSA.Create(rsaParameters);
         }
 
         public byte[] Encrypt(byte[] bytes)
         {
             // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.rsacryptoserviceprovider?view=net-7.0
             byte[] bytesEncrypted;
-            //Create a new instance of RSACryptoServiceProvider.
+            // Create a new instance of RSACryptoServiceProvider.
             using (RSACryptoServiceProvider rsaProvider = new RSACryptoServiceProvider())
             {
 
-                //Import the RSA Key information. This only needs
-                //toinclude the public key information.
+                // Import the RSA Key information. This only needs
+                // to include the public key information.
                 RSAParameters keyPublicParameters = keyPublic.ExportParameters(false);
                 rsaProvider.ImportParameters(keyPublicParameters);
 
-                //Encrypt the passed byte array and specify OAEP padding.  
-                //OAEP padding is only available on Microsoft Windows XP or
-                //later.  
+                // Encrypt the passed byte array and specify OAEP padding.  
+                // OAEP padding is only available on Microsoft Windows XP or later.  
                 bytesEncrypted = rsaProvider.Encrypt(bytes, false);
             }
             return bytesEncrypted;

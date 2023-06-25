@@ -20,31 +20,29 @@ namespace Web7.TrustLibrary
             handler = new JsonWebTokenHandler();
         }
 
-        public string CreateToken(string senderDID, string receiverDID, string messageBody64,
-            ECDsaSecurityKey senderKeyPrivateSecurityKey, ECDsaSecurityKey receiverKeyPublicSecurityKey)
+        public string CreateJWEToken(string senderDID, string receiverDID, string messageBody64,
+            ECDsaSecurityKey senderSigningKeyPrivateSecurityKey, RsaSecurityKey receiverEncryptionKeyPublicSecurityKey)
         {
-            string token = "";
-            token = handler.CreateToken(new SecurityTokenDescriptor
+            string token = handler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = senderDID,
                 Audience = receiverDID,
                 Claims = new Dictionary<string, object> { { "body", messageBody64 } },
 
                 // private key for signing
-                SigningCredentials = new SigningCredentials(senderKeyPrivateSecurityKey, SecurityAlgorithms.EcdsaSha256),
+                SigningCredentials = new SigningCredentials(senderSigningKeyPrivateSecurityKey, SecurityAlgorithms.EcdsaSha256),
 
                 // public key for encryption
-                EncryptingCredentials = new EncryptingCredentials(receiverKeyPublicSecurityKey, SecurityAlgorithms.RsaOAEP, SecurityAlgorithms.Aes256CbcHmacSha512)
+                EncryptingCredentials = new EncryptingCredentials(receiverEncryptionKeyPublicSecurityKey, SecurityAlgorithms.RsaOAEP, SecurityAlgorithms.Aes256CbcHmacSha512)
             });
 
             return token;
         }
 
-        public TokenValidationResult ValidateToken(string token, string senderDID, string receiverDID, 
-            RsaSecurityKey senderKeyPublicSecurityKey, RsaSecurityKey receiverKeyPrivateSecurityKey)
+        public TokenValidationResult ValidateJWEToken(string token, string senderDID, string receiverDID,
+            ECDsaSecurityKey senderSigningKeyPublicSecurityKey, RsaSecurityKey receiverEncryptionKeyPrivateSecurityKey)
         {
-            TokenValidationResult result;
-            result = handler.ValidateToken(
+            TokenValidationResult result = handler.ValidateToken(
                 token,
                 new TokenValidationParameters
                 {
@@ -52,10 +50,10 @@ namespace Web7.TrustLibrary
                     ValidAudience = receiverDID,
 
                     // Alice's public key to verify signature
-                    IssuerSigningKey = senderKeyPublicSecurityKey,
+                    IssuerSigningKey = senderSigningKeyPublicSecurityKey,
 
                     // Bob's private key for decryption
-                    TokenDecryptionKey = receiverKeyPrivateSecurityKey
+                    TokenDecryptionKey = receiverEncryptionKeyPrivateSecurityKey
                 });
 
             return result;

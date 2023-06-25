@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Web7.TrustLibrary;
@@ -18,6 +20,7 @@ namespace Web7.TrustLibrary
             string plaintext = "{ \"message\": \"Hello world!\" }";
             byte[] plaintextbytes = Encoding.UTF8.GetBytes(plaintext);
 
+            // 0. DIDComm namespace
             DateTime now = DateTime.Now;
             Message msg = new Message(
                 Helper.DID_MESSAGEID + Guid.NewGuid().ToString(),
@@ -45,9 +48,45 @@ namespace Web7.TrustLibrary
             msg.attachments.Add(a);
 
             string msgJson = JsonSerializer.Serialize<Message>(msg);
-            Console.WriteLine( msgJson );
+            Console.WriteLine( "0. msgJson: " + msgJson );
+            Console.WriteLine();
 
-            Console.WriteLine(msgJson);
+            // 1. Signer key generation
+            Signer signer = new Signer();
+            ECDsa signerKeyPrivate = signer.KeyPrivate;
+            ECDsa signerKeyPublic = signer.KeyPublic;
+            ECDsaSecurityKey signerKeyPrivateSecurityKey = signer.KeyPrivateSecurityKey;
+            ECDsaSecurityKey signerKeyPublicSecurityKey = signer.KeyPublicSecurityKey;
+            Console.WriteLine("1. Signer key generation");
+            Console.WriteLine();
+
+            // 2. Generate and verify signature for a string
+            byte[] signature = Hasher.SignText(signerKeyPrivate, plaintext);
+            bool verify = Hasher.VerifyTextHash(signerKeyPublic, plaintext, signature);
+            Console.WriteLine("2. VerifyTextHash: " + verify.ToString());
+            Console.WriteLine();
+
+            // 3. Export keys as JWTs
+            JsonWebKey signerKeyPrivateJWT = signer.KeyPrivateJsonWebKey();
+            string signerKeyPrivateJWTString = signer.KeyPrivateJsonWebKeyToString(signerKeyPrivateJWT);
+            Console.WriteLine("3. signerKeyPrivateJWTString: " + signerKeyPrivateJWTString);
+            JsonWebKey signerKeyPublicJWT = signer.KeyPublicJsonWebKey();
+            string signerKeyPublicJWTString = signer.KeyPublicJsonWebKeyToString(signerKeyPublicJWT);
+            Console.WriteLine("3. signerKeyPublicJWTString: " + signerKeyPublicJWTString);
+            Console.WriteLine();
+
+            // 4. Import keys from JWTs
+            Signer signerKeyPrivateFromJWT = new Signer(signerKeyPrivateJWTString, true);
+            Signer signerKeyPublicFromJWT = new Signer(signerKeyPublicJWTString, false);
+            Console.WriteLine("4. Signer key import from JWT strings");
+            Console.WriteLine();
+
+            // 5. Generate and verify signature for a string using imported JWTs
+            byte[] signatureJWT = Hasher.SignText(signerKeyPrivateFromJWT.KeyPrivate, plaintext);
+            bool verifyJWT = Hasher.VerifyTextHash(signerKeyPublicFromJWT.KeyPublic, plaintext, signatureJWT);
+            Console.WriteLine("5. VerifyTextHashJWT: " + verifyJWT.ToString());
+            Console.WriteLine();
+
             Console.WriteLine("Press ENTER to exit");
             Console.ReadLine();
         }

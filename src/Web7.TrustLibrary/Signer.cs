@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Microsoft.IdentityModel.Tokens;
@@ -15,6 +16,8 @@ namespace Web7.TrustLibrary
     // Keywords: Authenticity ECDsa
     public class Signer
     {
+        public const string DID_KEYID_SIGNER = "did:web7:keyid:signer:";
+
         private string keyID;
         private ECDsa keyPair;
         private ECDsa keyPrivate;
@@ -29,9 +32,24 @@ namespace Web7.TrustLibrary
             Initialize();
         }
 
+        public Signer(JsonWebKey jsonWebKey, bool importPrivateKey)
+        {
+            ImportJsonWebKey(jsonWebKey, importPrivateKey);
+
+            Initialize();
+        }
+
+        public Signer(string jsonWebKeyString, bool importPrivateKey)
+        {
+            JsonWebKey jsonWebKey = JsonSerializer.Deserialize<JsonWebKey>(jsonWebKeyString);
+            ImportJsonWebKey(jsonWebKey, importPrivateKey);
+
+            Initialize();
+        }
+
         internal void Initialize()
         {
-            keyID = Helper.DID_KEYID_SIGN + Guid.NewGuid().ToString();
+            keyID = DID_KEYID_SIGNER + Guid.NewGuid().ToString();
 
             keyPrivate = keyPair;
             keyPrivateSecurityKey = new ECDsaSecurityKey(keyPrivate) { KeyId = keyID };
@@ -51,13 +69,34 @@ namespace Web7.TrustLibrary
         {
             return JsonWebKeyConverter.ConvertFromECDsaSecurityKey(keyPrivateSecurityKey);
         }
+        public string KeyPrivateJsonWebKeyAsString()
+        {
+            JsonWebKey jwt = KeyPrivateJsonWebKey();
+            return JsonSerializer.Serialize(jwt);
+        }
+
+        public string KeyPrivateJsonWebKeyToString(JsonWebKey keyPrivateJWT)
+        {
+            return JsonSerializer.Serialize(keyPrivateJWT);
+        }
 
         public JsonWebKey KeyPublicJsonWebKey()
         {
             return JsonWebKeyConverter.ConvertFromECDsaSecurityKey(keyPublicSecurityKey);
         }
 
-        public void ImportFromJsonWebKey(JsonWebKey jsonWebKey, bool privateKey)
+        public string KeyPublicJsonWebKeyAsString()
+        {
+            JsonWebKey jwt = KeyPublicJsonWebKey();
+            return JsonSerializer.Serialize(jwt);
+        }
+
+        public string KeyPublicJsonWebKeyToString(JsonWebKey keyPublicJWT)
+        {
+            return JsonSerializer.Serialize(keyPublicJWT);
+        }
+
+        internal void ImportJsonWebKey(JsonWebKey jsonWebKey, bool importPrivateKey)
         {
             // https://www.scottbrady91.com/c-sharp/ecdsa-key-loading
             var curve = jsonWebKey.Crv switch
@@ -71,18 +110,16 @@ namespace Web7.TrustLibrary
             var ecParameters = new ECParameters();
             // crv parameter - public modulus
             ecParameters.Curve = curve;
-            // d parameter - the private exponent value for the EC key 
-            if (privateKey) ecParameters.D = Base64UrlEncoder.DecodeBytes(jsonWebKey.D);
             // q parameter - second prime factor
             ecParameters.Q = new ECPoint()
             {
                 X = Base64UrlEncoder.DecodeBytes(jsonWebKey.X),
                 Y = Base64UrlEncoder.DecodeBytes(jsonWebKey.Y)
             };
+            // d parameter - the private exponent value for the EC key 
+            if (importPrivateKey) ecParameters.D = Base64UrlEncoder.DecodeBytes(jsonWebKey.D);
 
             keyPair = ECDsa.Create(ecParameters);
-
-            Initialize();
         }
     }
 }

@@ -9,9 +9,6 @@ namespace Web7.TrustLibrary
     // The Helper class contains a number of public static helper or utility methods.
     public static class Helper
     {
-        public const string DID_KEYID_ENCRYPT = "did:web7:keyid:encrypt:";
-        public const string DID_KEYID_SIGN = "did:web7:keyid:sign:";
-
         public const string DID_SUBJECT = "did:web7:subject:";
         public const string DID_PERSON = DID_SUBJECT + "person:";
         public const string DID_ALICE = DID_PERSON + "1234";

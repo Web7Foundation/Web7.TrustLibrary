@@ -22,24 +22,24 @@ namespace Web7.TrustLibrary
             return SHA256.HashData(bytes);
         }
 
-        public static byte[] SignHash(ECDsa keyPrivate, string text)
+        public static byte[] SignText(ECDsa signerKeyPrivate, string text)
         {
-            return keyPrivate.SignHash(Hasher.Hash(text));
+            return signerKeyPrivate.SignHash(Hasher.Hash(text));
         }
 
-        public static byte[] SignHash(ECDsa keyPrivate, byte[] hash)
+        public static byte[] SignHash(ECDsa signerKeyPrivate, byte[] hash)
         {
-            return keyPrivate.SignHash(hash);
+            return signerKeyPrivate.SignHash(hash);
         }
 
-        public static bool VerifyHash(ECDsa keyPublic, string text, byte[] signature)
+        public static bool VerifyTextHash(ECDsa signerKeyPublic, string text, byte[] signature)
         {
-            return keyPublic.VerifyHash(Hasher.Hash(text), signature);
+            return signerKeyPublic.VerifyHash(Hasher.Hash(text), signature);
         }
 
-        public static bool VerifyHash(ECDsa keyPublic, byte[] hash, byte[] signature)
+        public static bool VerifyHash(ECDsa signerKeyPublic, byte[] hash, byte[] signature)
         {
-            return keyPublic.VerifyHash(hash, signature);
+            return signerKeyPublic.VerifyHash(hash, signature);
         }
 
     }
