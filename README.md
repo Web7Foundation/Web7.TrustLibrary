@@ -90,7 +90,7 @@ The Notary class is used to create, serialized, persist, and retrieve Signatures
 
 This class uses Signatures created or deserialized from the Signer class.
 
-Keywords: Authenticity Veriable-Data-Registry
+Keywords: Authenticity Verifiable-Data-Registry
 
 ## Signer
 
@@ -108,4 +108,4 @@ TrustReg documents are stored in a DID Registry managed by the DIDRegistrar clas
 
 The DIDDocumenter and DIDRegistrar classes are used to support the capabilities of the TrustRegistrar class.
 
-Keyworks: Trust-Registry DID-Document DID-Registry DID Decentralized-Identifier
+Keywords: Trust-Registry DID-Document DID-Registry DID Decentralized-Identifier
