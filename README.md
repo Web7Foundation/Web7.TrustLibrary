@@ -14,7 +14,9 @@ The list of PTL trust operations includes:
 - VDR-based signature authentication (Notary)
 - Trust Registry TrustReg document management
 
-The PTL supports the Web 7.0 Foundation goal of "making decentralized systems development easy-to-understand and easier for you to explain to others".
+The PTL supports the Web 7.0 Foundation's goal of "making decentralized systems development easy-to-understand and easier for you to explain to others".
+
+GitHub Repository: https://github.com/Web7Foundation/Web7.TrustLibrary 
 
 ## DIDComm (namespace)
 
