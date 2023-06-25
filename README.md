@@ -1,7 +1,9 @@
-﻿# Web 7.0 Trust Library
+﻿# Web 7.0 Portable Trust Library (PTL)
 
-The Web 7.0 Trust Library is used to support all of the trust operations required to develop a Web 7.0 Trusted Personal Agent and supporting components using the .NET 6.0 development environment. The list of trust operations includes:
-- Key generation, serialization and persistence (Signer)
+The Web 7.0 Portable Trust Library (PTL) is used to support all of the trust operations required to develop Web 7.0 Trusted Personal Agents and supporting components across multiple operating system environments. 
+
+The list of PTL trust operations includes:
+- Key generation, serialization and persistence (Signer and Encrypter)
 - Digital signature creation and validation (Signer)
 - Encryption and decryption (Encrypter)
 - JWE-based authenticated encryption (JWETokenizer)
@@ -11,9 +13,11 @@ The Web 7.0 Trust Library is used to support all of the trust operations require
 - DIDComm message transmission (HTTPTransporter)
 - VDR-based signature authentication (Notary)
 
-## DIDComm
+The PTL supports the Web 7.0 Foundation goal of "making decentralized systems development easy-to-understand and easier for you to explain to others".
 
-The DIDComm class is used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment. 
+## DIDComm (namespace)
+
+The DIDComm classes are used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment. 
 In addition, the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
 
 The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a Receiver 
@@ -85,7 +89,7 @@ The Notary class is used to create, serialized, persist, and retrieve Signatures
 
 This class uses Signatures created or deserialized from the Signer class.
 
-Keywords: Authenticity
+Keywords: Authenticity Veriable-Data-Registry
 
 ## Signer
 
@@ -93,4 +97,4 @@ The Signer class can be used to to support the creation of digital Signatures fo
 
 The Signer and Encrypter classes are used in the JWETokenizer class to create JWETokens.
 
-Keywords: Authenticity ECDsa
+Keywords: Authenticity ECDsa Digital-Signature

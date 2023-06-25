@@ -9,18 +9,18 @@ namespace Web7.TrustLibrary
     // The Helper class contains a number of public static helper or utility methods.
     public static class Helper
     {
-        const string DID_KEYID_ENCRYPT = "did:web7:keyid:encrypt:";
-        const string DID_KEYID_SIGN = "did:web7:keyid:sign:";
+        public const string DID_KEYID_ENCRYPT = "did:web7:keyid:encrypt:";
+        public const string DID_KEYID_SIGN = "did:web7:keyid:sign:";
 
-        const string DID_SUBJECT = "did:web7:subject:";
-        const string DID_PERSON = DID_SUBJECT + "person:";
-        const string DID_ALICE = DID_PERSON + "1234";
-        const string DID_BOB = DID_PERSON + "4567";
+        public const string DID_SUBJECT = "did:web7:subject:";
+        public const string DID_PERSON = DID_SUBJECT + "person:";
+        public const string DID_ALICE = DID_PERSON + "1234";
+        public const string DID_BOB = DID_PERSON + "4567";
 
-        const string DID_DIDCOMM = "did:web7:didcomm:";
-        const string DID_MESSAGEID = DID_DIDCOMM + "messageid:";
-        const string DID_ATTACHMENTID = DID_DIDCOMM + "attachmentid:";
-        const string DID_THID = DID_DIDCOMM + "thid:";
+        public const string DID_DIDCOMM = "did:web7:didcomm:";
+        public const string DID_MESSAGEID = DID_DIDCOMM + "messageid:";
+        public const string DID_ATTACHMENTID = DID_DIDCOMM + "attachmentid:";
+        public const string DID_THID = DID_DIDCOMM + "thid:";
 
         // https://stackoverflow.com/questions/11743160/how-do-i-encode-and-decode-a-base64-string
         public static string Base64Encode(string plainText)

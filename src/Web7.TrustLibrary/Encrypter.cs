@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,5 +13,14 @@ namespace Web7.TrustLibrary
     // Keywords: Confidentiality RSA
     public class Encrypter
     {
+        RSA keyPair = RSA.Create();
+        string keyID = Helper.DID_KEYID_ENCRYPT + Guid.NewGuid().ToString();
+
+        RSA GetKeyPair()
+        {
+            return keyPair;
+        }
+
+
     }
 }
