@@ -1,6 +1,6 @@
 ﻿# Web 7.0 Portable Trust Library (PTL)
 
-The Web 7.0 Portable Trust Library (PTL) is used to support all of the trust operations required to develop Web 7.0 Trusted Personal Agents and supporting components across multiple operating system environments. 
+The Web 7.0 Portable Trust Library (PTL) is used to support all of the trust operations required to develop Web 7.0 Trusted Personal Agents (and supporting components) across multiple operating system environments. 
 
 The list of PTL trust operations includes:
 - Key generation, serialization and persistence (Signer and Encrypter)
@@ -12,6 +12,7 @@ The list of PTL trust operations includes:
 - DIDComm message creation (DIDComm)
 - DIDComm message transmission (HTTPTransporter)
 - VDR-based signature authentication (Notary)
+- Trust Registry TrustReg document management
 
 The PTL supports the Web 7.0 Foundation goal of "making decentralized systems development easy-to-understand and easier for you to explain to others".
 
@@ -98,3 +99,13 @@ The Signer class can be used to to support the creation of digital Signatures fo
 The Signer and Encrypter classes are used in the JWETokenizer class to create JWETokens.
 
 Keywords: Authenticity ECDsa Digital-Signature
+
+# TrustRegistrar
+
+The TrustRegistrar class is used to maintain the collection of relationships in a Trust Registration (TrustReg) document, 
+a specialization of a DID Document.
+TrustReg documents are stored in a DID Registry managed by the DIDRegistrar class.
+
+The DIDDocumenter and DIDRegistrar classes are used to support the capabilities of the TrustRegistrar class.
+
+Keyworks: Trust-Registry DID-Document DID-Registry DID Decentralized-Identifier

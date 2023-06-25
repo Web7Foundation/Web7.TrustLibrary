@@ -11,5 +11,6 @@ namespace Web7.TrustLibrary
     // Keywords: Authenticity
     public class Notary
     {
+        // TODO
     }
 }

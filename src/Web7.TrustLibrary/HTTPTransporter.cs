@@ -14,5 +14,6 @@ namespace Web7.TrustLibrary
     // Keywords: DIDComm HTTP Transport-Protocol
     public class HTTPTransporter
     {
+        // TODO
     }
 }

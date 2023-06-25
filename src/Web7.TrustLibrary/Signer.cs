@@ -41,11 +41,11 @@ namespace Web7.TrustLibrary
         }
 
         public string KeyID { get => keyID; set => keyID = value; }
-        public ECDsa KeyPair { get => keyPair; set => keyPair = value; }
-        public ECDsa KeyPrivate { get => keyPrivate; set => keyPrivate = value; }
-        public ECDsa KeyPublic { get => keyPublic; set => keyPublic = value; }
-        public ECDsaSecurityKey KeyPrivateSecurityKey { get => keyPrivateSecurityKey; set => keyPrivateSecurityKey = value; }
-        public ECDsaSecurityKey KeyPublicSecurityKey { get => keyPublicSecurityKey; set => keyPublicSecurityKey = value; }
+        public ECDsa KeyPair { get => keyPair; }
+        public ECDsa KeyPrivate { get => keyPrivate; }
+        public ECDsa KeyPublic { get => keyPublic; }
+        public ECDsaSecurityKey KeyPrivateSecurityKey { get => keyPrivateSecurityKey;  }
+        public ECDsaSecurityKey KeyPublicSecurityKey { get => keyPublicSecurityKey; }
 
         public JsonWebKey KeyPrivateJsonWebKey()
         {

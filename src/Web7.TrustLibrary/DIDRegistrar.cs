@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +11,6 @@ namespace Web7.TrustLibrary
     // Keywords: DID-Registry DID Decentralized-Identifier
     public class DIDRegistrar
     {
+        // TODO
     }
 }
