@@ -102,7 +102,7 @@ The Signer and Encrypter classes are used in the JWETokenizer class to create JW
 
 Keywords: Authenticity ECDsa Digital-Signature
 
-# TrustRegistrar
+## TrustRegistrar
 
 The TrustRegistrar class is used to maintain the collection of relationships in a Trust Registration (TrustReg) document, 
 a specialization of a DID Document.
