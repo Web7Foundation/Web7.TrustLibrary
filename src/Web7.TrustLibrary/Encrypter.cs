@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Web7.TrustLibrary
@@ -26,6 +27,21 @@ namespace Web7.TrustLibrary
         public Encrypter()
         {
             keyPair = RSA.Create();
+
+            Initialize();
+        }
+
+        public Encrypter(JsonWebKey jsonWebKey, bool importPrivateKey)
+        {
+            ImportJsonWebKey(jsonWebKey, importPrivateKey);
+
+            Initialize();
+        }
+
+        public Encrypter(string jsonWebKeyString, bool importPrivateKey)
+        {
+            JsonWebKey jsonWebKey = JsonSerializer.Deserialize<JsonWebKey>(jsonWebKeyString);
+            ImportJsonWebKey(jsonWebKey, importPrivateKey);
 
             Initialize();
         }
@@ -58,7 +74,7 @@ namespace Web7.TrustLibrary
             return JsonWebKeyConverter.ConvertFromRSASecurityKey(keyPublicSecurityKey);
         }
 
-        public void ImportJsonWebKey(JsonWebKey jsonWebKey, bool importPrivateKey)
+        internal void ImportJsonWebKey(JsonWebKey jsonWebKey, bool importPrivateKey)
         {
             // https://www.scottbrady91.com/c-sharp/rsa-key-loading-dotnet
             RSAParameters rsaParameters = new RSAParameters();
@@ -91,7 +107,7 @@ namespace Web7.TrustLibrary
         public byte[] Encrypt(byte[] bytes)
         {
             // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.rsacryptoserviceprovider?view=net-7.0
-            byte[] bytesEncrypted;
+            byte[] bytesEncrypted = null;
             // Create a new instance of RSACryptoServiceProvider.
             using (RSACryptoServiceProvider rsaProvider = new RSACryptoServiceProvider())
             {
@@ -111,7 +127,7 @@ namespace Web7.TrustLibrary
         public byte[] Decrypt(byte[] bytesEncrypted)
         {
             // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.rsacryptoserviceprovider?view=net-7.0
-            byte[] bytesDecrypted;
+            byte[] bytesDecrypted = null;
             // Create a new instance of RSACryptoServiceProvider.
             using (RSACryptoServiceProvider rsaProvider = new RSACryptoServiceProvider())
             {

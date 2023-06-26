@@ -10,36 +10,43 @@ namespace Web7.TrustLibrary
     // The Hasher class is used to create Hashes of arbitrary Strings and Byte arrays.
     // This class is used primarily by the Signer class.
     // Keywords: Authenticity SHA SHA256 Hash
-    public static class Hasher
+    public class Hasher
     {
-        public static byte[] Hash(string text)
+        Signer signer;
+
+        public Hasher(Signer signer)
+        {
+            this.signer = signer;
+        }
+
+        public byte[] Hash(string text)
         {
             return Hash(Encoding.UTF8.GetBytes(text));
         }
 
-        public static byte[] Hash(byte[] bytes)
+        public byte[] Hash(byte[] bytes)
         {
             return SHA256.HashData(bytes);
         }
 
-        public static byte[] SignText(ECDsa signerKeyPrivate, string text)
+        public byte[] SignText(string text)
         {
-            return signerKeyPrivate.SignHash(Hasher.Hash(text));
+            return signer.KeyPrivate.SignHash(Hash(text));
         }
 
-        public static byte[] SignHash(ECDsa signerKeyPrivate, byte[] hash)
+        public byte[] SignHash(byte[] hash)
         {
-            return signerKeyPrivate.SignHash(hash);
+            return signer.KeyPrivate.SignHash(hash);
         }
 
-        public static bool VerifyTextHash(ECDsa signerKeyPublic, string text, byte[] signature)
+        public bool VerifyTextHash(string text, byte[] signature)
         {
-            return signerKeyPublic.VerifyHash(Hasher.Hash(text), signature);
+            return signer.KeyPublic.VerifyHash(Hash(text), signature);
         }
 
-        public static bool VerifyHash(ECDsa signerKeyPublic, byte[] hash, byte[] signature)
+        public bool VerifyHash(byte[] hash, byte[] signature)
         {
-            return signerKeyPublic.VerifyHash(hash, signature);
+            return signer.KeyPublic.VerifyHash(hash, signature);
         }
 
     }

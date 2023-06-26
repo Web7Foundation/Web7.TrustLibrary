@@ -61,8 +61,9 @@ namespace Web7.TrustLibrary
             Console.WriteLine();
 
             // 2. Generate and verify signature for a string
-            byte[] signature = Hasher.SignText(signerKeyPrivate, plaintext);
-            bool verify = Hasher.VerifyTextHash(signerKeyPublic, plaintext, signature);
+            Hasher hasher = new Hasher(signer);
+            byte[] signature = hasher.SignText(plaintext);
+            bool verify = hasher.VerifyTextHash(plaintext, signature);
             Console.WriteLine("2. VerifyTextHash: " + verify.ToString());
             Console.WriteLine();
 
@@ -82,9 +83,26 @@ namespace Web7.TrustLibrary
             Console.WriteLine();
 
             // 5. Generate and verify signature for a string using imported JWTs
-            byte[] signatureJWT = Hasher.SignText(signerKeyPrivateFromJWT.KeyPrivate, plaintext);
-            bool verifyJWT = Hasher.VerifyTextHash(signerKeyPublicFromJWT.KeyPublic, plaintext, signatureJWT);
+            Hasher hasherJWT = new Hasher(signer);
+            byte[] signatureJWT = hasherJWT.SignText(plaintext);
+            bool verifyJWT = hasherJWT.VerifyTextHash(plaintext, signatureJWT);
             Console.WriteLine("5. VerifyTextHashJWT: " + verifyJWT.ToString());
+            Console.WriteLine();
+
+            // 6. Encrypter key generation
+            Encrypter encrypter = new Encrypter();
+            RSA encrypterKeyPrivate = encrypter.KeyPrivate;
+            RSA encrypterKeyPublic = encrypter.KeyPublic;
+            RsaSecurityKey encrypterKeyPrivateSecurityKey = encrypter.KeyPrivateSecurityKey;
+            RsaSecurityKey encrypterKeyPublicSecurityKey = encrypter.KeyPublicSecurityKey;
+            Console.WriteLine("6. Encrypter key generation");
+            Console.WriteLine();
+
+            // 7. Encrypt and decrypt a string
+            byte[] bytesEncrypted = encrypter.Encrypt(plaintextbytes);
+            byte[] bytesDecrypted = encrypter.Decrypt(bytesEncrypted);
+            string stringDecrypted = Encoding.UTF8.GetString(bytesDecrypted);
+            Console.WriteLine("7. String encrypted/decrypted: " + stringDecrypted);
             Console.WriteLine();
 
             Console.WriteLine("Press ENTER to exit");
