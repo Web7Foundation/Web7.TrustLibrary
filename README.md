@@ -14,12 +14,12 @@ The list of PTL trust operations includes:
 - VDR-based signature authentication (Notary)
 - Trust Registry TrustReg document management
 
-The TPL is factored into 3 namespaces:
+The TPL trust operations are factored into 3 namespaces:
 1. Web7.TrustLibrary.Base
 2. Web7.TrustLibrary.Did
 3. Web7.TrustLibrary.Registries
 
-The PTL supports the Web 7.0 Foundation's goal of "making decentralized systems development easy-to-understand and easier for you to explain to others".
+The PTL supports the Web 7.0 Foundation's goal of "making decentralized systems development easy-to-understand and easier for you to explain to other developers.
 
 GitHub Repository: https://github.com/Web7Foundation/Web7.TrustLibrary 
 
