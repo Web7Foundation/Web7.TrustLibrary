@@ -6,4 +6,22 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="DIDCommAgent.tsl" />
+    <None Remove="DIDDocument.tsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GraphEngine.Core" Version="2.0.11318" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Web7.TrustLibrary.Base\Web7.TrustLibrary.Base.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TslCodegen Include="DIDCommAgent.tsl" />
+    <TslCodegen Include="DIDDocument.tsl" />
+  </ItemGroup>
+
 </Project>

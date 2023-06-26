@@ -69,9 +69,21 @@ namespace Web7.TrustLibrary.Base
             return JsonWebKeyConverter.ConvertFromRSASecurityKey(keyPrivateSecurityKey);
         }
 
+        public string KeyPrivateJsonWebKeyAsString()
+        {
+            JsonWebKey jwk = KeyPrivateJsonWebKey();
+            return Helper.JsonWebKeyToString(jwk);
+        }
+
         public JsonWebKey KeyPublicJsonWebKey()
         {
             return JsonWebKeyConverter.ConvertFromRSASecurityKey(keyPublicSecurityKey);
+        }
+
+        public string KeyPublicJsonWebKeyAsString()
+        {
+            JsonWebKey jwk = KeyPublicJsonWebKey();
+            return Helper.JsonWebKeyToString(jwk);
         }
 
         internal void ImportJsonWebKey(JsonWebKey jsonWebKey, bool importPrivateKey)

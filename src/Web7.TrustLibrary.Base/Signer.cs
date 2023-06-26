@@ -70,13 +70,8 @@ namespace Web7.TrustLibrary.Base
         }
         public string KeyPrivateJsonWebKeyAsString()
         {
-            JsonWebKey jwt = KeyPrivateJsonWebKey();
-            return JsonSerializer.Serialize(jwt);
-        }
-
-        public string KeyPrivateJsonWebKeyToString(JsonWebKey keyPrivateJWT)
-        {
-            return JsonSerializer.Serialize(keyPrivateJWT);
+            JsonWebKey jwk = KeyPrivateJsonWebKey();
+            return Helper.JsonWebKeyToString(jwk);
         }
 
         public JsonWebKey KeyPublicJsonWebKey()
@@ -86,13 +81,8 @@ namespace Web7.TrustLibrary.Base
 
         public string KeyPublicJsonWebKeyAsString()
         {
-            JsonWebKey jwt = KeyPublicJsonWebKey();
-            return JsonSerializer.Serialize(jwt);
-        }
-
-        public string KeyPublicJsonWebKeyToString(JsonWebKey keyPublicJWT)
-        {
-            return JsonSerializer.Serialize(keyPublicJWT);
+            JsonWebKey jwk = KeyPublicJsonWebKey();
+            return Helper.JsonWebKeyToString(jwk);
         }
 
         internal void ImportJsonWebKey(JsonWebKey jsonWebKey, bool importPrivateKey)

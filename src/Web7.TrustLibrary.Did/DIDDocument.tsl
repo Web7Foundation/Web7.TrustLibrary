@@ -1,0 +1,64 @@
+// Trusted Digial Web Project
+// Hyperonomy Digital Identity Lab
+// Parallelspace Corporation
+// (c) Copyright 2021 Parallelspace Corporation. All Rights Reserved
+
+//////////////////////////////////////////////////////////////////////////////
+
+// https://www.graphengine.io/docs/manual/TSL/tsl-basics.html
+
+// https://www.w3.org/TR/did-core/#dfn-publickeyjwk plus examples
+struct JSONKeyMap
+{
+	optional string crv;
+	optional string e;
+	optional string n;
+	optional string x;
+	optional string y;
+	optional string kty;
+	optional string kid;
+}
+
+
+// https://www.w3.org/TR/did-core/#verification-method-properties
+struct VerificationMethodMap
+{
+	optional string comment;
+	string id;
+	string controller;
+	string type_;
+	optional string keyPublicJsonWebKey; // used by Web7.TrustLibrary.Did.DIDDocumenter()
+	optional string publicKeyMultibase;
+	optional JSONKeyMap publicKeyJwk;
+}
+
+// https://www.w3.org/TR/did-core/#service-properties
+struct ServiceMap
+{
+	optional string comment;
+	string id;
+	List<string> type_;
+	List<string> serviceEndpoint;
+}
+
+
+// https://www.w3.org/TR/did-core/#did-document-properties
+struct DIDDocument
+{
+	string id;
+	optional string comment;
+
+	optional List<string> context;
+	optional List<string> alsoKnownAs;
+	optional List<string> controller;
+
+	optional List<VerificationMethodMap> verificationMethod;	// Signer public key
+	optional List<VerificationMethodMap> authentication;
+	optional List<VerificationMethodMap> assertionMethod;
+	optional List<VerificationMethodMap> keyAgreement;			// Encryter public key
+	optional List<VerificationMethodMap> capabilityInvocation;
+	optional List<VerificationMethodMap> capabilityDelegation;
+
+	optional List<ServiceMap> service;
+	optional List<ServiceMap> relationship;
+}

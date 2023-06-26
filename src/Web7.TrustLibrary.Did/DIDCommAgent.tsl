@@ -1,0 +1,43 @@
+﻿// Secure Verifiable Credential Transport Protocol (VCTPS)
+// Verifiable Capability Authorization-based Verifiable Credential Exchange Protocol over DIDComm
+// - using the .NET version of the https://github.com/trinsic-id/okapi/tree/main/dotnet Okapi DID libraries
+//   and the Microsoft "Trinity" Graph Engine object platform
+//
+// BlueToque Tools, Trusted Digital Web Project, Hyperonomy Digital Identity Lab, Parallelspace Corporation
+// http://hyperonomy.com
+// (c) Copyright 2022. Parallelspace Corporation, Bindloss, Alberta, Canada
+
+cell struct DIDCommEncryptedMessage64_Cell
+{
+	DIDCommEncryptedMessage64 em;
+}
+
+struct DIDCommEncryptedMessage64
+{
+	string lv64;
+	string ciphertext64;
+	string tag64;
+	List<string> recipients64;
+}
+
+struct DIDCommMessageRequest
+{
+	DIDCommEncryptedMessage64 encryptedMessage64; 
+}
+
+struct DIDCommResponse 
+{
+	long rc;
+}
+
+protocol DIDCommEndpoint
+{
+	Type: HTTP;
+	Request:  DIDCommMessageRequest;
+	Response: DIDCommResponse;
+}
+
+server DIDCommAgent
+{
+    protocol DIDCommEndpoint;
+}

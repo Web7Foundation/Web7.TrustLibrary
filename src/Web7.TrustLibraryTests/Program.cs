@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using Web7.TrustLibrary.Base;
 using Web7.TrustLibrary.Did.DIDComm;
+using Web7.TrustLibrary.Did.DIDDocumemt;
 
 namespace Web7.TrustLibrary.Base
 {
@@ -67,10 +68,10 @@ namespace Web7.TrustLibrary.Base
 
             // 3. Export keys as JWTs
             JsonWebKey signerKeyPrivateJWT = signer.KeyPrivateJsonWebKey();
-            string signerKeyPrivateJWTString = signer.KeyPrivateJsonWebKeyToString(signerKeyPrivateJWT);
+            string signerKeyPrivateJWTString = Helper.JsonWebKeyToString(signerKeyPrivateJWT);
             Console.WriteLine("3. signerKeyPrivateJWTString: " + signerKeyPrivateJWTString);
             JsonWebKey signerKeyPublicJWT = signer.KeyPublicJsonWebKey();
-            string signerKeyPublicJWTString = signer.KeyPublicJsonWebKeyToString(signerKeyPublicJWT);
+            string signerKeyPublicJWTString = Helper.JsonWebKeyToString(signerKeyPublicJWT);
             Console.WriteLine("3. signerKeyPublicJWTString: " + signerKeyPublicJWTString);
             Console.WriteLine();
 
@@ -119,6 +120,17 @@ namespace Web7.TrustLibrary.Base
             Console.WriteLine("9. IsValid: " + result.IsValid.ToString());
             Console.WriteLine("9. Body: " + result.Claims["body"].ToString());
             Console.WriteLine();
+
+            // 10. Create a DID Document
+            Did.ServiceMap service0 = new Did.ServiceMap(null, "#default", new List<string>() { "default" }, new List<string>() { "http://localhost:8080" } );
+            Did.ServiceMap relationship0 = new Did.ServiceMap(null, "#verifiers-accepted", new List<string>() { "verifiers-accepted" }, new List<string>() { "did:web7:verifier:1111" });
+            DIDDocumenter diddocer = new DIDDocumenter(Helper.DID_ALICE, new List<string> { Helper.DID_ALICE }, signer, encrypter,
+                new List<Did.ServiceMap>() { service0 },
+                new List<Did.ServiceMap>() { relationship0 } );
+            string diddoc = diddocer.ToString();
+            Console.WriteLine("10. DID Document: " + Helper.JsonPrettyPrint(diddoc));
+            Console.WriteLine();
+
 
             Console.WriteLine("Press ENTER to exit");
             Console.ReadLine();

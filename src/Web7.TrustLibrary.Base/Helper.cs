@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Web7.TrustLibrary.Base
@@ -46,6 +48,18 @@ namespace Web7.TrustLibrary.Base
         public static long UNIX_time(DateTime t)
         {
             return (long)(t.Subtract(DateTime.UnixEpoch)).TotalSeconds;
+        }
+
+        public static string JsonWebKeyToString(JsonWebKey jwk)
+        {
+            return JsonSerializer.Serialize<JsonWebKey>(jwk);
+        }
+
+        // https://stackoverflow.com/questions/65620631/how-to-pretty-print-using-system-text-json-for-unknown-object
+        public static string JsonPrettyPrint(this string json)
+        {
+            using var jsonDoc = JsonDocument.Parse(json);
+            return JsonSerializer.Serialize(jsonDoc, new JsonSerializerOptions { WriteIndented = true }).Replace("\\u0022", "\"");
         }
     }
 }
