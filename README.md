@@ -4,7 +4,7 @@ The Web 7.0 Portable Trust Library (PTL) is used to support all of the trust ope
 
 The list of PTL trust operations includes:
 - Key generation, serialization and persistence (Signer and Encrypter)
-- Digital signature creation and validation (Signer)
+- Digital signature creation and validation (Signer and Hasher)
 - Encryption and decryption (Encrypter)
 - JWE-based authenticated encryption (JWETokenizer)
 - DID Document creation and management (DIDDocumenter)
@@ -59,10 +59,9 @@ Keywords: Confidentiality RSA
 
 The Hasher class is used to create Hashes of arbitrary Strings and Byte arrays.
 
-This class is used primarily by the Signer class.
+This class uses the Signer class.
 
 Keywords: Authenticity SHA SHA256 Hash
-
 
 ## Helper
 

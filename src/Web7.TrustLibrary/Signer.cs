@@ -121,5 +121,24 @@ namespace Web7.TrustLibrary
 
             keyPair = ECDsa.Create(ecParameters);
         }
+        public byte[] SignText(string text)
+        {
+            return keyPrivate.SignHash(Hasher.Hash(text));
+        }
+
+        public byte[] SignHash(byte[] hash)
+        {
+            return keyPrivate.SignHash(hash);
+        }
+
+        public bool VerifyTextHash(string text, byte[] signature)
+        {
+            return keyPublic.VerifyHash(Hasher.Hash(text), signature);
+        }
+
+        public bool VerifyHash(byte[] hash, byte[] signature)
+        {
+            return keyPublic.VerifyHash(hash, signature);
+        }
     }
 }

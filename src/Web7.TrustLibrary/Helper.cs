@@ -33,7 +33,7 @@ namespace Web7.TrustLibrary
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
 
-        public static string Base64EncodeBytes(byte[] bytes)
+        public static string Base64Encode(byte[] bytes)
         {
             return System.Convert.ToBase64String(bytes);
         }

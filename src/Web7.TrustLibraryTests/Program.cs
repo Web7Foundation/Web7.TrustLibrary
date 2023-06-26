@@ -61,9 +61,8 @@ namespace Web7.TrustLibrary
             Console.WriteLine();
 
             // 2. Generate and verify signature for a string
-            Hasher hasher = new Hasher(signer);
-            byte[] signature = hasher.SignText(plaintext);
-            bool verify = hasher.VerifyTextHash(plaintext, signature);
+            byte[] signature = signer.SignText(plaintext);
+            bool verify = signer.VerifyTextHash(plaintext, signature);
             Console.WriteLine("2. VerifyTextHash: " + verify.ToString());
             Console.WriteLine();
 
@@ -83,9 +82,8 @@ namespace Web7.TrustLibrary
             Console.WriteLine();
 
             // 5. Generate and verify signature for a string using imported JWTs
-            Hasher hasherJWT = new Hasher(signer);
-            byte[] signatureJWT = hasherJWT.SignText(plaintext);
-            bool verifyJWT = hasherJWT.VerifyTextHash(plaintext, signatureJWT);
+            byte[] signatureJWT = signer.SignText(plaintext);
+            bool verifyJWT = signer.VerifyTextHash(plaintext, signatureJWT);
             Console.WriteLine("5. VerifyTextHashJWT: " + verifyJWT.ToString());
             Console.WriteLine();
 
@@ -103,6 +101,15 @@ namespace Web7.TrustLibrary
             byte[] bytesDecrypted = encrypter.Decrypt(bytesEncrypted);
             string stringDecrypted = Encoding.UTF8.GetString(bytesDecrypted);
             Console.WriteLine("7. String encrypted/decrypted: " + stringDecrypted);
+            Console.WriteLine();
+
+            // 8. Hash a string (and by implication, an byte array)
+            byte[] hash = Hasher.Hash(plaintext);
+            string hash64 = Helper.Base64Encode(hash);
+            byte[] hashbytes = Helper.Base64DecodeBytes(hash64);
+            string hash64copy = Helper.Base64Encode(hashbytes);
+            Console.WriteLine("8. Hash64:     " + hash64);
+            Console.WriteLine("8. Hash64Copy: " + hash64);
             Console.WriteLine();
 
             Console.WriteLine("Press ENTER to exit");
