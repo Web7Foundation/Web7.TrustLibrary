@@ -111,6 +111,15 @@ namespace Web7.TrustLibrary.Base
             Console.WriteLine("8. Hash64Copy: " + hash64copy);
             Console.WriteLine();
 
+            // 9. Create and validate a JWE token
+            JWETokenizer jwter = new JWETokenizer(Helper.DID_ALICE, signer, Helper.DID_BOB, encrypter);
+            string token = jwter.CreateJWEToken(msgJson);
+            Console.WriteLine("9. Token: " + token);
+            TokenValidationResult result = jwter.ValidateJWEToken(token);
+            Console.WriteLine("9. IsValid: " + result.IsValid.ToString());
+            Console.WriteLine("9. Body: " + result.Claims["body"].ToString());
+            Console.WriteLine();
+
             Console.WriteLine("Press ENTER to exit");
             Console.ReadLine();
         }

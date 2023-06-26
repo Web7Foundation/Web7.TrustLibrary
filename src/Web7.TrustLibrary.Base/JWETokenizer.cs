@@ -13,35 +13,50 @@ namespace Web7.TrustLibrary.Base
     // Keywords: Authenticated-Encryption JWE JWE-Token
     public class JWETokenizer
     {
-        private JsonWebTokenHandler handler;
+        JsonWebTokenHandler handler;
+        string senderDID;
+        Signer senderSigner;
+        string receiverDID;
+        Encrypter receiverEncrypter;
 
-        public JWETokenizer() 
+        public JWETokenizer(string senderDID, Signer senderSigner, string receiverDID, Encrypter receiverEncrypter) 
         {
             handler = new JsonWebTokenHandler();
+            this.senderDID = senderDID;
+            this.senderSigner = senderSigner;   
+            this.receiverDID = receiverDID; 
+            this.receiverEncrypter = receiverEncrypter;
         }
 
-        public string CreateJWEToken(string senderDID, string receiverDID, string messageBody64,
-            ECDsaSecurityKey senderSigningKeyPrivateSecurityKey, RsaSecurityKey receiverEncryptionKeyPublicSecurityKey)
+        public string SenderDID { get => senderDID; set => senderDID = value; }
+        public Signer SenderSigner { get => senderSigner; set => senderSigner = value; }
+        public string ReceiverDID { get => receiverDID; set => receiverDID = value; }
+        public Encrypter ReceiverEncrypter { get => receiverEncrypter; set => receiverEncrypter = value; }
+
+        public string CreateJWEToken(string body)
         {
+            ECDsaSecurityKey senderSigningKeyPrivateSecurityKey = senderSigner.KeyPrivateSecurityKey;
+            RsaSecurityKey receiverEncryptionKeyPublicSecurityKey = receiverEncrypter.KeyPublicSecurityKey;
             string token = handler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = senderDID,
                 Audience = receiverDID,
-                Claims = new Dictionary<string, object> { { "body", messageBody64 } },
+                Claims = new Dictionary<string, object> { { "body", body } },
 
-                // private key for signing
+                // Alice's sender private key for signing
                 SigningCredentials = new SigningCredentials(senderSigningKeyPrivateSecurityKey, SecurityAlgorithms.EcdsaSha256),
 
-                // public key for encryption
+                // Bob's receiver public key for encryption
                 EncryptingCredentials = new EncryptingCredentials(receiverEncryptionKeyPublicSecurityKey, SecurityAlgorithms.RsaOAEP, SecurityAlgorithms.Aes256CbcHmacSha512)
             });
 
             return token;
         }
 
-        public TokenValidationResult ValidateJWEToken(string token, string senderDID, string receiverDID,
-            ECDsaSecurityKey senderSigningKeyPublicSecurityKey, RsaSecurityKey receiverEncryptionKeyPrivateSecurityKey)
+        public TokenValidationResult ValidateJWEToken(string token)
         {
+            ECDsaSecurityKey senderSigningKeyPublicSecurityKey = senderSigner.KeyPublicSecurityKey;
+            RsaSecurityKey receiverEncryptionKeyPrivateSecurityKey = receiverEncrypter.KeyPrivateSecurityKey;
             TokenValidationResult result = handler.ValidateToken(
                 token,
                 new TokenValidationParameters
@@ -49,10 +64,10 @@ namespace Web7.TrustLibrary.Base
                     ValidIssuer = senderDID,
                     ValidAudience = receiverDID,
 
-                    // Alice's public key to verify signature
+                    // Alice's sender public key to verify signature
                     IssuerSigningKey = senderSigningKeyPublicSecurityKey,
 
-                    // Bob's private key for decryption
+                    // Bob's receiver private key for decryption
                     TokenDecryptionKey = receiverEncryptionKeyPrivateSecurityKey
                 });
 
