@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Web7.TrustLibrary
+namespace Web7.TrustLibrary.Did.DIDDocumemt
 {
     // The DIDDocumenter class takes as inputs a Signer public key, an Encrypter public key, a list of service endpoints,
     // and a list of relationships and creates an in-memory DIDDocument.

@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Web7.TrustLibrary
+namespace Web7.TrustLibrary.Base
 {
     // The Encrypter class is used to support a set of public and private keys for encryption and decryption;
     // including key generation and serialization.

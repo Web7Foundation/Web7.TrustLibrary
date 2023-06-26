@@ -5,11 +5,10 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using Web7.TrustLibrary;
-using Web7.TrustLibrary.DIDComm;
+using Web7.TrustLibrary.Base;
+using Web7.TrustLibrary.Did.DIDComm;
 
-
-namespace Web7.TrustLibrary
+namespace Web7.TrustLibrary.Base
 {
     internal class Program
     {
@@ -106,10 +105,10 @@ namespace Web7.TrustLibrary
             // 8. Hash a string (and by implication, an byte array)
             byte[] hash = Hasher.Hash(plaintext);
             string hash64 = Helper.Base64Encode(hash);
-            byte[] hashbytes = Helper.Base64DecodeBytes(hash64);
-            string hash64copy = Helper.Base64Encode(hashbytes);
+            byte[] hash64decoded = Helper.Base64DecodeBytes(hash64);
+            string hash64copy = Helper.Base64Encode(hash64decoded);
             Console.WriteLine("8. Hash64:     " + hash64);
-            Console.WriteLine("8. Hash64Copy: " + hash64);
+            Console.WriteLine("8. Hash64Copy: " + hash64copy);
             Console.WriteLine();
 
             Console.WriteLine("Press ENTER to exit");

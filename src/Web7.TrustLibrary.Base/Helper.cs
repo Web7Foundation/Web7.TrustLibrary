@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Web7.TrustLibrary
+namespace Web7.TrustLibrary.Base
 {
     // The Helper class contains a number of public static helper or utility methods.
     public static class Helper

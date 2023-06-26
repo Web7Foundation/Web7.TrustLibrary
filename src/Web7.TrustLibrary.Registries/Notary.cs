@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Web7.TrustLibrary
+namespace Web7.TrustLibrary.Registries
 {
     // The Notary class is used to create, serialized, persist, and retrieve Signatures using a Verifiable Data Registry.
     // This class uses Signatures created or deserialized from the Signer class.

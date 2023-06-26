@@ -5,12 +5,16 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web7.TrustLibraryTests", "Web7.TrustLibraryTests\Web7.TrustLibraryTests.csproj", "{25615AA6-3DD1-4F4C-84B5-7D8F689F2C8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web7.TrustLibrary", "Web7.TrustLibrary\Web7.TrustLibrary.csproj", "{00FC066E-E9D6-4185-A867-6CD9E28433F4}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4A1170B6-D59B-4E99-B5FE-8669F2C37EDF}"
 	ProjectSection(SolutionItems) = preProject
 		..\README.md = ..\README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web7.TrustLibrary.Base", "Web7.TrustLibrary.Base\Web7.TrustLibrary.Base.csproj", "{0C347C7E-8CE2-43D5-A361-CE3F5675958D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web7.TrustLibrary.Did", "Web7.TrustLibrary.Did\Web7.TrustLibrary.Did.csproj", "{DA4ACB88-24FC-4695-813E-88590F41C8B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web7.TrustLibrary.Registries", "Web7.TrustLibrary.Registries\Web7.TrustLibrary.Registries.csproj", "{426E7D65-321F-425F-ACD7-17BFB0CFC82F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +26,18 @@ Global
 		{25615AA6-3DD1-4F4C-84B5-7D8F689F2C8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25615AA6-3DD1-4F4C-84B5-7D8F689F2C8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25615AA6-3DD1-4F4C-84B5-7D8F689F2C8D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{00FC066E-E9D6-4185-A867-6CD9E28433F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00FC066E-E9D6-4185-A867-6CD9E28433F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{00FC066E-E9D6-4185-A867-6CD9E28433F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{00FC066E-E9D6-4185-A867-6CD9E28433F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C347C7E-8CE2-43D5-A361-CE3F5675958D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C347C7E-8CE2-43D5-A361-CE3F5675958D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C347C7E-8CE2-43D5-A361-CE3F5675958D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C347C7E-8CE2-43D5-A361-CE3F5675958D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA4ACB88-24FC-4695-813E-88590F41C8B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA4ACB88-24FC-4695-813E-88590F41C8B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA4ACB88-24FC-4695-813E-88590F41C8B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA4ACB88-24FC-4695-813E-88590F41C8B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{426E7D65-321F-425F-ACD7-17BFB0CFC82F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{426E7D65-321F-425F-ACD7-17BFB0CFC82F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{426E7D65-321F-425F-ACD7-17BFB0CFC82F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{426E7D65-321F-425F-ACD7-17BFB0CFC82F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

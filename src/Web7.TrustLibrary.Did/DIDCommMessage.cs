@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Web7.TrustLibrary.DIDComm
+namespace Web7.TrustLibrary.Did.DIDComm
 {
     // The DIDComm classes are used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment.
     // In addition, the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.

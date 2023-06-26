@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Web7.TrustLibrary\Web7.TrustLibrary.csproj" />
+    <ProjectReference Include="..\Web7.TrustLibrary.Base\Web7.TrustLibrary.Base.csproj" />
+    <ProjectReference Include="..\Web7.TrustLibrary.Did\Web7.TrustLibrary.Did.csproj" />
+    <ProjectReference Include="..\Web7.TrustLibrary.Registries\Web7.TrustLibrary.Registries.csproj" />
   </ItemGroup>
 
 </Project>

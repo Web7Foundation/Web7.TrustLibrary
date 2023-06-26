@@ -5,10 +5,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-
 using Microsoft.IdentityModel.Tokens;
 
-namespace Web7.TrustLibrary
+namespace Web7.TrustLibrary.Base
 {
     // The Signer class can be used to to support the creation of keys for digital signing
     // including key generation and serialization.

@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Web7.TrustLibrary
+namespace Web7.TrustLibrary.Base
 {
     // The Hasher class is used to create Hashes of arbitrary Strings and Byte arrays.
     // This class uses the Signer class.

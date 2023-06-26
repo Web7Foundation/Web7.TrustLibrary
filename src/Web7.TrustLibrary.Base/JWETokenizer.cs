@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Web7.TrustLibrary
+namespace Web7.TrustLibrary.Base
 {
     // The JWETokenizer class is used to support the creation, verification, and serialization of JWE tokens.
     // This class uses keys created or deserialized from the Signer and Encrypter classes.
