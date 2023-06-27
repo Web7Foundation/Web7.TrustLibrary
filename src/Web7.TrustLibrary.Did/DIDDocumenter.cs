@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Web7.TrustLibrary.Base;
 
@@ -35,13 +37,36 @@ namespace Web7.TrustLibrary.Did.DIDDocumemt
             List<ServiceMap> service,
             List<ServiceMap> relationship)
         {
-            VerificationMethodMap verificationMethod0 = new VerificationMethodMap("Web 7.0 PTL Signer Public Key", signer.KeyID, signer.KeyID, "JsonWebKeyWeb7PTL", signer.KeyPublicJsonWebKeyAsString());
-            VerificationMethodMap keyAgreement0 = new VerificationMethodMap("Web 7.0 PTL Encrypter Public Key", encrypter.KeyID, encrypter.KeyID, "JsonWebKeyWeb7PTL", encrypter.KeyPublicJsonWebKeyAsString());
+            JsonWebKey signerKeyPublicPWK = signer.KeyPublicJsonWebKey();
+            JsonWebKeyDotnet6 signerKeyPublicJsonWebKeyDotnet6 = new JsonWebKeyDotnet6(signerKeyPublicPWK.Alg, signerKeyPublicPWK.Crv, signerKeyPublicPWK.D, signerKeyPublicPWK.DP, signerKeyPublicPWK.DQ, signerKeyPublicPWK.E, signerKeyPublicPWK.K, 
+                signerKeyPublicPWK.KeyOps == null ? null : new List<string>(signerKeyPublicPWK.KeyOps), 
+                signerKeyPublicPWK.Kid, signerKeyPublicPWK.Kty, signerKeyPublicPWK.N,
+                signerKeyPublicPWK.Oth == null ? null : new List<string>(signerKeyPublicPWK.Oth), 
+                signerKeyPublicPWK.P, signerKeyPublicPWK.Q, signerKeyPublicPWK.QI, signerKeyPublicPWK.Use, signerKeyPublicPWK.X,
+                signerKeyPublicPWK.X5c == null ? null : new List<string>(signerKeyPublicPWK.X5c), 
+                signerKeyPublicPWK.X5t, signerKeyPublicPWK.X5tS256, signerKeyPublicPWK.X5u, signerKeyPublicPWK.Y);
+
+            JsonWebKey encrypterKeyPublicPWK = encrypter.KeyPublicJsonWebKey();
+            JsonWebKeyDotnet6 encrypterKeyPublicJsonWebKeyDotnet6 = new JsonWebKeyDotnet6(encrypterKeyPublicPWK.Alg, encrypterKeyPublicPWK.Crv, encrypterKeyPublicPWK.D, encrypterKeyPublicPWK.DP, encrypterKeyPublicPWK.DQ, encrypterKeyPublicPWK.E, encrypterKeyPublicPWK.K,
+                encrypterKeyPublicPWK.KeyOps == null ? null : new List<string>(encrypterKeyPublicPWK.KeyOps), 
+                encrypterKeyPublicPWK.Kid, encrypterKeyPublicPWK.Kty, encrypterKeyPublicPWK.N,
+                encrypterKeyPublicPWK.Oth == null ? null : new List<string>(encrypterKeyPublicPWK.Oth), 
+                encrypterKeyPublicPWK.P, encrypterKeyPublicPWK.Q, encrypterKeyPublicPWK.QI, encrypterKeyPublicPWK.Use, encrypterKeyPublicPWK.X,
+                encrypterKeyPublicPWK.X5c == null ? null : new List<string>(encrypterKeyPublicPWK.X5c), 
+                encrypterKeyPublicPWK.X5t, encrypterKeyPublicPWK.X5tS256, encrypterKeyPublicPWK.X5u, encrypterKeyPublicPWK.Y);
+
+            VerificationMethodMap verificationMethod0 = new VerificationMethodMap("Web 7.0 PTL Signer Public Key", signer.KeyID, signer.KeyID, "JsonWebKeyWeb7PTL", signerKeyPublicJsonWebKeyDotnet6);
+            VerificationMethodMap keyAgreement0 = new VerificationMethodMap("Web 7.0 PTL Encrypter Public Key", encrypter.KeyID, encrypter.KeyID, "JsonWebKeyWeb7PTL", encrypterKeyPublicJsonWebKeyDotnet6);
 
             List<VerificationMethodMap> verificationMethod = new List<VerificationMethodMap>() { verificationMethod0 };
             List<VerificationMethodMap> keyAgreement = new List<VerificationMethodMap>() { keyAgreement0 };
 
             Initialize(did, controller, verificationMethod, keyAgreement, service, relationship);
+        }
+
+        public DIDDocumenter(string didDocJson)
+        {
+            didDocument = didDocument.FromJson(didDocJson);
         }
 
         internal void Initialize(string did,
@@ -62,10 +87,5 @@ namespace Web7.TrustLibrary.Did.DIDDocumemt
         }
 
         public DIDDocument DidDocument { get => didDocument; set => didDocument = value; }
-
-        public override string ToString()
-        {
-            return didDocument.ToString();
-        }
     }
 }

@@ -12,9 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web7.TrustLibrary.Base", "Web7.TrustLibrary.Base\Web7.TrustLibrary.Base.csproj", "{0C347C7E-8CE2-43D5-A361-CE3F5675958D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web7.TrustLibrary.Did", "Web7.TrustLibrary.Did\Web7.TrustLibrary.Did.csproj", "{DA4ACB88-24FC-4695-813E-88590F41C8B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web7.TrustLibrary.Did", "Web7.TrustLibrary.Did\Web7.TrustLibrary.Did.csproj", "{DA4ACB88-24FC-4695-813E-88590F41C8B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web7.TrustLibrary.Registries", "Web7.TrustLibrary.Registries\Web7.TrustLibrary.Registries.csproj", "{426E7D65-321F-425F-ACD7-17BFB0CFC82F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web7.TrustLibrary.Registries", "Web7.TrustLibrary.Registries\Web7.TrustLibrary.Registries.csproj", "{426E7D65-321F-425F-ACD7-17BFB0CFC82F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web7.TrustLibrary.Transports", "Web7.TrustLibrary.Transports\Web7.TrustLibrary.Transports.csproj", "{217D403D-E546-4DE5-BDB3-0864D4A7147C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{426E7D65-321F-425F-ACD7-17BFB0CFC82F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{426E7D65-321F-425F-ACD7-17BFB0CFC82F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{426E7D65-321F-425F-ACD7-17BFB0CFC82F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{217D403D-E546-4DE5-BDB3-0864D4A7147C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{217D403D-E546-4DE5-BDB3-0864D4A7147C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{217D403D-E546-4DE5-BDB3-0864D4A7147C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{217D403D-E546-4DE5-BDB3-0864D4A7147C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

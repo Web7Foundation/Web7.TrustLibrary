@@ -7,7 +7,7 @@
 
 // https://www.graphengine.io/docs/manual/TSL/tsl-basics.html
 
-// https://www.w3.org/TR/did-core/#dfn-publickeyjwk plus examples
+// https://www.w3.org/TR/did-core/#dfn-publickeyjwk
 struct JSONKeyMap
 {
 	optional string crv;
@@ -19,6 +19,32 @@ struct JSONKeyMap
 	optional string kid;
 }
 
+// .NET 6.0 JsonWebKey: Microsoft.IdentityModel.Tokens.JsonWebKey 
+struct JsonWebKeyDotnet6
+{
+	optional string Alg; // 'alg' (KeyType)
+	optional string Crv; // 'crv' (ECC - Curve)
+	optional string D; // 'd' (ECC - Private Key OR RSA - Private Exponent)
+	optional string DP; // 'dp' (RSA - First Factor CRT Exponent)
+	optional string DQ; // 'dq' (RSA - Second Factor CRT Exponent)
+	optional string E; // 'e' (RSA - Exponent)
+	optional string K; // 'k' (Symmetric; // Key Value)
+	optional List<string> KeyOps; // 'key_ops' (Key Operations)
+	optional string Kid; // 'kid' (Key ID)
+	optional string Kty; // 'kty' (Key Type)
+	optional string N; // 'n' (RSA - Modulus)
+	optional List<string> Oth; // 'oth' (RSA - Other Primes Info)
+	optional string P; // 'p' (RSA - First Prime Factor)
+	optional string Q; // 'q' (RSA - Second  Prime Factor)
+	optional string QI; // 'qi' (RSA - First CRT Coefficient)
+	optional string Use; // 'use' (Public Key Use)
+	optional string X; // 'x' (ECC - X Coordinate)
+	optional List<string> X5c; // 'x5c' collection (X.509 Certificate Chain)
+	optional string X5t; // 'x5t' (X.509 Certificate SHA-1 thumbprint)
+	optional string X5tS256; // 'x5t#S256' (X.509 Certificate SHA-1 thumbprint)
+	optional string X5u; // 'x5u' (X.509 URL)
+	optional string Y; // 'y' (ECC - Y Coordinate)
+}
 
 // https://www.w3.org/TR/did-core/#verification-method-properties
 struct VerificationMethodMap
@@ -26,8 +52,9 @@ struct VerificationMethodMap
 	optional string comment;
 	string id;
 	string controller;
-	string type_;
-	optional string keyPublicJsonWebKey; // used by Web7.TrustLibrary.Did.DIDDocumenter()
+	string type_; 
+	optional JsonWebKeyDotnet6 keyPublicJsonWebKey; // used by Web7.TrustLibrary.Did.DIDDocumenter()
+	optional string keyPublicJsonWebKeyString;
 	optional string publicKeyMultibase;
 	optional JSONKeyMap publicKeyJwk;
 }

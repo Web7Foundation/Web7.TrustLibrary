@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Web7.TrustLibrary.Base;
+using Web7.TrustLibrary.Did;
 using Web7.TrustLibrary.Did.DIDComm;
 using Web7.TrustLibrary.Did.DIDDocumemt;
 
@@ -66,25 +67,25 @@ namespace Web7.TrustLibrary.Base
             Console.WriteLine("2. VerifyTextHash: " + verify.ToString());
             Console.WriteLine();
 
-            // 3. Export keys as JWTs
-            JsonWebKey signerKeyPrivateJWT = signer.KeyPrivateJsonWebKey();
-            string signerKeyPrivateJWTString = Helper.JsonWebKeyToString(signerKeyPrivateJWT);
-            Console.WriteLine("3. signerKeyPrivateJWTString: " + signerKeyPrivateJWTString);
-            JsonWebKey signerKeyPublicJWT = signer.KeyPublicJsonWebKey();
-            string signerKeyPublicJWTString = Helper.JsonWebKeyToString(signerKeyPublicJWT);
-            Console.WriteLine("3. signerKeyPublicJWTString: " + signerKeyPublicJWTString);
+            // 3. Export keys as JWKs
+            JsonWebKey signerKeyPrivateJWK = signer.KeyPrivateJsonWebKey();
+            string signerKeyPrivateJWKString = Helper.JsonWebKeyToString(signerKeyPrivateJWK);
+            Console.WriteLine("3. signerKeyPrivateJWKString: " + signerKeyPrivateJWKString);
+            JsonWebKey signerKeyPublicJWK = signer.KeyPublicJsonWebKey();
+            string signerKeyPublicJWKString = Helper.JsonWebKeyToString(signerKeyPublicJWK);
+            Console.WriteLine("3. signerKeyPublicJWKString: " + signerKeyPublicJWKString);
             Console.WriteLine();
 
-            // 4. Import keys from JWTs
-            Signer signerKeyPrivateFromJWT = new Signer(signerKeyPrivateJWTString, true);
-            Signer signerKeyPublicFromJWT = new Signer(signerKeyPublicJWTString, false);
-            Console.WriteLine("4. Signer key import from JWT strings");
+            // 4. Import keys from JWKs
+            Signer signerKeyPrivateFromJWK = new Signer(signerKeyPrivateJWKString, true);
+            Signer signerKeyPublicFromJWK = new Signer(signerKeyPublicJWKString, false);
+            Console.WriteLine("4. Signer key import from JWK strings");
             Console.WriteLine();
 
-            // 5. Generate and verify signature for a string using imported JWTs
-            byte[] signatureJWT = signer.SignText(plaintext);
-            bool verifyJWT = signer.VerifyTextHash(plaintext, signatureJWT);
-            Console.WriteLine("5. VerifyTextHashJWT: " + verifyJWT.ToString());
+            // 5. Generate and verify signature for a string using imported JWKs
+            byte[] signatureJWK = signer.SignText(plaintext);
+            bool verifyJWK = signer.VerifyTextHash(plaintext, signatureJWK);
+            Console.WriteLine("5. VerifyTextHashJWK: " + verifyJWK.ToString());
             Console.WriteLine();
 
             // 6. Encrypter key generation
@@ -127,10 +128,44 @@ namespace Web7.TrustLibrary.Base
             DIDDocumenter diddocer = new DIDDocumenter(Helper.DID_ALICE, new List<string> { Helper.DID_ALICE }, signer, encrypter,
                 new List<Did.ServiceMap>() { service0 },
                 new List<Did.ServiceMap>() { relationship0 } );
-            string diddoc = diddocer.ToString();
-            Console.WriteLine("10. DID Document: " + Helper.JsonPrettyPrint(diddoc));
+            DIDDocument diddoc = diddocer.DidDocument;
+            string diddocJson = diddoc.ToJson();
+            Console.WriteLine("10. Serialized DID Document: " + Helper.JsonPrettyPrint(diddocJson));
             Console.WriteLine();
 
+            // 11. Deserialize DID Document from Json
+            DIDDocumenter diddocer2 = new DIDDocumenter(diddocJson);
+            DIDDocument diddoc2 = diddocer2.DidDocument;
+            string diddocJson2 = diddoc2.ToJson();
+            Console.WriteLine("11. Deserialized DID Document: " + Helper.JsonPrettyPrint(diddocJson2));
+            Console.WriteLine();
+
+            // 12. Deserialize Signer public key from deserialized DID Document
+            JsonWebKeyDotnet6 signerKeyPublicJsonWebKey6 = (JsonWebKeyDotnet6)diddoc2.verificationMethod[0].keyPublicJsonWebKey;
+            JsonWebKey signerKeyPublicJsonWebKey = signerKeyPublicJsonWebKey6.ToJsonWebKey();
+            Signer signerPublicKey2 = new Signer(signerKeyPublicJsonWebKey, false);
+            Console.WriteLine("12. Deserialize Signer public key from deserialized DID Document");
+            Console.WriteLine();
+
+            // 13. Generate and verify signature for a string
+            byte[] signature2 = signer.SignText(plaintext); // need a Signer with a private key
+            bool verify2 = signerPublicKey2.VerifyTextHash(plaintext, signature2);
+            Console.WriteLine("13. VerifyTextHash: " + verify2.ToString());
+            Console.WriteLine();
+
+            // 14. Deserialize Encrypter public key from deserialized DID Document
+            JsonWebKeyDotnet6 encrypterKeyPublicJsonWebKey6 = (JsonWebKeyDotnet6)diddoc2.keyAgreement[0].keyPublicJsonWebKey;
+            JsonWebKey encrypterKeyPublicJsonWebKey = encrypterKeyPublicJsonWebKey6.ToJsonWebKey();
+            Encrypter encrypterPublicKey2 = new Encrypter(encrypterKeyPublicJsonWebKey, false);
+            Console.WriteLine("14. Deserialize Encrypter public key from deserialized DID Document");
+            Console.WriteLine();
+
+            // 15. Encrypt and decrypt a string
+            byte[] bytesEncrypted2 = encrypterPublicKey2.Encrypt(plaintextbytes);
+            byte[] bytesDecrypted2 = encrypter.Decrypt(bytesEncrypted2); // need an Encrypter with private key
+            string stringDecrypted2 = Encoding.UTF8.GetString(bytesDecrypted2);
+            Console.WriteLine("15. String encrypted/decrypted: " + stringDecrypted2);
+            Console.WriteLine();
 
             Console.WriteLine("Press ENTER to exit");
             Console.ReadLine();

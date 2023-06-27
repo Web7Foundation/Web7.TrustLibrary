@@ -5,7 +5,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Web7.TrustLibrary.Did
+namespace Web7.TrustLibrary.Transports
 {
     // The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a
     // Receiver agent's inbound service endpoint using the HTTP protocol.

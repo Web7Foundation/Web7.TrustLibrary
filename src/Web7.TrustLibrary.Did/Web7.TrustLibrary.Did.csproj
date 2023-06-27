@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="DIDCommAgent.tsl" />
     <None Remove="DIDDocument.tsl" />
   </ItemGroup>
 
@@ -20,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TslCodegen Include="DIDCommAgent.tsl" />
     <TslCodegen Include="DIDDocument.tsl" />
   </ItemGroup>
 

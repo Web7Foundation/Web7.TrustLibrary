@@ -82,15 +82,21 @@ The Registry class is used to persist an in-memory DIDDocument to as well as ret
 
 Keywords: DID DID-Document
 
-### HTTPTransporter
+### DIDDocument (Extension Methods)
 
-The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a Receiver 
-agent's inbound service endpoint using the HTTP protocol.
+The DIDDocument partial class supports the tricky field-based JSON serialization/deserialization needed by users of the DIDDocumenter class.
 
-The DIDComm class is used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment. 
-In addition the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
+The underlying DIDDocument partial class is generated from DIDDocument.tsl.
 
-Keywords: DIDComm HTTP Transport-Protocol
+Keywords: DID DID-Document
+
+### JsonWebKeyDotnet6 (Extension Methods)
+
+The JsonWebKeyDotnet6 partial class supports the tricky field-based JSON serialization/deserialization needed by users of the DIDDocumenter class.
+
+The underlying JsonWebKeyDotnet6 partial class is generated from DIDDocument.tsl.
+
+Keywords: DID DID-Document JsonWebKey Dotnet
 
 ## Web7.TrustLibrary.Registries
 
@@ -102,7 +108,7 @@ The DIDocumenter class is used to create, update and serialized in-memory DIDDoc
 
 Keywords: DID-Registry DID Decentralized-Identifier
 
-## Notary
+### Notary
 
 The Notary class is used to create, serialized, persist, and retrieve Signatures using a Verifiable Data Registry.
 
@@ -110,7 +116,7 @@ This class uses Signatures created or deserialized from the Signer class.
 
 Keywords: Authenticity Verifiable-Data-Registry
 
-## TrustRegistrar
+### TrustRegistrar
 
 The TrustRegistrar class is used to maintain the collection of relationships in a Trust Registration (TrustReg) document, 
 a specialization of a DID Document.
@@ -119,3 +125,15 @@ TrustReg documents are stored in a DID Registry managed by the DIDRegistrar clas
 The DIDDocumenter and DIDRegistrar classes are used to support the capabilities of the TrustRegistrar class.
 
 Keywords: Trust-Registry DID-Document DID-Registry DID Decentralized-Identifier
+
+## Web7.TrustLibrary.Transports
+
+### HTTPTransporter
+
+The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a Receiver 
+agent's inbound service endpoint using the HTTP protocol.
+
+The DIDComm class is used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment. 
+In addition the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
+
+Keywords: DIDComm HTTP Transport-Protocol
