@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Web7.TrustLibrary.Base\Web7.TrustLibrary.Base.csproj" />
+    <ProjectReference Include="..\Web7.TrustLibrary.Did\Web7.TrustLibrary.Did.csproj" />
+    <ProjectReference Include="..\Web7.TrustLibrary.Transports\Web7.TrustLibrary.Transports.csproj" />
+  </ItemGroup>
+
+</Project>

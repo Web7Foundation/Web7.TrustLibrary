@@ -87,17 +87,23 @@ namespace Web7.TrustLibrary.Did.DIDComm
         }
     }
 
-    public class MessageJWE
+    public class Envelope
     {
         private string senderID;
+        private string receiverID;
+        private string receiverServiceEndpointUrl;
         private string token;
 
         public string SenderID { get => senderID; set => senderID = value; }
+        public string ReceiverID { get => receiverID; set => receiverID = value; }
+        public string ReceiverServiceEndpointUrl { get => receiverServiceEndpointUrl; set => receiverServiceEndpointUrl = value; }
         public string Token { get => token; set => token = value; }
 
-        public MessageJWE(string senderID, string token)
+        public Envelope(string senderID, string receiverID, string receiverUrl, string token)
         {
             this.senderID = senderID;
+            this.receiverID = receiverID;
+            this.receiverServiceEndpointUrl = receiverUrl;
             this.token = token;
         }
     }

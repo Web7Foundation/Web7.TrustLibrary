@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -119,7 +120,20 @@ namespace Web7.TrustLibrary.Base
             Console.WriteLine("9. Token: " + token);
             TokenValidationResult result = jwter.ValidateJWEToken(token);
             Console.WriteLine("9. IsValid: " + result.IsValid.ToString());
-            Console.WriteLine("9. Body: " + result.Claims["body"].ToString());
+            string token2 = result.SecurityToken.ToString();
+            Console.WriteLine("9. SecurityToken: " + token2);
+            string[] tokenparts = token2.Split('.');
+            // https://learn.microsoft.com/en-us/dotnet/api/microsoft.identitymodel.tokens.base64urlencoder?view=msal-web-dotnet-latest
+            string spart = tokenparts[0]; //  Base64UrlEncoder.Decode(tokenparts[0]);
+            Console.WriteLine("9: JOSE Header: " + spart);
+            int index = 0;
+            foreach (string part in tokenparts)
+            {
+                Console.WriteLine("9. " + index.ToString() + ": " + part);
+                index++;
+            }
+            string body = result.Claims["body"].ToString();
+            Console.WriteLine("9: Body: " + body);
             Console.WriteLine();
 
             // 10. Create a DID Document
@@ -165,6 +179,11 @@ namespace Web7.TrustLibrary.Base
             byte[] bytesDecrypted2 = encrypter.Decrypt(bytesEncrypted2); // need an Encrypter with private key
             string stringDecrypted2 = Encoding.UTF8.GetString(bytesDecrypted2);
             Console.WriteLine("15. String encrypted/decrypted: " + stringDecrypted2);
+            Console.WriteLine();
+
+            // 16. Create a DIDComm Envelope (for use HTTPTransporter in Web7.TRustedPersonalAgent app)
+            Envelope envelope = new Envelope(Helper.DID_ALICE, Helper.DID_BOB, "http://localhost:8080", token);
+            Console.WriteLine("16. Envelope: " + JsonSerializer.Serialize<Envelope>(envelope));
             Console.WriteLine();
 
             Console.WriteLine("Press ENTER to exit");

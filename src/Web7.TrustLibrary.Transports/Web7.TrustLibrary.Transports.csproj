@@ -1,9 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="DIDCommAgent.tsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GraphEngine.Core" Version="2.0.11318" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Web7.TrustLibrary.Did\Web7.TrustLibrary.Did.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TslCodegen Include="DIDCommAgent.tsl" />
+  </ItemGroup>
 
 </Project>

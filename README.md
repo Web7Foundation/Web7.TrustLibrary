@@ -108,6 +108,12 @@ The DIDocumenter class is used to create, update and serialized in-memory DIDDoc
 
 Keywords: DID-Registry DID Decentralized-Identifier
 
+### KeyManager
+
+The KeyManager Class is used to manage a collection of Signer and Encrypter key pairs stored locally on a device.
+
+Keywords: KeyManager KeyVault Key-Storage
+
 ### Notary
 
 The Notary class is used to create, serialized, persist, and retrieve Signatures using a Verifiable Data Registry.
