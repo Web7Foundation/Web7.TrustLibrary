@@ -24,7 +24,7 @@ namespace Web7.TrustLibrary.Base
 
             // 0. DIDComm namespace
             DateTime now = DateTime.Now;
-            Message msg = new Message(
+            Message message = new Message(
                 Helper.DID_MESSAGEID + Guid.NewGuid().ToString(),
                 MESSAGE_TYPE,
                 Helper.DID_ALICE,
@@ -47,10 +47,10 @@ namespace Web7.TrustLibrary.Base
                 d,
                 0
             );
-            msg.attachments.Add(a);
+            message.attachments.Add(a);
 
-            string msgJson = JsonSerializer.Serialize<Message>(msg);
-            Console.WriteLine( "0. msgJson: " + msgJson );
+            string messageJson = JsonSerializer.Serialize<Message>(message);
+            Console.WriteLine( "0. messageJson: " + messageJson );
             Console.WriteLine();
 
             // 1. Signer key generation
@@ -69,10 +69,10 @@ namespace Web7.TrustLibrary.Base
             Console.WriteLine();
 
             // 3. Export keys as JWKs
-            JsonWebKey signerKeyPrivateJWK = signer.KeyPrivateJsonWebKey();
+            JsonWebKey signerKeyPrivateJWK = signer.KeyPrivateSecurityKeyToJsonWebKey();
             string signerKeyPrivateJWKString = Helper.JsonWebKeyToString(signerKeyPrivateJWK);
             Console.WriteLine("3. signerKeyPrivateJWKString: " + signerKeyPrivateJWKString);
-            JsonWebKey signerKeyPublicJWK = signer.KeyPublicJsonWebKey();
+            JsonWebKey signerKeyPublicJWK = signer.KeyPublicSecurityKeyToJsonWebKey();
             string signerKeyPublicJWKString = Helper.JsonWebKeyToString(signerKeyPublicJWK);
             Console.WriteLine("3. signerKeyPublicJWKString: " + signerKeyPublicJWKString);
             Console.WriteLine();
@@ -116,7 +116,7 @@ namespace Web7.TrustLibrary.Base
 
             // 9. Create and validate a JWE token
             JWETokenizer jwter = new JWETokenizer(Helper.DID_ALICE, signer, Helper.DID_BOB, encrypter);
-            string token = jwter.CreateJWEToken(msgJson);
+            string token = jwter.CreateJWEToken(messageJson);
             Console.WriteLine("9. Token: " + token);
             TokenValidationResult result = jwter.ValidateJWEToken(token);
             Console.WriteLine("9. IsValid: " + result.IsValid.ToString());
@@ -132,8 +132,11 @@ namespace Web7.TrustLibrary.Base
                 Console.WriteLine("9. " + index.ToString() + ": " + part);
                 index++;
             }
-            string body = result.Claims["body"].ToString();
-            Console.WriteLine("9: Body: " + body);
+            string messageJson2 = result.Claims[Helper.CLAIM_MESSAGE].ToString();
+            Console.WriteLine("9: CLAIM_MESSAGE: " + messageJson2);
+            Message message2 = JsonSerializer.Deserialize<Message>(messageJson);
+            string plaintext2 = Helper.Base64Decode(message2.body);
+            Console.WriteLine("9: plaintext2: " + plaintext2);
             Console.WriteLine();
 
             // 10. Create a DID Document

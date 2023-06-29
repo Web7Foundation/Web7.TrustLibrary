@@ -11,15 +11,13 @@ namespace Web7.TrustLibrary.Transports
 {
     public class DIDCommAgentImplementation : DIDCommAgentBase
     {
-        private static ConcurrentDictionary<string, ConcurrentQueue<long>> queues = new ConcurrentDictionary<string, ConcurrentQueue<long>>();
-
-        public static ConcurrentDictionary<string, ConcurrentQueue<long>> Queues { get => queues; }
+        ConcurrentDictionary<string, ConcurrentQueue<long>> queues = new ConcurrentDictionary<string, ConcurrentQueue<long>>();
 
         public override void DIDCommEndpointHandler(DIDCommMessageRequest request, out DIDCommResponse response)
         {
             DIDCommMessageEnvelope env = request.envelope;
 
-            // Persist DIDCommMessageEnvelope
+            // Persist DIDCommMessageEnvelope and queue CellId based on ReceiverID
             DIDCommMessageEnvelope_Cell envCell = new DIDCommMessageEnvelope_Cell(env);
             Global.LocalStorage.SaveDIDCommMessageEnvelope_Cell(envCell);
             Global.LocalStorage.SaveStorage();
@@ -27,16 +25,44 @@ namespace Web7.TrustLibrary.Transports
             ulong cellcount = Global.LocalStorage.CellCount;
             Console.WriteLine(">>>> cellid: " + envCell.CellId.ToString() + " celltype: " + celltype.ToString() + " cellcount: " + cellcount);
 
-            if (!Queues.ContainsKey(env.ReceiverID))
+            if (!queues.ContainsKey(env.ReceiverID))
             {
-                Queues.TryAdd(env.ReceiverID, new ConcurrentQueue<long>());
+                queues.TryAdd(env.ReceiverID, new ConcurrentQueue<long>());
             }
-            Queues[env.ReceiverID].Enqueue(envCell.CellId);
+            queues[env.ReceiverID].Enqueue(envCell.CellId);
 
             response.rc = (int)Trinity.TrinityErrorCode.E_SUCCESS;
 
             // Create a Web 7.0 Message Envelope
             // Envelope envelope = new Envelope(env.SenderID, env.ReceiverID, env.ReceiverID, env.Token);
+        }
+
+        public void ProcessMessageQueues(IMessageEnvelopeProcessor messageEnvelopeProcessor)
+        {
+            bool Processing = true;
+            while (Processing)
+            {
+                foreach (var queue in queues)
+                {
+                    ConcurrentQueue<long> cellids = queue.Value;
+                    while (cellids.Count > 0)
+                    {
+                        long cellid;
+                        bool dequeued = cellids.TryDequeue(out cellid);
+                        if (dequeued)
+                        {
+                            DIDCommMessageEnvelope_Cell envCell = Global.LocalStorage.LoadDIDCommMessageEnvelope_Cell(cellid);
+                            DIDCommMessageEnvelope env = envCell.env;
+                            Envelope envelope = new Envelope(env.SenderID, env.ReceiverID, env.ReceiverServiceEndpointUrl, env.Token);
+                            Console.WriteLine("17. Process envelope addressed to: " + envelope.ReceiverID);
+                            messageEnvelopeProcessor.ProcessEnvelope(envelope);
+                            Global.LocalStorage.RemoveCell(cellid);
+                        }
+                    }
+                }
+
+                Thread.Sleep(100);
+            }
         }
     }
 }

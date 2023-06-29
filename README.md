@@ -110,7 +110,8 @@ Keywords: DID-Registry DID Decentralized-Identifier
 
 ### KeyManager
 
-The KeyManager Class is used to manage a collection of Signer and Encrypter key pairs stored locally on a device.
+The KeyManager class is used to manage a collection of Signer and Encrypter key pairs
+stored locally on a device in a personal KeyVault.
 
 Keywords: KeyManager KeyVault Key-Storage
 

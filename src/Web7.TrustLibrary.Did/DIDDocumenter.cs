@@ -37,7 +37,7 @@ namespace Web7.TrustLibrary.Did.DIDDocumemt
             List<ServiceMap> service,
             List<ServiceMap> relationship)
         {
-            JsonWebKey signerKeyPublicPWK = signer.KeyPublicJsonWebKey();
+            JsonWebKey signerKeyPublicPWK = signer.KeyPublicSecurityKeyToJsonWebKey();
             JsonWebKeyDotnet6 signerKeyPublicJsonWebKeyDotnet6 = new JsonWebKeyDotnet6(signerKeyPublicPWK.Alg, signerKeyPublicPWK.Crv, signerKeyPublicPWK.D, signerKeyPublicPWK.DP, signerKeyPublicPWK.DQ, signerKeyPublicPWK.E, signerKeyPublicPWK.K, 
                 signerKeyPublicPWK.KeyOps == null ? null : new List<string>(signerKeyPublicPWK.KeyOps), 
                 signerKeyPublicPWK.Kid, signerKeyPublicPWK.Kty, signerKeyPublicPWK.N,
@@ -46,7 +46,7 @@ namespace Web7.TrustLibrary.Did.DIDDocumemt
                 signerKeyPublicPWK.X5c == null ? null : new List<string>(signerKeyPublicPWK.X5c), 
                 signerKeyPublicPWK.X5t, signerKeyPublicPWK.X5tS256, signerKeyPublicPWK.X5u, signerKeyPublicPWK.Y);
 
-            JsonWebKey encrypterKeyPublicPWK = encrypter.KeyPublicJsonWebKey();
+            JsonWebKey encrypterKeyPublicPWK = encrypter.KeyPublicSecurityKeyToJsonWebKey();
             JsonWebKeyDotnet6 encrypterKeyPublicJsonWebKeyDotnet6 = new JsonWebKeyDotnet6(encrypterKeyPublicPWK.Alg, encrypterKeyPublicPWK.Crv, encrypterKeyPublicPWK.D, encrypterKeyPublicPWK.DP, encrypterKeyPublicPWK.DQ, encrypterKeyPublicPWK.E, encrypterKeyPublicPWK.K,
                 encrypterKeyPublicPWK.KeyOps == null ? null : new List<string>(encrypterKeyPublicPWK.KeyOps), 
                 encrypterKeyPublicPWK.Kid, encrypterKeyPublicPWK.Kty, encrypterKeyPublicPWK.N,

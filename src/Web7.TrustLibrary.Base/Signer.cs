@@ -64,24 +64,24 @@ namespace Web7.TrustLibrary.Base
         public ECDsaSecurityKey KeyPrivateSecurityKey { get => keyPrivateSecurityKey;  }
         public ECDsaSecurityKey KeyPublicSecurityKey { get => keyPublicSecurityKey; }
 
-        public JsonWebKey KeyPrivateJsonWebKey()
+        public JsonWebKey KeyPrivateSecurityKeyToJsonWebKey()
         {
             return JsonWebKeyConverter.ConvertFromECDsaSecurityKey(keyPrivateSecurityKey);
         }
         public string KeyPrivateJsonWebKeyAsString()
         {
-            JsonWebKey jwk = KeyPrivateJsonWebKey();
+            JsonWebKey jwk = KeyPrivateSecurityKeyToJsonWebKey();
             return Helper.JsonWebKeyToString(jwk);
         }
 
-        public JsonWebKey KeyPublicJsonWebKey()
+        public JsonWebKey KeyPublicSecurityKeyToJsonWebKey()
         {
             return JsonWebKeyConverter.ConvertFromECDsaSecurityKey(keyPublicSecurityKey);
         }
 
         public string KeyPublicJsonWebKeyAsString()
         {
-            JsonWebKey jwk = KeyPublicJsonWebKey();
+            JsonWebKey jwk = KeyPublicSecurityKeyToJsonWebKey();
             return Helper.JsonWebKeyToString(jwk);
         }
 

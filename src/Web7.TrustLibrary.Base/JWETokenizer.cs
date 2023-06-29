@@ -33,7 +33,7 @@ namespace Web7.TrustLibrary.Base
         public string ReceiverDID { get => receiverDID; set => receiverDID = value; }
         public Encrypter ReceiverEncrypter { get => receiverEncrypter; set => receiverEncrypter = value; }
 
-        public string CreateJWEToken(string body)
+        public string CreateJWEToken(string messageJson)
         {
             ECDsaSecurityKey senderSigningKeyPrivateSecurityKey = senderSigner.KeyPrivateSecurityKey;
             RsaSecurityKey receiverEncryptionKeyPublicSecurityKey = receiverEncrypter.KeyPublicSecurityKey;
@@ -41,7 +41,7 @@ namespace Web7.TrustLibrary.Base
             {
                 Issuer = senderDID,
                 Audience = receiverDID,
-                Claims = new Dictionary<string, object> { { "body", body } },
+                Claims = new Dictionary<string, object> { { Helper.CLAIM_MESSAGE, messageJson } },
 
                 // Alice's sender private key for signing
                 SigningCredentials = new SigningCredentials(senderSigningKeyPrivateSecurityKey, SecurityAlgorithms.EcdsaSha256),

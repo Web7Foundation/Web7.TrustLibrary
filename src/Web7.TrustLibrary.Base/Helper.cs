@@ -11,6 +11,8 @@ namespace Web7.TrustLibrary.Base
     // The Helper class contains a number of public static helper or utility methods.
     public static class Helper
     {
+        public const string CLAIM_MESSAGE = "message";
+
         public const string DID_SUBJECT = "did:web7:subject:";
         public const string DID_PERSON = DID_SUBJECT + "person:";
         public const string DID_ALICE = DID_PERSON + "1234";

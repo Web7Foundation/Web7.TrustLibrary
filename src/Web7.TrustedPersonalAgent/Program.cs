@@ -1,9 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using Trinity;
 using Web7.TrustLibrary.Base;
 using Web7.TrustLibrary.Did.DIDComm;
@@ -15,6 +18,10 @@ namespace Web7.TrustedPersonalAgent
     {
         const int masterPort = 8080;
         const string STORAGE_ROOT = "c:\\temp\\DIDMaster\\storage";
+        const string plaintext = "{ \"message\": \"Hello world!\" }";
+        
+        public static Signer signer = new Signer();
+        public static Encrypter encrypter = new Encrypter();
 
         static void Main(string[] args)
         {
@@ -27,22 +34,23 @@ namespace Web7.TrustedPersonalAgent
             DIDCommAgentImplementation agent = new DIDCommAgentImplementation();
             agent.Start();
 
-            Signer signer = new Signer();
-            Encrypter encrypter = new Encrypter();
+            Global.LocalStorage.ResetStorage();
 
-            SendTestMessage(Helper.DID_ALICE, signer, Helper.DID_BOB, encrypter);
+            for (int i = 0; i < 10; i++)
+            {
+                SendSampleMessage(Helper.DID_ALICE, signer, Helper.DID_BOB, encrypter, plaintext + " " + DateTime.Now.ToString());
+            }
+
+            agent.ProcessMessageQueues(new MessageEnvelopeProcessor());
 
             Console.WriteLine("Press ENTER to exit...");
             Console.ReadLine();
             agent.Stop();
         }
 
-        public static void SendTestMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter)
+        public static void SendSampleMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter, string plaintext)
         {
             const string MESSAGE_TYPE = "https://example.org/example/1.0/hello";
-
-            string plaintext = "{ \"message\": \"Hello world!\" }";
-            byte[] plaintextbytes = Encoding.UTF8.GetBytes(plaintext);
 
             // 0. DIDComm namespace
             DateTime now = DateTime.Now;
@@ -89,6 +97,28 @@ namespace Web7.TrustedPersonalAgent
             // 17. Use HTTPTransporter to send the message
             HTTPTransporter client = new HTTPTransporter();
             client.SendDIDCommEnvelope(envelope);
+        }
+    }
+
+    public class MessageEnvelopeProcessor : IMessageEnvelopeProcessor
+    {
+        public void ProcessEnvelope(Envelope envelope)
+        {
+            Console.WriteLine("18. Processing envelope addressed to: " + envelope.SenderID);
+            Console.WriteLine("18. Processing envelope addressed to: " + envelope.ReceiverID);
+            Console.WriteLine("18. Processing envelope addressed to: " + envelope.ReceiverServiceEndpointUrl);
+
+            string token = envelope.Token;
+            JWETokenizer jwter = new JWETokenizer(Helper.DID_ALICE, Program.signer, Helper.DID_BOB, Program.encrypter);
+            var result = jwter.ValidateJWEToken(token);
+            Console.WriteLine("9. ValidateJWEToken(token) result: " + result.IsValid.ToString());
+            string messageJson = result.Claims[Helper.CLAIM_MESSAGE].ToString();
+            Console.WriteLine("9: CLAIM_MESSAGE: " + messageJson);
+            Message message = JsonSerializer.Deserialize<Message>(messageJson);
+            string plaintext2 = Helper.Base64Decode(message.body);
+            Console.WriteLine("9: plaintext2: " + plaintext2);
+            Console.WriteLine();
+
         }
     }
 }
