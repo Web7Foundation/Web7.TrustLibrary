@@ -19,7 +19,7 @@ The TPL trust operations are factored into 3 namespaces:
 2. Web7.TrustLibrary.Did
 3. Web7.TrustLibrary.Registries
 
-The PTL supports the Web 7.0 Foundation's goal of "making decentralized systems development easy-to-understand and easier for you to explain to other developers.
+The PTL supports the Web 7.0 Foundation's goal of "making decentralized systems development easy-to-understand and easier for you to explain to other developers".
 
 GitHub Repository: https://github.com/Web7Foundation/Web7.TrustLibrary 
 
