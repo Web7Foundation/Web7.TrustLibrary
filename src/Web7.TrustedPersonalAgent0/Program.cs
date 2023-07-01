@@ -38,23 +38,23 @@ namespace Web7.TrustedPersonalAgent
 
             for (int i = 0; i < 10; i++)
             {
-                SendSampleMessage(Helper.DID_ALICE, signer, Helper.DID_BOB, encrypter, plaintext + " " + DateTime.Now.ToString());
+                SendHelloMessage(Helper.DID_ALICE, signer, Helper.DID_BOB, encrypter, plaintext + " " + DateTime.Now.ToString());
             }
 
-            agent.ProcessMessageQueues(new MessageEnvelopeProcessor());
+            agent.ProcessMessageQueues(new MessageProcessor());
 
             Console.WriteLine("Press ENTER to exit...");
             Console.ReadLine();
             agent.Stop();
         }
 
-        public static void SendSampleMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter, string plaintext)
+        public static void SendHelloMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter, string plaintext)
         {
             const string MESSAGE_TYPE = "https://example.org/example/1.0/hello";
 
             // 0. DIDComm namespace
             DateTime now = DateTime.Now;
-            Message msg = new Message(
+            Message message = new Message(
                 Helper.DID_MESSAGEID + Guid.NewGuid().ToString(),
                 MESSAGE_TYPE,
                 Helper.DID_ALICE,
@@ -77,20 +77,20 @@ namespace Web7.TrustedPersonalAgent
                 d,
                 0
             );
-            msg.attachments.Add(a);
+            message.attachments.Add(a);
 
-            string msgJson = JsonSerializer.Serialize<Message>(msg);
-            Console.WriteLine("0. msgJson: " + msgJson);
+            string messageJson = JsonSerializer.Serialize<Message>(message);
+            Console.WriteLine("0. messageJson: " + messageJson);
             Console.WriteLine();
 
-            JWETokenizer jwter = new JWETokenizer(signerID, signer, encrypterID, encrypter);
-            string token = jwter.CreateJWEToken(msgJson);
-            Console.WriteLine("9. Token: " + token);
+            JWEMessagePacker messagePacker = new JWEMessagePacker(signerID, signer, encrypterID, encrypter);
+            string messageJWE = messagePacker.CreateJWEMessage(messageJson);
+            Console.WriteLine("9. MessageJWE: " + messageJWE);
 
             // 16. Create a DIDComm Envelope (for use HTTPTransporter in Web7.TrustedPersonalAgent app)
             Envelope envelope = new Envelope(signerID, encrypterID, 
                 "http://localhost:" + Trinity.TrinityConfig.HttpPort + "/DIDCommEndpoint/", 
-                token);
+                messageJWE);
             Console.WriteLine("16. Envelope: " + JsonSerializer.Serialize<Envelope>(envelope));
             Console.WriteLine();
 
@@ -100,23 +100,34 @@ namespace Web7.TrustedPersonalAgent
         }
     }
 
-    public class MessageEnvelopeProcessor : IMessageEnvelopeProcessor
+    public class MessageProcessor : IMessageProcessor
     {
-        public void ProcessEnvelope(Envelope envelope)
+        public Message AuthenticateMessage(Envelope envelope)
         {
+            Message message = null;
+
             Console.WriteLine("18. Processing envelope addressed to: " + envelope.SenderID);
             Console.WriteLine("18. Processing envelope addressed to: " + envelope.ReceiverID);
             Console.WriteLine("18. Processing envelope addressed to: " + envelope.ReceiverServiceEndpointUrl);
 
-            string token = envelope.Token;
-            JWETokenizer jwter = new JWETokenizer(Helper.DID_ALICE, Program.signer, Helper.DID_BOB, Program.encrypter);
-            var result = jwter.ValidateJWEToken(token);
-            Console.WriteLine("9. ValidateJWEToken(token) result: " + result.IsValid.ToString());
-            string messageJson = result.Claims[Helper.CLAIM_MESSAGE].ToString();
-            Console.WriteLine("9: CLAIM_MESSAGE: " + messageJson);
-            Message message = JsonSerializer.Deserialize<Message>(messageJson);
-            string plaintext2 = Helper.Base64Decode(message.body);
-            Console.WriteLine("9: plaintext2: " + plaintext2);
+            string messageJWE = envelope.MessageJWE;
+            JWEMessagePacker messagePacker = new JWEMessagePacker(Helper.DID_ALICE, Program.signer, Helper.DID_BOB, Program.encrypter);
+            var result = messagePacker.ValidateJWEMessage(messageJWE);
+            Console.WriteLine("9. ValidateJWEMessage(messageJWE) result: " + result.IsValid.ToString());
+            if (result.IsValid)
+            {
+                string messageJson = result.Claims[Helper.CLAIM_MESSAGE].ToString();
+                Console.WriteLine("9: CLAIM_MESSAGE: " + messageJson);
+                message = JsonSerializer.Deserialize<Message>(messageJson);
+            }
+
+            return message;
+        }
+
+        public void ProcessMessage(Message message)
+        {
+            string plaintext = Helper.Base64Decode(message.body);
+            Console.WriteLine("9: plaintext2: " + plaintext);
             Console.WriteLine();
 
         }

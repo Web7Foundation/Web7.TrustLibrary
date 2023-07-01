@@ -114,15 +114,15 @@ namespace Web7.TrustLibrary.Base
             Console.WriteLine("8. Hash64Copy: " + hash64copy);
             Console.WriteLine();
 
-            // 9. Create and validate a JWE token
-            JWETokenizer jwter = new JWETokenizer(Helper.DID_ALICE, signer, Helper.DID_BOB, encrypter);
-            string token = jwter.CreateJWEToken(messageJson);
-            Console.WriteLine("9. Token: " + token);
-            TokenValidationResult result = jwter.ValidateJWEToken(token);
+            // 9. Create and validate a JWE messageJWE
+            JWEMessagePacker messagePacker = new JWEMessagePacker(Helper.DID_ALICE, signer, Helper.DID_BOB, encrypter);
+            string messageJWE = messagePacker.CreateJWEMessage(messageJson);
+            Console.WriteLine("9. MessageJWE: " + messageJWE);
+            TokenValidationResult result = messagePacker.ValidateJWEMessage(messageJWE);
             Console.WriteLine("9. IsValid: " + result.IsValid.ToString());
-            string token2 = result.SecurityToken.ToString();
-            Console.WriteLine("9. SecurityToken: " + token2);
-            string[] tokenparts = token2.Split('.');
+            string token = result.SecurityToken.ToString();
+            Console.WriteLine("9. SecurityToken: " + token);
+            string[] tokenparts = token.Split('.');
             // https://learn.microsoft.com/en-us/dotnet/api/microsoft.identitymodel.tokens.base64urlencoder?view=msal-web-dotnet-latest
             string spart = tokenparts[0]; //  Base64UrlEncoder.Decode(tokenparts[0]);
             Console.WriteLine("9: JOSE Header: " + spart);
@@ -185,7 +185,7 @@ namespace Web7.TrustLibrary.Base
             Console.WriteLine();
 
             // 16. Create a DIDComm Envelope (for use HTTPTransporter in Web7.TRustedPersonalAgent app)
-            Envelope envelope = new Envelope(Helper.DID_ALICE, Helper.DID_BOB, "http://localhost:8080", token);
+            Envelope envelope = new Envelope(Helper.DID_ALICE, Helper.DID_BOB, "http://localhost:8080", messageJWE);
             Console.WriteLine("16. Envelope: " + JsonSerializer.Serialize<Envelope>(envelope));
             Console.WriteLine();
 

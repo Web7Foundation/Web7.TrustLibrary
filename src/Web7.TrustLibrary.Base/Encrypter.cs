@@ -11,7 +11,7 @@ namespace Web7.TrustLibrary.Base
 {
     // The Encrypter class is used to support a set of public and private keys for encryption and decryption;
     // including key generation and serialization.
-    // The Encrypter and Encrypter classes are used in the JWETokenizer class to create JWETokens.
+    // The Encrypter and Encrypter classes are used in the JWEMessagePacker class to create JWETokens.
     // Keywords: Confidentiality RSA
     public class Encrypter
     {

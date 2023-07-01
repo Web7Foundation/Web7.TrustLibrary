@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Web7.TrustLibrary.Did.DIDComm
 {
     // The DIDComm Message classes are used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment.
-    // In addition, the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
+    // In addition, the DIDComm class can create authenticated encrypted messages by internally using the JWEMessagePacker class.
     // The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a Receiver
     // agent's inbound service endpoint using the HTTP protocol.
     // Keywords: Secure-Messaging Authenticity Confidentiality DID DID-Communications DIDComm-Messaging
@@ -92,19 +92,19 @@ namespace Web7.TrustLibrary.Did.DIDComm
         private string senderID;
         private string receiverID;
         private string receiverServiceEndpointUrl;
-        private string token;
+        private string messageJWE;
 
         public string SenderID { get => senderID; set => senderID = value; }
         public string ReceiverID { get => receiverID; set => receiverID = value; }
         public string ReceiverServiceEndpointUrl { get => receiverServiceEndpointUrl; set => receiverServiceEndpointUrl = value; }
-        public string Token { get => token; set => token = value; }
+        public string MessageJWE { get => messageJWE; set => messageJWE = value; }
 
-        public Envelope(string senderID, string receiverID, string receiverUrl, string token)
+        public Envelope(string senderID, string receiverID, string receiverUrl, string messageJWE)
         {
             this.senderID = senderID;
             this.receiverID = receiverID;
             this.receiverServiceEndpointUrl = receiverUrl;
-            this.token = token;
+            this.messageJWE = messageJWE;
         }
     }
 }

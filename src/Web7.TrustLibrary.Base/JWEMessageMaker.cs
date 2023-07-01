@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Web7.TrustLibrary.Base
 {
-    // The JWETokenizer class is used to support the creation, verification, and serialization of JWE tokens.
+    // The JWEMessagePacker class is used to support the creation, verification, and serialization of JWE tokens.
     // This class uses keys created or deserialized from the Signer and Encrypter classes.
-    // Keywords: Authenticated-Encryption JWE JWE-Token
-    public class JWETokenizer
+    // Keywords: Authenticated-Encryption JWE MessageJWE
+    public class JWEMessagePacker
     {
         JsonWebTokenHandler handler;
         string senderDID;
@@ -19,7 +19,7 @@ namespace Web7.TrustLibrary.Base
         string receiverDID;
         Encrypter receiverEncrypter;
 
-        public JWETokenizer(string senderDID, Signer senderSigner, string receiverDID, Encrypter receiverEncrypter) 
+        public JWEMessagePacker(string senderDID, Signer senderSigner, string receiverDID, Encrypter receiverEncrypter) 
         {
             handler = new JsonWebTokenHandler();
             this.senderDID = senderDID;
@@ -33,11 +33,11 @@ namespace Web7.TrustLibrary.Base
         public string ReceiverDID { get => receiverDID; set => receiverDID = value; }
         public Encrypter ReceiverEncrypter { get => receiverEncrypter; set => receiverEncrypter = value; }
 
-        public string CreateJWEToken(string messageJson)
+        public string CreateJWEMessage(string messageJson)
         {
             ECDsaSecurityKey senderSigningKeyPrivateSecurityKey = senderSigner.KeyPrivateSecurityKey;
             RsaSecurityKey receiverEncryptionKeyPublicSecurityKey = receiverEncrypter.KeyPublicSecurityKey;
-            string token = handler.CreateToken(new SecurityTokenDescriptor
+            string messageJWE = handler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = senderDID,
                 Audience = receiverDID,
@@ -50,15 +50,15 @@ namespace Web7.TrustLibrary.Base
                 EncryptingCredentials = new EncryptingCredentials(receiverEncryptionKeyPublicSecurityKey, SecurityAlgorithms.RsaOAEP, SecurityAlgorithms.Aes256CbcHmacSha512)
             });
 
-            return token;
+            return messageJWE;
         }
 
-        public TokenValidationResult ValidateJWEToken(string token)
+        public TokenValidationResult ValidateJWEMessage(string messageJWE)
         {
             ECDsaSecurityKey senderSigningKeyPublicSecurityKey = senderSigner.KeyPublicSecurityKey;
             RsaSecurityKey receiverEncryptionKeyPrivateSecurityKey = receiverEncrypter.KeyPrivateSecurityKey;
             TokenValidationResult result = handler.ValidateToken(
-                token,
+                messageJWE,
                 new TokenValidationParameters
                 {
                     ValidIssuer = senderDID,

@@ -32,16 +32,14 @@ namespace Web7.TrustLibrary.Transports
             queues[env.ReceiverID].Enqueue(envCell.CellId);
 
             response.rc = (int)Trinity.TrinityErrorCode.E_SUCCESS;
-
-            // Create a Web 7.0 Message Envelope
-            // Envelope envelope = new Envelope(env.SenderID, env.ReceiverID, env.ReceiverID, env.Token);
         }
 
-        public void ProcessMessageQueues(IMessageEnvelopeProcessor messageEnvelopeProcessor)
+        public void ProcessMessageQueues(IMessageProcessor messageProcessor)
         {
             bool Processing = true;
             while (Processing)
             {
+                // Doubly-nested queues: queues of CellId's indexed by receiverID
                 foreach (var queue in queues)
                 {
                     ConcurrentQueue<long> cellids = queue.Value;
@@ -53,9 +51,10 @@ namespace Web7.TrustLibrary.Transports
                         {
                             DIDCommMessageEnvelope_Cell envCell = Global.LocalStorage.LoadDIDCommMessageEnvelope_Cell(cellid);
                             DIDCommMessageEnvelope env = envCell.env;
-                            Envelope envelope = new Envelope(env.SenderID, env.ReceiverID, env.ReceiverServiceEndpointUrl, env.Token);
+                            Envelope envelope = new Envelope(env.SenderID, env.ReceiverID, env.ReceiverServiceEndpointUrl, env.MessageJWE);
                             Console.WriteLine("17. Process envelope addressed to: " + envelope.ReceiverID);
-                            messageEnvelopeProcessor.ProcessEnvelope(envelope);
+                            Message message = messageProcessor.AuthenticateMessage(envelope);
+                            messageProcessor.ProcessMessage(message);
                             Global.LocalStorage.RemoveCell(cellid);
                         }
                     }

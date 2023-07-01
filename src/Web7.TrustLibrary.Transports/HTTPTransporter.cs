@@ -13,7 +13,7 @@ namespace Web7.TrustLibrary.Transports
     // The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a
     // Receiver agent's inbound service endpoint using the HTTP protocol.
     // The DIDComm class is used to create and serialize an in-memory Web 7.0 DIDComm Message with(or without) a DIDComm Attachment.
-    // In addition the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
+    // In addition the DIDComm class can create authenticated encrypted messages by internally using the JWEMessagePacker class.
     // Keywords: DIDComm HTTP Transport-Protocol
     public class HTTPTransporter
     {
@@ -22,7 +22,7 @@ namespace Web7.TrustLibrary.Transports
 
         public void SendDIDCommEnvelope(Envelope envelope)
         {
-            DIDCommMessageEnvelope env = new DIDCommMessageEnvelope(envelope.SenderID, envelope.ReceiverID, envelope.ReceiverServiceEndpointUrl, envelope.Token);
+            DIDCommMessageEnvelope env = new DIDCommMessageEnvelope(envelope.SenderID, envelope.ReceiverID, envelope.ReceiverServiceEndpointUrl, envelope.MessageJWE);
             DIDCommMessageRequest request = new DIDCommMessageRequest(env);
             var task = Task.Run(() => SendHttpMessage(envelope.ReceiverServiceEndpointUrl, request.ToString()));
         }

@@ -17,7 +17,7 @@ struct DIDCommMessageEnvelope
 	string SenderID;
 	string ReceiverID;
 	string ReceiverServiceEndpointUrl;
-	string Token;
+	string MessageJWE;
 }
 
 struct DIDCommMessageRequest

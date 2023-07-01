@@ -11,7 +11,7 @@ namespace Web7.TrustLibrary.Base
 {
     // The Signer class can be used to to support the creation of keys for digital signing
     // including key generation and serialization.
-    // The Signer and Encrypter classes are used in the JWETokenizer class to create JWETokens.
+    // The Signer and Encrypter classes are used in the JWEMessagePacker class to create JWETokens.
     // Keywords: Authenticity ECDsa
     public class Signer
     {

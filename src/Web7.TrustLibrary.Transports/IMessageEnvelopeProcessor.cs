@@ -3,8 +3,9 @@
 namespace Web7.TrustLibrary.Transports
 {
     //  Not a full DI design: https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection
-    public interface IMessageEnvelopeProcessor
+    public interface IMessageProcessor
     {
-        void ProcessEnvelope(Envelope envelope);
+        Message AuthenticateMessage(Envelope envelope);
+        void ProcessMessage(Message message);
     }
 }

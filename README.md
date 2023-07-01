@@ -6,7 +6,7 @@ The list of PTL trust operations includes:
 - Key generation, serialization and persistence (Signer and Encrypter)
 - Digital signature creation and validation (Signer and Hasher)
 - Encryption and decryption (Encrypter)
-- JWE-based authenticated encryption (JWETokenizer)
+- JWE-based authenticated encryption (JWEMessagePacker)
 - DID Document creation and management (DIDDocumenter)
 - DID Registry-based DID Document registration and retrieval (DIDRegistrar)
 - DIDComm message creation (DIDComm)
@@ -30,7 +30,7 @@ GitHub Repository: https://github.com/Web7Foundation/Web7.TrustLibrary
 The Encrypter class is used to support a set of public and private keys for encryption and decryption; 
 including key generation and serialization.
 
-The Signer and Encrypter classes are used in the JWETokenizer class to create JWETokens.
+The Signer and Encrypter classes are used in the JWEMessagePacker class to create JWETokens.
 
 Keywords: Confidentiality RSA
 
@@ -44,9 +44,9 @@ Keywords: Authenticity SHA SHA256 Hash
 
 The Helper class contains a number of public static helper or utility methods.
 
-### JWETokenizer
+### JWEMessagePacker
 
-The JWETokenizer class is used to support the creation, verification, and serialization of JWE tokens. 
+The JWEMessagePacker class is used to support the creation, verification, and serialization of JWE tokens. 
 
 This class uses keys created or deserialized from the Signer and Encrypter classes. 
 
@@ -56,7 +56,7 @@ Keywords: Authenticated-Encryption JWE JWE-Token
 
 The Signer class can be used to to support the creation of digital Signatures for arbitrary Strings and Byte arrays; including key generation and serialization.
 
-The Signer and Encrypter classes are used in the JWETokenizer class to create JWETokens.
+The Signer and Encrypter classes are used in the JWEMessagePacker class to create JWETokens.
 
 Keywords: Authenticity ECDsa Digital-Signature
 
@@ -65,7 +65,7 @@ Keywords: Authenticity ECDsa Digital-Signature
 ### DIDComm Message
 
 The DIDComm Message classes are used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment. 
-In addition, the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
+In addition, the DIDComm class can create authenticated encrypted messages by internally using the JWEMessagePacker class.
 
 The HTTPTransporter class is used to transport a DIDCommMessage from a Sender agent's outbound service endpoint to a Receiver 
 agent's inbound service endpoint using the HTTP protocol.
@@ -141,6 +141,6 @@ The HTTPTransporter class is used to transport a DIDCommMessage from a Sender ag
 agent's inbound service endpoint using the HTTP protocol.
 
 The DIDComm class is used to create and serialize an in-memory Web 7.0 DIDComm Message with (or without) a DIDComm Attachment. 
-In addition the DIDComm class can create authenticated encrypted messages by internally using the JWETokenizer class.
+In addition the DIDComm class can create authenticated encrypted messages by internally using the JWEMessagePacker class.
 
 Keywords: DIDComm HTTP Transport-Protocol
