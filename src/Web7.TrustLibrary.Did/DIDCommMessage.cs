@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Web7.TrustLibrary.Did.DIDComm
@@ -85,6 +86,11 @@ namespace Web7.TrustLibrary.Did.DIDComm
             this.body = body;
             this.attachments = new List<Attachment>();
         }
+
+        public string ToJson()
+        {
+            return JsonSerializer.Serialize<Message>(this);
+        }
     }
 
     public class Envelope
@@ -105,6 +111,11 @@ namespace Web7.TrustLibrary.Did.DIDComm
             this.receiverID = receiverID;
             this.receiverServiceEndpointUrl = receiverUrl;
             this.messageJWE = messageJWE;
+        }
+
+        public string ToJson()
+        {
+            return JsonSerializer.Serialize<Envelope>(this);
         }
     }
 }

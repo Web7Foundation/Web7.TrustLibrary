@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trinity;
+using Web7.TrustLibrary.Base;
 using Web7.TrustLibrary.Did.DIDComm;
 
 namespace Web7.TrustLibrary.Transports
@@ -12,29 +13,51 @@ namespace Web7.TrustLibrary.Transports
     public class DIDCommAgentImplementation : DIDCommAgentBase
     {
         ConcurrentDictionary<string, ConcurrentQueue<long>> queues = new ConcurrentDictionary<string, ConcurrentQueue<long>>();
+        IMessageSender messageSender = null;
+        IMessageProcessor messageProcessor = null;
 
-        public override void DIDCommEndpointHandler(DIDCommMessageRequest request, out DIDCommResponse response)
+        public IMessageProcessor MessageProcessor { get => messageProcessor; set => messageProcessor = value; }
+        public IMessageSender MessageSender { get => messageSender; set => messageSender = value; }
+
+        public void Start(IMessageSender messageSender, IMessageProcessor messageProcessor)
         {
-            DIDCommMessageEnvelope env = request.envelope;
-
-            // Persist DIDCommMessageEnvelope and queue CellId based on ReceiverID
-            DIDCommMessageEnvelope_Cell envCell = new DIDCommMessageEnvelope_Cell(env);
-            Global.LocalStorage.SaveDIDCommMessageEnvelope_Cell(envCell);
-            Global.LocalStorage.SaveStorage();
-            var celltype = Global.LocalStorage.GetCellType(envCell.CellId);
-            ulong cellcount = Global.LocalStorage.CellCount;
-            Console.WriteLine(">>>> cellid: " + envCell.CellId.ToString() + " celltype: " + celltype.ToString() + " cellcount: " + cellcount);
-
-            if (!queues.ContainsKey(env.ReceiverID))
-            {
-                queues.TryAdd(env.ReceiverID, new ConcurrentQueue<long>());
-            }
-            queues[env.ReceiverID].Enqueue(envCell.CellId);
-
-            response.rc = (int)Trinity.TrinityErrorCode.E_SUCCESS;
+            this.messageSender = messageSender;
+            this.messageProcessor = messageProcessor;
+            Start(); // Also call the default (inherited) Start() - else connections are refused
         }
 
-        public void ProcessMessageQueues(IMessageProcessor messageProcessor)
+        public void SendMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter, string messageType, string body)
+        {
+            messageSender.SendMessage(signerID, signer, encrypterID, encrypter, messageType, body, new List<Attachment>());
+        }
+
+        public void SendMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter, string messageType, string body, List<Attachment>attachments)
+        {
+            messageSender.SendMessage(signerID, signer, encrypterID, encrypter, messageType, body, attachments); 
+        }
+
+        public override void DIDCommEndpointHandler(DIDCommMessageRequest requestDIDComm, out DIDCommResponse responseDIDComm)
+        {
+            DIDCommMessageEnvelope envDIDComm = requestDIDComm.envelope;
+
+            // Persist DIDCommMessageEnvelope and queue CellId based on ReceiverID
+            DIDCommMessageEnvelope_Cell envDIDCommCell = new DIDCommMessageEnvelope_Cell(envDIDComm);
+            Global.LocalStorage.SaveDIDCommMessageEnvelope_Cell(envDIDCommCell);
+            Global.LocalStorage.SaveStorage();
+            var celltype = Global.LocalStorage.GetCellType(envDIDCommCell.CellId);
+            ulong cellcount = Global.LocalStorage.CellCount;
+            Console.WriteLine(">>>> cellid: " + envDIDCommCell.CellId.ToString() + " celltype: " + celltype.ToString() + " cellcount: " + cellcount);
+
+            if (!queues.ContainsKey(envDIDComm.ReceiverID))
+            {
+                queues.TryAdd(envDIDComm.ReceiverID, new ConcurrentQueue<long>());
+            }
+            queues[envDIDComm.ReceiverID].Enqueue(envDIDCommCell.CellId);
+
+            responseDIDComm.rc = (int)Trinity.TrinityErrorCode.E_SUCCESS;
+        }
+
+        public void ProcessMessageQueues()
         {
             bool Processing = true;
             while (Processing)
@@ -49,12 +72,16 @@ namespace Web7.TrustLibrary.Transports
                         bool dequeued = cellids.TryDequeue(out cellid);
                         if (dequeued)
                         {
-                            DIDCommMessageEnvelope_Cell envCell = Global.LocalStorage.LoadDIDCommMessageEnvelope_Cell(cellid);
-                            DIDCommMessageEnvelope env = envCell.env;
-                            Envelope envelope = new Envelope(env.SenderID, env.ReceiverID, env.ReceiverServiceEndpointUrl, env.MessageJWE);
-                            Console.WriteLine("17. Process envelope addressed to: " + envelope.ReceiverID);
+                            DIDCommMessageEnvelope_Cell envDIDCommCell = Global.LocalStorage.LoadDIDCommMessageEnvelope_Cell(cellid);
+                            DIDCommMessageEnvelope envDIDComm = envDIDCommCell.env;
+                            Envelope envelope = new Envelope(envDIDComm.SenderID, envDIDComm.ReceiverID, envDIDComm.ReceiverServiceEndpointUrl, envDIDComm.MessageJWE);
+                            Console.WriteLine("17. Authenticating envelope addressed to: " + envelope.ReceiverID);
                             Message message = messageProcessor.AuthenticateMessage(envelope);
-                            messageProcessor.ProcessMessage(message);
+                            if (message != null)
+                            {
+                                Console.WriteLine("17. Processing messsage from: " + message.from);
+                                messageProcessor.ProcessMessage(message);
+                            }
                             Global.LocalStorage.RemoveCell(cellid);
                         }
                     }

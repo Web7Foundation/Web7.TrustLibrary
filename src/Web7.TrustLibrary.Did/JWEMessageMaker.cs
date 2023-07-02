@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Web7.TrustLibrary.Base;
+using Web7.TrustLibrary.Did.DIDComm;
 
-namespace Web7.TrustLibrary.Base
+namespace Web7.TrustLibrary.Did
 {
     // The JWEMessagePacker class is used to support the creation, verification, and serialization of JWE tokens.
     // This class uses keys created or deserialized from the Signer and Encrypter classes.
@@ -32,6 +34,11 @@ namespace Web7.TrustLibrary.Base
         public Signer SenderSigner { get => senderSigner; set => senderSigner = value; }
         public string ReceiverDID { get => receiverDID; set => receiverDID = value; }
         public Encrypter ReceiverEncrypter { get => receiverEncrypter; set => receiverEncrypter = value; }
+
+        public string CreateJWEMessage(Message msg)
+        {
+            return CreateJWEMessage(msg.ToJson());
+        }
 
         public string CreateJWEMessage(string messageJson)
         {

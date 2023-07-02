@@ -22,26 +22,26 @@ namespace Web7.TrustLibrary.Transports
 
         public void SendDIDCommEnvelope(Envelope envelope)
         {
-            DIDCommMessageEnvelope env = new DIDCommMessageEnvelope(envelope.SenderID, envelope.ReceiverID, envelope.ReceiverServiceEndpointUrl, envelope.MessageJWE);
-            DIDCommMessageRequest request = new DIDCommMessageRequest(env);
-            var task = Task.Run(() => SendHttpMessage(envelope.ReceiverServiceEndpointUrl, request.ToString()));
+            DIDCommMessageEnvelope envDIDComm = new DIDCommMessageEnvelope(envelope.SenderID, envelope.ReceiverID, envelope.ReceiverServiceEndpointUrl, envelope.MessageJWE);
+            DIDCommMessageRequest requestDIDComm = new DIDCommMessageRequest(envDIDComm);
+            var task = Task.Run(() => SendHttpMessage(envelope.ReceiverServiceEndpointUrl, requestDIDComm.ToString()));
         }
 
         private static string SendHttpMessage(string url, string jsonMessageRequest)
         {
             string jsonResponse = "{ }";
 
-            Console.WriteLine(">>>Agent Url:" + url);
+            //Console.WriteLine(">>>Agent Url:" + url);
             using (var requestMessage = new HttpRequestMessage(new HttpMethod("POST"), url))
             {
                 requestMessage.Headers.TryAddWithoutValidation("Accept", "application/json");
-                Console.WriteLine(">>>Request:" + jsonMessageRequest);
+                //Console.WriteLine(">>>Request:" + jsonMessageRequest);
                 requestMessage.Content = new StringContent(jsonMessageRequest);
                 var task = httpClient.SendAsync(requestMessage);
                 task.Wait();  // if an exception is thrown here, you likely forgot to run Visual Studio in "Run as Administrator" mode
                 var result = task.Result;
                 jsonResponse = result.Content.ReadAsStringAsync().Result;
-                Console.WriteLine(">>>Response:" + jsonResponse);
+                //Console.WriteLine(">>>Response:" + jsonResponse);
             }
 
             return jsonResponse;
