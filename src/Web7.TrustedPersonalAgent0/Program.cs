@@ -126,8 +126,8 @@ namespace Web7.TrustedPersonalAgent0
 
         public void ProcessMessage(Message message)
         {
-            string plaintext = Helper.Base64Decode(message.body);
-            Console.WriteLine("9: plaintext: " + plaintext);
+            string body = Helper.Base64Decode(message.body);
+            Console.WriteLine("9: body: " + body);
             Console.WriteLine();
 
         }

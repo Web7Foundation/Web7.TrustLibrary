@@ -37,8 +37,14 @@ namespace Web7.TrustedPersonalAgent1
 
         public void ProcessMessage(Message message)
         {
-            string plaintext = Helper.Base64Decode(message.body);
-            Console.WriteLine("9: plaintext: " + plaintext);
+            string body = Helper.Base64Decode(message.body);
+            Console.WriteLine("9: body: " + body);
+            if (message.attachments.Count > 0)
+            {
+                AttachmentData ad = message.attachments[0].data;
+                string data = Helper.Base64Decode(ad.base64);
+                Console.WriteLine("9: attachment: " + data);
+            }
             Console.WriteLine();
 
         }

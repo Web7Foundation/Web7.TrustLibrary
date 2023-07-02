@@ -42,7 +42,25 @@ namespace Web7.TrustedPersonalAgent1
                 agent.SendMessage(Helper.DID_ALICE, signer, Helper.DID_BOB, encrypter, MessageSender1.MESSAGE_HELLO,
                     plaintext + " " + DateTime.Now.ToString());
             }
-            (new MessageSender1()).SendMessage(Helper.DID_ALICE, signer, Helper.DID_BOB, encrypter, MessageSender1.MESSAGE_HELLO, plaintext + " last " + DateTime.Now.ToString());
+
+            agent.SendMessage(Helper.DID_ALICE, signer, Helper.DID_BOB, encrypter, MessageSender1.MESSAGE_PRESENCE, MessageSender1.PRESENCE_VALUES.BUSY.ToString());
+
+            // Send a Message with an Attachment
+            string text64 = Helper.Base64Encode("Foo bar!");
+            AttachmentData attachmentData = new AttachmentData("", "", "", text64, "");
+            Attachment attachment = new Attachment(
+                Helper.DID_ATTACHMENTID + Guid.NewGuid().ToString(),
+                "Attachment abc",
+                "abc.txt",
+                "text/plain",
+                "",
+                Helper.UNIX_time(DateTime.Now),
+                attachmentData,
+                0
+            );
+            (new MessageSender1()).SendMessage(Helper.DID_ALICE, signer, Helper.DID_BOB, encrypter, 
+                MessageSender1.MESSAGE_HELLO, plaintext + " last " + DateTime.Now.ToString(),
+                new List<Attachment> { attachment });
 
             agent.ProcessMessageQueues();
 
