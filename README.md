@@ -20,7 +20,7 @@ The TPL trust operations are factored into 4 namespaces:
 3. Web7.TrustLibrary.Registries
 4. Web7.TrustLibrary.Transports
 
-The sample code for DIDComm Agent can be found here: https://github.com/Web7Foundation/Web7.TrustLibrary/blob/main/src/Web7.TrustedPersonalAgent1/Program.cs
+The sample code for a DIDComm Agent can be found here: https://github.com/Web7Foundation/Web7.TrustLibrary/tree/main/src/Web7.TrustedPersonalAgent1 
 
 The PTL supports the Web 7.0 Foundation's goal of "making decentralized systems development easy-to-understand and easier for you to explain to other developers".
 
