@@ -13,12 +13,14 @@ The list of PTL trust operations includes:
 - DIDComm message transmission (HTTPTransporter)
 - VDR-based signature authentication (Notary)
 - Trust Registry TrustReg document management
+- BIP39-compliant mnemonic phrase and seed generation
 
-The TPL trust operations are factored into 4 namespaces:
+The TPL trust operations are factored into 5 namespaces:
 1. Web7.TrustLibrary.Base
 2. Web7.TrustLibrary.Did
 3. Web7.TrustLibrary.Registries
 4. Web7.TrustLibrary.Transports
+5. Web7.TrustLibrary.NBitcoin 
 
 The sample code for a DIDComm Agent can be found here: https://github.com/Web7Foundation/Web7.TrustLibrary/tree/main/src/Web7.TrustedPersonalAgent1 
 
