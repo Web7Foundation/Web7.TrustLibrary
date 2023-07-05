@@ -152,12 +152,12 @@ Keywords: DIDComm HTTP Transport-Protocol
 
 ### Mnemonic
 
-The Mnemonic class (and related classes) implement the Bitcoin Improvement Proposal 39 (BIP39) @ https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki ).
+The Mnemonic class (and related classes) implement the [Bitcoin Improvement Proposal 39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) (BIP39):
 
 >[[BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)] describes the implementation of a mnemonic code or mnemonic sentence — a group of easy to remember words — for the generation of deterministic wallets. It consists of two parts: generating the mnemonic, and converting it into a binary seed." [Credit](https://medium.com/coinmonks/mnemonic-generation-bip39-simply-explained-e9ac18db9477)
 
-This instance of the Mnemoinc classes is (more or less) a direct copy of the [NBitcoin](https://github.com/MetacoSA/NBitcoin/tree/master/NBitcoin) classes found here:
-https://github.com/MetacoSA/NBitcoin/tree/master/NBitcoin/BIP39 (and sibling diretories).
+This instance of the Mnemonic classes is (more or less) a direct copy of the [NBitcoin](https://github.com/MetacoSA/NBitcoin/tree/master/NBitcoin) classes found here:
+https://github.com/MetacoSA/NBitcoin/tree/master/NBitcoin/BIP39 (and sibling directories).
 The code in this project is a completely independent (standalone) implementation.
 These classes do not use or rely any of the other Portable Trust Library classes.
 
