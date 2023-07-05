@@ -162,6 +162,8 @@ This instance of the Mnemonic classes is (more or less) a direct copy of the [NB
 https://github.com/MetacoSA/NBitcoin/tree/master/NBitcoin/BIP39 (and sibling directories).
 The code in this project is a completely independent (standalone) implementation.
 These classes do not use or rely any of the other Portable Trust Library classes.
+ 
+NOTE: This project only includes the code necessary to implement BIP39. It is not a fork or a clone of the NBitcoin repository.
 
 Thank you to [Nickolas Dorier](https://www.linkedin.com/in/nicolasdorier/) for creating [NBitcoin](https://github.com/MetacoSA/NBitcoin/tree/master/NBitcoin), the C#/.NET implementation of the Bitcoin libraries.
 
