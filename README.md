@@ -160,7 +160,7 @@ The Mnemonic class (and related classes) implement the [Bitcoin Improvement Prop
 
 ![Metamask Mnemonics](images/metamask.png)
 
-This instance of the Mnemonic classes is (more or less) a direct copy of the [NBitcoin](https://github.com/MetacoSA/NBitcoin/tree/master/NBitcoin) classes found here:
+This instance of the Mnemonic classes is (more or less) a direct copy of the BIP39 [NBitcoin](https://github.com/MetacoSA/NBitcoin/tree/master/NBitcoin) classes found here:
 https://github.com/MetacoSA/NBitcoin/tree/master/NBitcoin/BIP39 (and sibling directories).
 The code in this project is a completely independent (standalone) implementation.
 These classes do not use or rely any of the other Portable Trust Library classes.
