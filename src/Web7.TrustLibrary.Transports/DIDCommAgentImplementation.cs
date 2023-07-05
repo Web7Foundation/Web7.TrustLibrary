@@ -44,9 +44,9 @@ namespace Web7.TrustLibrary.Transports
             DIDCommMessageEnvelope_Cell envDIDCommCell = new DIDCommMessageEnvelope_Cell(envDIDComm);
             Global.LocalStorage.SaveDIDCommMessageEnvelope_Cell(envDIDCommCell);
             Global.LocalStorage.SaveStorage();
-            var celltype = Global.LocalStorage.GetCellType(envDIDCommCell.CellId);
-            ulong cellcount = Global.LocalStorage.CellCount;
-            Console.WriteLine(">>>> cellid: " + envDIDCommCell.CellId.ToString() + " celltype: " + celltype.ToString() + " cellcount: " + cellcount);
+            //var celltype = Global.LocalStorage.GetCellType(envDIDCommCell.CellId);
+            //ulong cellcount = Global.LocalStorage.CellCount;
+            //Console.WriteLine(">>>> cellid: " + envDIDCommCell.CellId.ToString() + " celltype: " + celltype.ToString() + " cellcount: " + cellcount);
 
             if (!queues.ContainsKey(envDIDComm.ReceiverID))
             {

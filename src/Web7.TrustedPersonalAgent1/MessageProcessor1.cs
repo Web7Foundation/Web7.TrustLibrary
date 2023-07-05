@@ -22,7 +22,7 @@ namespace Web7.TrustedPersonalAgent1
             Console.WriteLine("18. Authenticating envelope sent to: " + envelope.ReceiverServiceEndpointUrl);
 
             string messageJWE = envelope.MessageJWE;
-            JWEMessagePacker messagePacker = new JWEMessagePacker(Helper.DID_ALICE, Program.signer, Helper.DID_BOB, Program.encrypter);
+            JWEMessagePacker messagePacker = new JWEMessagePacker(Helper.DID_ALICE, Program.signerAlice, Helper.DID_BOB, Program.encrypterAlice);
             var result = messagePacker.ValidateJWEMessage(messageJWE);
             Console.WriteLine("9. ValidateJWEMessage(messageJWE) result: " + result.IsValid.ToString());
             if (result.IsValid) // authenticated

@@ -147,3 +147,51 @@ The DIDComm class is used to create and serialize an in-memory Web 7.0 DIDComm M
 In addition the DIDComm class can create authenticated encrypted messages by internally using the JWEMessagePacker class.
 
 Keywords: DIDComm HTTP Transport-Protocol
+
+## Web7.TrustLibrary.NBitcoin.BIP39
+
+### Mnemonic
+
+The Mnemonic class (and related classes) implement the Bitcoin Improvement Proposal 39 (BIP39) @ https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki ).
+
+>[[BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)] describes the implementation of a mnemonic code or mnemonic sentence — a group of easy to remember words — for the generation of deterministic wallets. It consists of two parts: generating the mnemonic, and converting it into a binary seed." [Credit](https://medium.com/coinmonks/mnemonic-generation-bip39-simply-explained-e9ac18db9477)
+
+This instance of the Mnemoinc classes is (more or less) a direct copy of the [NBitcoin](https://github.com/MetacoSA/NBitcoin/tree/master/NBitcoin) classes found here:
+https://github.com/MetacoSA/NBitcoin/tree/master/NBitcoin/BIP39 (and sibling diretories).
+The code in this project is a completely independent (standalone) implementation.
+These classes do not use or rely any of the other Portable Trust Library classes.
+
+Thank you to [Nickolas Dorier](https://www.linkedin.com/in/nicolasdorier/) for creating [NBitcoin](https://github.com/MetacoSA/NBitcoin/tree/master/NBitcoin), the C#/.NET implementation of the Bitcoin libraries.
+
+#### Sample Code
+
+```csharp
+using Web7.TrustLibrary.NBitcoin;
+using Web7.TrustLibrary.NBitcoin.BIP39;
+using Web7.TrustLibrary.NBitcoin.Crypto;
+...
+    RandomUtils.Random = new UnsecureRandom();
+    foreach (var count in new[] { 
+        WordCount.Twelve, WordCount.TwentyFour, WordCount.TwentyOne, WordCount.Fifteen, WordCount.Eighteen 
+    })
+    {
+        Mnemonic mnemonic = new Mnemonic(Wordlist.English, count);
+        var mnemonicWords = mnemonic.Words;
+        string mnemonicString = string.Join(" ", mnemonicWords);
+        Console.WriteLine(((int)count).ToString() + ":\t" + mnemonicString);
+        byte[] mnemonicHash = Hashes.SHA256(Encoding.UTF8.GetBytes(mnemonicString));
+        string mnemonicHash64 = Convert.ToBase64String(mnemonicHash);
+        Console.WriteLine(((int)count).ToString() + ":\t" + mnemonicHash64 + " (" + mnemonicHash.Length.ToString() + ")");
+
+        Console.WriteLine(((int)count).ToString() + ":\t" + mnemonic.IsValidChecksum.ToString());
+
+        Mnemonic mnemonic2 = new Mnemonic(mnemonicString);
+        Console.WriteLine(((int)count).ToString() + ":\t" + mnemonic2.IsValidChecksum.ToString());
+
+        var indices = mnemonic2.Indices;
+
+        byte[] seedBytes = mnemonic.DeriveSeed("Hello World!");
+        string seed64 = Convert.ToBase64String(seedBytes);
+        Console.WriteLine(((int)count).ToString() + ":\t" + seed64 + " (" + seedBytes.Length.ToString() + ")");
+    }
+```

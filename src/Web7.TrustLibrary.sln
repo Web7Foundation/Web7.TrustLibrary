@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web7.TrustedPersonalAgent0"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web7.TrustedPersonalAgent1", "Web7.TrustedPersonalAgent1\Web7.TrustedPersonalAgent1.csproj", "{531ADDD6-C522-4825-8793-5C2CF657A582}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web7.TrustLibrary.NBitcoin.BIP39", "Web7.TrustLibrary.NBitcoin.BIP39\Web7.TrustLibrary.NBitcoin.BIP39.csproj", "{BD94AEC1-E817-4B7B-918C-0D3026677BB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{531ADDD6-C522-4825-8793-5C2CF657A582}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{531ADDD6-C522-4825-8793-5C2CF657A582}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{531ADDD6-C522-4825-8793-5C2CF657A582}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD94AEC1-E817-4B7B-918C-0D3026677BB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD94AEC1-E817-4B7B-918C-0D3026677BB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD94AEC1-E817-4B7B-918C-0D3026677BB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD94AEC1-E817-4B7B-918C-0D3026677BB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,11 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="KeyManagerDataProtectedKeys.tsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GraphEngine.Core" Version="2.0.11318" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="7.0.8" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.31.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Web7.TrustLibrary.Base\Web7.TrustLibrary.Base.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TslCodegen Include="KeyManagerDataProtectedKeys.tsl" />
   </ItemGroup>
 
 </Project>
