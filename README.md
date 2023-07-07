@@ -1,6 +1,6 @@
 ﻿# Web 7.0 Portable Trust Library (PTL)
 
-The Web 7.0 Portable Trust Library (PTL) is used to support all of the trust operations required to develop Web 7.0 Trusted Personal Agents (and supporting components) across multiple operating system environments. 
+The Web 7.0 Portable Trust Library (PTL) is used to provide software support for the trust operations required to develop Web 7.0 Trusted Personal Agents (and supporting components) across multiple operating system environments. THe PTL is a free, open source software project available using the MIT License.
 
 The list of PTL trust operations includes:
 - Key generation, serialization and persistence (Signer and Encrypter)
