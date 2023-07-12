@@ -124,7 +124,7 @@ namespace Web7.TrustLibrary.Base
             Console.WriteLine("9. SecurityToken: " + token);
             string[] tokenparts = token.Split('.');
             // https://learn.microsoft.com/en-us/dotnet/api/microsoft.identitymodel.tokens.base64urlencoder?view=msal-web-dotnet-latest
-            string spart = tokenparts[0]; //  Base64UrlEncoder.Decode(tokenparts[0]);
+            string spart = Base64UrlEncoder.Decode(tokenparts[0]);
             Console.WriteLine("9: JOSE Header: " + spart);
             int index = 0;
             foreach (string part in tokenparts)
@@ -187,6 +187,33 @@ namespace Web7.TrustLibrary.Base
             // 16. Create a DIDComm Envelope (for use HTTPTransporter in Web7.TRustedPersonalAgent app)
             Envelope envelope = new Envelope(Helper.DID_ALICE, Helper.DID_BOB, "http://localhost:8080", messageJWE);
             Console.WriteLine("16. Envelope: " + JsonSerializer.Serialize<Envelope>(envelope));
+            Console.WriteLine();
+
+            // 20. Test SymEncrypter
+            string masterPassphrase = "Hello world!";
+            SymEncrypter sym = new SymEncrypter(masterPassphrase);
+            string wordString = sym.WordString;
+            string[] words = sym.Words;
+            Console.WriteLine("20. WordString: " + wordString);
+        
+            byte[] encryptedBytes = sym.Encrypt(plaintextbytes);
+            byte[] decryptedBytes = sym.Decrypt(encryptedBytes);
+            string t1 = Encoding.UTF8.GetString(decryptedBytes);
+            Console.WriteLine("20. String: " + t1);
+
+            sym = new SymEncrypter(masterPassphrase, wordString);
+            wordString = sym.WordString;
+            words = sym.Words;
+            Console.WriteLine("21. WordString: " + wordString);
+            decryptedBytes = sym.Decrypt(encryptedBytes);
+            string t2 = Encoding.UTF8.GetString(decryptedBytes);
+            Console.WriteLine("21. String: " + t2);
+            decryptedBytes = sym.Decrypt(encryptedBytes);
+            string t3 = Encoding.UTF8.GetString(decryptedBytes);
+            Console.WriteLine("22. String: " + t3);
+            decryptedBytes = sym.Decrypt(encryptedBytes);
+            string t4 = Encoding.UTF8.GetString(decryptedBytes);
+            Console.WriteLine("22. String: " + t4);
             Console.WriteLine();
 
             Console.WriteLine("Press ENTER to exit");

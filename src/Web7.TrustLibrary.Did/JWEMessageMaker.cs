@@ -46,6 +46,7 @@ namespace Web7.TrustLibrary.Did
             RsaSecurityKey receiverEncryptionKeyPublicSecurityKey = receiverEncrypter.KeyPublicSecurityKey;
             string messageJWE = handler.CreateToken(new SecurityTokenDescriptor
             {
+                AdditionalHeaderClaims = new Dictionary<string, object> { { "sender", senderDID }, { "receiver", receiverDID } },
                 Issuer = senderDID,
                 Audience = receiverDID,
                 Claims = new Dictionary<string, object> { { Helper.CLAIM_MESSAGE, messageJson } },

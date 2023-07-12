@@ -1,14 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Web 7.0 Portable Trust Library (Base)</Title>
+    <PackageId>Web7.TrustLibrary.Base</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Michael Herman</Authors>
+    <Company>Web 7.0 Foundation</Company>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.31.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.31.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Web7.TrustLibrary.NBitcoin.BIP39\Web7.TrustLibrary.NBitcoin.BIP39.csproj" />
   </ItemGroup>
 
 </Project>

@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Web7.TrustLibrary.Base\Web7.TrustLibrary.Base.csproj" />
     <ProjectReference Include="..\Web7.TrustLibrary.Did\Web7.TrustLibrary.Did.csproj" />
+    <ProjectReference Include="..\Web7.TrustLibrary.NBitcoin.BIP39\Web7.TrustLibrary.NBitcoin.BIP39.csproj" />
     <ProjectReference Include="..\Web7.TrustLibrary.Registries\Web7.TrustLibrary.Registries.csproj" />
     <ProjectReference Include="..\Web7.TrustLibrary.Transports\Web7.TrustLibrary.Transports.csproj" />
   </ItemGroup>
