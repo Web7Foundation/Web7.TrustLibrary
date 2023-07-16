@@ -108,7 +108,7 @@ namespace Web7.TrustLibrary.Base
             // 8. Hash a string (and by implication, an byte array)
             byte[] hash = Hasher.Hash(plaintext);
             string hash64 = Helper.Base64Encode(hash);
-            byte[] hash64decoded = Helper.Base64DecodeBytes(hash64);
+            byte[] hash64decoded = Helper.Base64Decode64(hash64);
             string hash64copy = Helper.Base64Encode(hash64decoded);
             Console.WriteLine("8. Hash64:     " + hash64);
             Console.WriteLine("8. Hash64Copy: " + hash64copy);
@@ -135,7 +135,7 @@ namespace Web7.TrustLibrary.Base
             string messageJson2 = result.Claims[Helper.CLAIM_MESSAGE].ToString();
             Console.WriteLine("9: CLAIM_MESSAGE: " + messageJson2);
             Message message2 = JsonSerializer.Deserialize<Message>(messageJson);
-            string plaintext2 = Helper.Base64Decode(message2.body);
+            string plaintext2 = Helper.Base64Decode64ToString(message2.body);
             Console.WriteLine("9: plaintext2: " + plaintext2);
             Console.WriteLine();
 
@@ -189,22 +189,28 @@ namespace Web7.TrustLibrary.Base
             Console.WriteLine("16. Envelope: " + JsonSerializer.Serialize<Envelope>(envelope));
             Console.WriteLine();
 
-            // 20. Test SymEncrypter
+            // 19. MasterKeyMaker
+            MasterKeyMaker mkm = new MasterKeyMaker();
             string masterPassphrase = "Hello world!";
-            SymEncrypter sym = new SymEncrypter(masterPassphrase);
-            string wordString = sym.WordString;
-            string[] words = sym.Words;
-            Console.WriteLine("20. WordString: " + wordString);
-        
-            byte[] encryptedBytes = sym.Encrypt(plaintextbytes);
-            byte[] decryptedBytes = sym.Decrypt(encryptedBytes);
+            byte[] masterKey = mkm.RandomMasterKey(masterPassphrase);
+            string wordString = mkm.WordString;
+            Console.WriteLine("19. WordString: " + wordString);
+            masterKey = mkm.RandomMasterKey(masterPassphrase);
+            wordString = mkm.WordString;
+            Console.WriteLine("19. WordString: " + wordString);
+
+            // 20. Test Secret Keys SymEncrypter
+            SymEncrypter syme = new SymEncrypter(masterPassphrase, masterKey);
+            byte[] encryptedBytes = syme.Encrypt(plaintextbytes);
+            SymEncrypter symd = new SymEncrypter(masterPassphrase, masterKey);
+            byte[] decryptedBytes = symd.Decrypt(encryptedBytes);
             string t1 = Encoding.UTF8.GetString(decryptedBytes);
             Console.WriteLine("20. String: " + t1);
 
-            sym = new SymEncrypter(masterPassphrase, wordString);
-            wordString = sym.WordString;
-            words = sym.Words;
+            masterKey = mkm.MakeMasterKey(masterPassphrase, mkm.WordString);
+            wordString = mkm.WordString;
             Console.WriteLine("21. WordString: " + wordString);
+            SymEncrypter sym = new SymEncrypter(masterPassphrase, masterKey);
             decryptedBytes = sym.Decrypt(encryptedBytes);
             string t2 = Encoding.UTF8.GetString(decryptedBytes);
             Console.WriteLine("21. String: " + t2);
@@ -215,6 +221,25 @@ namespace Web7.TrustLibrary.Base
             string t4 = Encoding.UTF8.GetString(decryptedBytes);
             Console.WriteLine("22. String: " + t4);
             Console.WriteLine();
+
+            byte[] b5 = sym.Decrypt(sym.Encrypt(plaintextbytes));
+            string t5 = Encoding.UTF8.GetString(b5);
+            Console.WriteLine("23. String: " + t5);
+            string t6 = sym.DecryptFromString64(sym.EncryptToString64(plaintextbytes));
+            Console.WriteLine("24. String: " + t6);
+            string t7 = sym.DecryptFromString64(sym.EncryptToString64(plaintext));
+            Console.WriteLine("25. String: " + t7);
+            Console.WriteLine();
+
+            // 26. Test Master Key Symcrypter
+            SymEncrypter symMasterKey = new SymEncrypter(Helper.DID_ALICE, Encoding.UTF8.GetBytes("Password1!"));
+            byte[] b5b = symMasterKey.Decrypt(symMasterKey.Encrypt(plaintextbytes));
+            string t5b = Encoding.UTF8.GetString(b5b);
+            Console.WriteLine("26. String: " + t5b);
+            string t6b = symMasterKey.DecryptFromString64(symMasterKey.EncryptToString64(plaintextbytes));
+            Console.WriteLine("27. String: " + t6b);
+            string t7b = symMasterKey.DecryptFromString64(symMasterKey.EncryptToString64(plaintext));
+            Console.WriteLine("28. String: " + t7b);
 
             Console.WriteLine("Press ENTER to exit");
             Console.ReadLine();

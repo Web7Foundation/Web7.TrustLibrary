@@ -11,6 +11,8 @@ namespace Web7.TrustLibrary.Base
     // The Helper class contains a number of public static helper or utility methods.
     public static class Helper
     {
+        public const int ROOT_CELLID = 0;
+
         public const string CLAIM_MESSAGE = "message";
 
         public const string DID_SUBJECT = "did:web7:subject:";
@@ -24,17 +26,10 @@ namespace Web7.TrustLibrary.Base
         public const string DID_THID = DID_DIDCOMM + "thid:";
 
         // https://stackoverflow.com/questions/11743160/how-do-i-encode-and-decode-a-base64-string
-        public static string Base64Encode(string plainText)
+        public static string Base64Encode(string s)
         {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
-        }
-
-        // https://stackoverflow.com/questions/11743160/how-do-i-encode-and-decode-a-base64-string
-        public static string Base64Decode(string base64EncodedData)
-        {
-            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
-            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+            byte[] bytes = Encoding.UTF8.GetBytes(s);
+            return Base64Encode(bytes);
         }
 
         public static string Base64Encode(byte[] bytes)
@@ -42,9 +37,15 @@ namespace Web7.TrustLibrary.Base
             return System.Convert.ToBase64String(bytes);
         }
 
-        public static byte[] Base64DecodeBytes(string byteString)
+        public static string Base64Decode64ToString(string string64)
         {
-            return System.Convert.FromBase64String(byteString);
+            var base64EncodedBytes = Base64Decode64(string64);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+        }
+
+        public static byte[] Base64Decode64(string string64)
+        {
+            return System.Convert.FromBase64String(string64);
         }
 
         public static long UNIX_time(DateTime t)

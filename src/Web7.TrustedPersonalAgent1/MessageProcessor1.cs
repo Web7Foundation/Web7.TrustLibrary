@@ -24,11 +24,11 @@ namespace Web7.TrustedPersonalAgent1
             string messageJWE = envelope.MessageJWE;
             JWEMessagePacker messagePacker = new JWEMessagePacker(Helper.DID_ALICE, Program.signerAlice, Helper.DID_BOB, Program.encrypterAlice);
             var result = messagePacker.ValidateJWEMessage(messageJWE);
-            Console.WriteLine("9. ValidateJWEMessage(messageJWE) result: " + result.IsValid.ToString());
+            Console.WriteLine("19. ValidateJWEMessage(messageJWE) result: " + result.IsValid.ToString());
             if (result.IsValid) // authenticated
             {
                 string messageJson = result.Claims[Helper.CLAIM_MESSAGE].ToString();
-                Console.WriteLine("9: CLAIM_MESSAGE: " + messageJson);
+                Console.WriteLine("20: CLAIM_MESSAGE: " + messageJson);
                 message = JsonSerializer.Deserialize<Message>(messageJson);
             }
 
@@ -37,12 +37,12 @@ namespace Web7.TrustedPersonalAgent1
 
         public void ProcessMessage(Message message)
         {
-            string body = Helper.Base64Decode(message.body);
+            string body = Helper.Base64Decode64ToString(message.body);
             Console.WriteLine("9: body: " + body);
             if (message.attachments.Count > 0)
             {
                 AttachmentData ad = message.attachments[0].data;
-                string data = Helper.Base64Decode(ad.base64);
+                string data = Helper.Base64Decode64ToString(ad.base64);
                 Console.WriteLine("9: attachment: " + data);
             }
             Console.WriteLine();

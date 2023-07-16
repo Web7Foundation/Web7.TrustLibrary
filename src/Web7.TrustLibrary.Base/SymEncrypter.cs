@@ -8,6 +8,7 @@ using Web7.TrustLibrary.NBitcoin;
 using Web7.TrustLibrary.NBitcoin.BIP39;
 using Web7.TrustLibrary.NBitcoin;
 using System.Text.Json;
+using System.Text.Unicode;
 
 namespace Web7.TrustLibrary.Base
 {
@@ -15,50 +16,25 @@ namespace Web7.TrustLibrary.Base
     {
         const int KEYGEN_ITERATIONS = 1000;
 
-        Mnemonic mnemonic;
-        Aes cipher;
+        Aes cipher = null;
 
-        byte[] masterKey;
-        public byte[] MasterKey { get => masterKey; set => masterKey = value; }
-        public string[] Words { get => mnemonic.Words; }
-        public string WordString { get => string.Join(" ", mnemonic.Words); }
-
-        public SymEncrypter(string masterPassphrase) // New Mnemonic to create new Master Key
-        {
-            Initialize(masterPassphrase, "");
-        }
-
-        public SymEncrypter(string masterPassphrase, string wordString) // Restore Mnemonic from string to recreate Restore Master Key
-        {
-            Initialize(masterPassphrase, wordString);
-        }
-
-        public SymEncrypter(string masterPassphrase, string[] mnemonicWords) // Restore Mnemonic from array of strings to recreate Master Key 
-        {
-            Initialize(masterPassphrase, String.Join(" ", mnemonicWords));
-        }
-
-        private void Initialize(string masterPassphrase, string wordString)
+        public SymEncrypter(string password, byte[] salt)
         {
             if (RandomUtils.Random == null)
             {
                 RandomUtils.Random = new UnsecureRandom();
             }
 
-            if (String.IsNullOrEmpty(wordString))
-            {
-                Mnemonic mnemonic = new Mnemonic(Wordlist.English, WordCount.Twelve);
-                wordString = String.Join(" ", mnemonic.Words);
-            }
-
-            mnemonic = new Mnemonic(wordString, Wordlist.English);
-            masterKey = mnemonic.DeriveSeed(masterPassphrase); // Compute masterKey (salt) from mnemonic & master passphrase
-
-            Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(masterPassphrase, masterKey, KEYGEN_ITERATIONS, HashAlgorithmName.SHA256);
+            Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(password, salt, KEYGEN_ITERATIONS, HashAlgorithmName.SHA256);
             cipher = Aes.Create();
             cipher.Key = key.GetBytes(cipher.LegalKeySizes[0].MaxSize / 8);
             cipher.IV = cipher.IV;
             //Console.WriteLine("cipher: " + JsonSerializer.Serialize(cipher));
+        }
+
+        public byte[] Encrypt(string s)
+        {
+            return Encrypt(Encoding.UTF8.GetBytes(s));
         }
 
         public byte[] Encrypt(byte[] bytes)
@@ -80,6 +56,31 @@ namespace Web7.TrustLibrary.Base
             cipher.IV = IV;
             byte[] decryptedBytes = cipher.DecryptCbc(bytes, cipher.IV);
             return decryptedBytes;
+        }
+
+        public string EncryptToString64(string s)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(s);
+            return EncryptToString64(bytes);
+        }
+
+        public string EncryptToString64(byte[] bytes)
+        {
+            byte[] encryptedBytes = Encrypt(bytes);
+            return Helper.Base64Encode(encryptedBytes);
+        }
+
+        public byte[] DecryptFromString64ToBytes(string s64)
+        {
+            byte[] encryptedBytes = Helper.Base64Decode64(s64);
+            byte[] bytes = Decrypt(encryptedBytes);
+            return bytes;
+        }
+
+        public string DecryptFromString64(string s64)
+        {
+            byte[] bytes = DecryptFromString64ToBytes(s64);
+            return Encoding.UTF8.GetString(bytes);
         }
     }
 }

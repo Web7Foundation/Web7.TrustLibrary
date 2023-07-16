@@ -1,0 +1,23 @@
+﻿// Web 7.0 Foundation
+// Trusted Digital Web Project
+// Hyperonomy Digital Identity Lab
+// Parallelspace Corporation
+// (c) Copyright 2023 Parallelspace Corporation. All Rights Reserved
+
+//////////////////////////////////////////////////////////////////////////////
+
+// https://www.graphengine.io/docs/manual/TSL/tsl-basics.html
+
+cell struct KeyManagerSubjectKeysEncrypted_Cell
+{
+	KeyManagerSubjectKeysEncrypted encryptedSubjectKeys;
+}
+
+struct KeyManagerSubjectKeysEncrypted
+{
+    bool hasValues;
+	string signerKeyPrivateJWKEncrypted64;
+	string signerKeyPublicJWKEncrypted64;
+	string encrypterKeyPrivateJWKEncrypted64;
+	string encrypterKeyPublicJWKEncrypted64;
+}

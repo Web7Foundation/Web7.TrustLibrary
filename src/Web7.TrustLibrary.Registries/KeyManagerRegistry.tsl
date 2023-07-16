@@ -8,31 +8,19 @@
 
 // https://www.graphengine.io/docs/manual/TSL/tsl-basics.html
 
-cell struct KeyManagerDataProtectedKeys_Cell
-{
-	KeyManagerDataProtectedKeys dpKeys;
-}
-
-struct KeyManagerDataProtectedKeys
-{
-	string signerKeyPrivateJWKDP;
-	string signerKeyPublicJWKDP;
-	string encrypterKeyPrivateJWKDP;
-	string encrypterKeyPublicJWKDP;
-}
-
-cell struct KeyManagerRegistry_Cell
+cell struct KeyManagerRegistry_Cell // Cell 0
 {
 	KeyManagerRegistry reg;
 }
 
 struct KeyManagerRegistry
 {
-	List<KeyManagerRegistryEntry> registry;
+	List<KeyManagerMasterKeyEntry> registry;
 }
 
-struct KeyManagerRegistryEntry
+struct KeyManagerMasterKeyEntry
 {
-	string id;
-	long cellid;
+	string subjectID;
+	string encryptedMasterKey64;
+	long encryptedSubjectKeysCellID;
 }
