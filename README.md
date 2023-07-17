@@ -13,8 +13,9 @@ The list of PTL trust operations includes:
 - DIDComm message creation (DIDComm)
 - DIDComm message transmission (HTTPTransporter)
 - VDR-based signature authentication (Notary)
-- Trust Registry TrustReg document management
-- BIP39-compliant mnemonic phrase and seed generation
+- Trust Registry TrustReg Document management
+- BIP39-compliant mnemonic phrase and seed generation ([Mnemonic](docs/masterkey-encryption.md))
+- Key vault ([MasterKeyManager and SubjectKeysManager](docs/masterkey-encryption.md))
 
 The TPL trust operations are factored into 5 namespaces:
 1. Web7.TrustLibrary.Base
