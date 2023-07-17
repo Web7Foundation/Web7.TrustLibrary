@@ -17,15 +17,15 @@ namespace Web7.TrustLibrary.Did.DIDComm
         public string jws { get; set; }
         public string hash { get; set; }
         public string links { get; set; }
-        public string base64 { get; set; }
+        public string body64 { get; set; }
         public string json { get; set; }
 
-        public AttachmentData(string jws, string hash, string links, string base64, string json)
+        public AttachmentData(string jws, string hash, string links, string body64, string json)
         {
             this.jws = jws;
             this.hash = hash;
             this.links = links;
-            this.base64 = base64;
+            this.body64 = body64;
             this.json = json;
         }
     }

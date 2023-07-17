@@ -120,6 +120,7 @@ namespace Web7.TrustedPersonalAgent1
                 attachmentData,
                 0
             );
+            // One off message
             (new MessageSender1()).SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_BOB, encrypterAlice, 
                 MessageSender1.MESSAGE_HELLO, plaintext + " last " + DateTime.Now.ToString(),
                 new List<Attachment> { attachment });
