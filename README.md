@@ -29,6 +29,8 @@ The PTL supports the Web 7.0 Foundation's goal of "making decentralized systems 
 
 GitHub Repository: https://github.com/Web7Foundation/Web7.TrustLibrary 
 
+The mission and goals of Web 7.0 are described here: [Web 7.0: a universal, open-source solution for the Internet’s digital identity and trust problems](https://hyperonomy.com/2023/07/06/web-7-0-a-universal-open-source-solution-for-the-internets-digital-identity-and-trust-problems/).
+
 ## Web7.TrustLibrary.Base
 
 ### Encrypter
