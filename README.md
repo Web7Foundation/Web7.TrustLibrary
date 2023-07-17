@@ -6,7 +6,7 @@ The list of PTL trust operations includes:
 - Key generation, serialization and persistence (Signer and Encrypter)
 - Asymmetric digital signature creation and validation (Signer and Hasher)
 - Asymmetric encryption and decryption (Encrypter)
-- Symmetric encryption and decryption (SymEncrypter)
+- Symmetric encryption and decryption ([SymEncrypter](docs/masterkey-encryption.md))
 - JWE-based authenticated encryption (JWEMessagePacker)
 - DID Document creation and management (DIDDocumenter)
 - DID Registry-based DID Document registration and retrieval (DIDRegistrar)
