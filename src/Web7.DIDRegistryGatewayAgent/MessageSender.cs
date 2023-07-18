@@ -9,13 +9,13 @@ using Web7.TrustLibrary.Did;
 using Web7.TrustLibrary.Transports;
 using System.Text.Json;
 
-namespace Web7.TrustedPersonalAgent1
+namespace Web7.DIDRegistryGatewayAgent
 {
-    public class MessageSender1 : IMessageSender
+    public class MessageSender : IMessageSender
     {
-        public const string MESSAGE_HELLO = "https://example.org/example/1.0/hello";
-        public const string MESSAGE_PRESENCE= "https://example.org/example/1.0/presence";
-        public const string MESSAGE_SENDFILE = "https://example.org/example/1.0/sendfile";
+        public const string MESSAGE_GETDIDDOC = "https://example.org/example/1.0/getdiddoc";
+        public const string MESSAGE_UPDATEDIDDOC = "https://example.org/example/1.0/updatediddoc";
+
         public enum PRESENCE_VALUES
         { 
             IDLE,
@@ -51,18 +51,23 @@ namespace Web7.TrustedPersonalAgent1
             Console.WriteLine("0. msgJson: " + message.ToJson());
             Console.WriteLine();
 
-            JWEMessagePacker messagePacker = new JWEMessagePacker(message.from, signer, message.to[0], encrypter); // TODO
-            string messageJWE = messagePacker.CreateJWEMessage(message);
-            Console.WriteLine("9. MessageJWE: " + messageJWE);
+            foreach (string toID in message.to)
+            {
+                JWEMessagePacker messagePacker = new JWEMessagePacker(
+                message.from, Program.SubjectCryptoActorsTable[message.from].Signer,
+                toID, Program.SubjectCryptoActorsTable[toID].Encrypter); // TODO
+                string messageJWE = messagePacker.CreateJWEMessage(message);
+                Console.WriteLine("9. MessageJWE: " + messageJWE);
 
-            // 16. Create a DIDComm Envelope
-            Envelope envelope = new Envelope(signerID, encrypterID,
-                "http://localhost:" + Trinity.TrinityConfig.HttpPort + "/DIDCommEndpoint/", messageJWE);
-            Console.WriteLine("16. Envelope: " + envelope.ToJson());
-            Console.WriteLine();
+                // 16. Create a DIDComm Envelope
+                Envelope envelope = new Envelope(signerID, encrypterID,
+                    "http://localhost:" + Trinity.TrinityConfig.HttpPort + "/DIDCommEndpoint/", messageJWE);
+                Console.WriteLine("16. Envelope: " + envelope.ToJson());
+                Console.WriteLine();
 
-            // 17. Use HTTPTransporter to send the message
-            client.SendDIDCommEnvelope(envelope);
+                // 17. Use HTTPTransporter to send the message
+                client.SendDIDCommEnvelope(envelope);
+            }
         }
     }
 }

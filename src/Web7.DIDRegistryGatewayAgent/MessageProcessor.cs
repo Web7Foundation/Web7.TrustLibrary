@@ -9,9 +9,9 @@ using Web7.TrustLibrary.Did;
 using Web7.TrustLibrary.Transports;
 using System.Text.Json;
 
-namespace Web7.TrustedPersonalAgent1
+namespace Web7.DIDRegistryGatewayAgent
 {
-    public class MessageProcessor1 : IMessageProcessor
+    public class MessageProcessor : IMessageProcessor
     {
         public Message AuthenticateMessage(Envelope envelope)
         {
@@ -22,13 +22,15 @@ namespace Web7.TrustedPersonalAgent1
             Console.WriteLine("18. Authenticating envelope sent to: " + envelope.ReceiverServiceEndpointUrl);
 
             string messageJWE = envelope.MessageJWE;
-            JWEMessagePacker messagePacker = new JWEMessagePacker(Helper.DID_ALICE, Program.signerAlice, Helper.DID_BOB, Program.encrypterBob);
+            JWEMessagePacker messagePacker = new JWEMessagePacker(
+                envelope.SenderID, Program.SubjectCryptoActorsTable[envelope.SenderID].Signer,      
+                envelope.ReceiverID, Program.SubjectCryptoActorsTable[envelope.ReceiverID].Encrypter); // TODO
             var result = messagePacker.ValidateJWEMessage(messageJWE);
             Console.WriteLine("19. ValidateJWEMessage(messageJWE) result: " + result.IsValid.ToString());
             if (result.IsValid) // authenticated
             {
                 string messageJson = result.Claims[Helper.CLAIM_MESSAGE].ToString();
-                Console.WriteLine("20: CLAIM_MESSAGE: " + messageJson);
+                Console.WriteLine("20: JWE CLAIM_MESSAGE: " + messageJson);
                 message = JsonSerializer.Deserialize<Message>(messageJson);
             }
 
@@ -38,7 +40,7 @@ namespace Web7.TrustedPersonalAgent1
         public void ProcessMessage(Message message)
         {
             string body = Helper.Base64Decode64ToString(message.body);
-            Console.WriteLine("9: body: " + body);
+            Console.WriteLine(message.type + " " + body);
             if (message.attachments.Count > 0)
             {
                 AttachmentData ad = message.attachments[0].data;

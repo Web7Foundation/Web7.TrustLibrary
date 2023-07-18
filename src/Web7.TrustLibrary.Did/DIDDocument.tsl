@@ -73,19 +73,20 @@ struct ServiceMap
 struct DIDDocument
 {
 	string id;
-	optional string comment;
+	optional string purpose;                                    // DIDPURP
+	optional string comment;                                    // DIDCOMM
 
-	optional List<string> context;
-	optional List<string> alsoKnownAs;
-	optional List<string> controller;
+	optional List<string> context;                              // DIDCTXT
+	optional List<string> alsoKnownAs;                          // DIDAKA
+	optional List<string> controller;                           // DIDCTLR
 
-	optional List<VerificationMethodMap> verificationMethod;	// Signer public key
-	optional List<VerificationMethodMap> authentication;
-	optional List<VerificationMethodMap> assertionMethod;
-	optional List<VerificationMethodMap> keyAgreement;			// Encryter public key
-	optional List<VerificationMethodMap> capabilityInvocation;
-	optional List<VerificationMethodMap> capabilityDelegation;
+	optional List<VerificationMethodMap> verificationMethod;	// DIDVM Signer public key
+	optional List<VerificationMethodMap> authentication;        // DIDAUTH
+	optional List<VerificationMethodMap> assertionMethod;       // DIDAM
+	optional List<VerificationMethodMap> keyAgreement;			// DIDKA Encrypter public key
+	optional List<VerificationMethodMap> capabilityInvocation;  // DIDCI
+	optional List<VerificationMethodMap> capabilityDelegation;  // DIDCD
 
-	optional List<ServiceMap> service;
-	optional List<ServiceMap> relationship;
+	optional List<ServiceMap> service;                          // DIDSVC
+	optional List<ServiceMap> relationship;                     // DIDREL Web 3.0 TrustReg Documents
 }

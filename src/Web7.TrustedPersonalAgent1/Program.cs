@@ -101,11 +101,11 @@ namespace Web7.TrustedPersonalAgent1
 
             for (int i = 0; i < 10; i++)
             {
-                agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_BOB, encrypterAlice, MessageSender1.MESSAGE_HELLO,
+                agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_BOB, encrypterBob, MessageSender1.MESSAGE_HELLO,
                     i.ToString() + ": " + plaintext + " " + DateTime.Now.ToString());
             }
 
-            agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_BOB, encrypterAlice, MessageSender1.MESSAGE_PRESENCE, MessageSender1.PRESENCE_VALUES.BUSY.ToString());
+            agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_BOB, encrypterBob, MessageSender1.MESSAGE_PRESENCE, MessageSender1.PRESENCE_VALUES.BUSY.ToString());
 
             // Send a Message with an Attachment
             string text64 = Helper.Base64Encode("Foo bar!");

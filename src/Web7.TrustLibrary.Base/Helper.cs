@@ -20,6 +20,10 @@ namespace Web7.TrustLibrary.Base
         public const string DID_ALICE = DID_PERSON + "1234";
         public const string DID_BOB = DID_PERSON + "4567";
 
+        public const string DID_AGENT = "did:web7:agent:";
+        public const string DID_DIDREGISTRYAGENT = DID_AGENT + "didregstry:";
+        public const string DID_DIDREGISTRYAGENT2222 = DID_DIDREGISTRYAGENT + "2222";
+
         public const string DID_DIDCOMM = "did:web7:didcomm:";
         public const string DID_MESSAGEID = DID_DIDCOMM + "messageid:";
         public const string DID_ATTACHMENTID = DID_DIDCOMM + "attachmentid:";
