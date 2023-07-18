@@ -15,7 +15,7 @@ The list of PTL trust operations includes:
 - VDR-based signature authentication (Notary)
 - Trust Registry TrustReg Document management
 - BIP39-compliant mnemonic phrase and seed generation ([Mnemonic](docs/masterkey-encryption.md))
-- Key vault ([MasterKeyManager and SubjectKeysManager](docs/masterkey-encryption.md))
+- Key vault management ([MasterKeyManager and SubjectKeysManager](docs/masterkey-encryption.md))
 
 The TPL trust operations are factored into 5 namespaces:
 1. Web7.TrustLibrary.Base
@@ -31,6 +31,10 @@ The PTL supports the Web 7.0 Foundation's goal of "making decentralized systems 
 GitHub Repository: https://github.com/Web7Foundation/Web7.TrustLibrary 
 
 The mission and goals of Web 7.0 are described here: [Web 7.0: a universal, open-source solution for the Internet’s digital identity and trust problems](https://hyperonomy.com/2023/07/06/web-7-0-a-universal-open-source-solution-for-the-internets-digital-identity-and-trust-problems/).
+
+## Web 7.0 PTL Architecture
+
+![Web 7.0 PTL Architecture](images/ptl-based-architecture.png)
 
 ## Web7.TrustLibrary.Base
 
