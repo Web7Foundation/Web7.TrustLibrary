@@ -80,10 +80,10 @@ struct DIDDocument
 	optional List<string> alsoKnownAs;                          // DIDAKA
 	optional List<string> controller;                           // DIDCTLR
 
-	optional List<VerificationMethodMap> verificationMethod;	// DIDVM Signer public key
+	optional List<VerificationMethodMap> verificationMethod;    // DIDVM Signer public key
 	optional List<VerificationMethodMap> authentication;        // DIDAUTH
 	optional List<VerificationMethodMap> assertionMethod;       // DIDAM
-	optional List<VerificationMethodMap> keyAgreement;			// DIDKA Encrypter public key
+	optional List<VerificationMethodMap> keyAgreement;          // DIDKA Encrypter public key
 	optional List<VerificationMethodMap> capabilityInvocation;  // DIDCI
 	optional List<VerificationMethodMap> capabilityDelegation;  // DIDCD
 
