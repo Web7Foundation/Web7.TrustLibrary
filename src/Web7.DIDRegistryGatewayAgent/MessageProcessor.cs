@@ -37,19 +37,27 @@ namespace Web7.DIDRegistryGatewayAgent
             return message;
         }
 
+        static System.Reflection.Assembly assembly = typeof(Program).Assembly;
+
         public string ProcessMessage(Message message)
         {
             string response = ""; // for non-queued message requests
-            string body = Helper.Base64Decode64ToString(message.body);
-            Console.WriteLine("44. " + message.type + " " + body);
+            string subjectID = Helper.Base64Decode64ToString(message.body);
+            Console.WriteLine("44. " + message.type + " " + subjectID);
             if (message.attachments.Count > 0)
             {
                 AttachmentData ad = message.attachments[0].data;
                 string data = Helper.Base64Decode64ToString(ad.body64);
                 Console.WriteLine("9: attachment: " + data);
             }
-            response = "ACK " + message.type + " " + body; // TODO
+            response = GetDIDDocument(subjectID);
+            
             return response;
+        }
+
+        string GetDIDDocument(string subjectID) // TODO
+        {
+            return Helper.GetTemplate(assembly, "Web7.DIDRegistryGatewayAgent.resources.DIDDocument-sample1.json");
         }
     }
 }

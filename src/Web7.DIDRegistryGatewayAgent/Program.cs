@@ -43,6 +43,9 @@ namespace Web7.DIDRegistryGatewayAgent
             string response = agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_DIDREGISTRYAGENT2222, encrypterDIDRegistryAgent, MessageSender.MESSAGE_GETDIDDOC, Helper.DID_BOB);
             Console.WriteLine("response: " + response);
 
+            DIDDocument didDoc = new DIDDocument().FromJson(response);
+            Console.WriteLine("didDoc: " + didDoc.ToJson());
+
             if (agent.QueueMessages)
             {
                 agent.ProcessMessageQueues();

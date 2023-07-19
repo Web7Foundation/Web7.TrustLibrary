@@ -76,5 +76,19 @@ namespace Web7.TrustLibrary.Base
             Buffer.BlockCopy(second, 0, bytes, first.Length, second.Length);
             return bytes;
         }
+
+        public static string GetTemplate(System.Reflection.Assembly assembly, string resname)
+        {
+            string[] streams = assembly.GetManifestResourceNames();
+            var resStream = assembly.GetManifestResourceStream(resname);
+            if (resStream == null) return "";
+            byte[] res = new byte[resStream.Length];
+            int nBytes = resStream.Read(res);
+            string template = Encoding.UTF8.GetString(res);
+
+            if (String.IsNullOrEmpty(template)) throw new NullReferenceException("GetTemplate");
+
+            return template;
+        }
     }
 }
