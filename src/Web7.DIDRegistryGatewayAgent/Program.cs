@@ -40,11 +40,26 @@ namespace Web7.DIDRegistryGatewayAgent
             DIDCommAgentImplementation agent = new DIDCommAgentImplementation(false);
             agent.Start(new MessageSender(), new MessageProcessor());
 
-            string response = agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_DIDREGISTRYAGENT2222, encrypterDIDRegistryAgent, MessageSender.MESSAGE_GETDIDDOC, Helper.DID_BOB);
+            string response = agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_DIDREGISTRYAGENT2222, encrypterDIDRegistryAgent, MessageProcessor.MESSAGE_GETDIDDOC, Helper.DID_BOB);
             Console.WriteLine("response: " + response);
-
             DIDDocument didDoc = new DIDDocument().FromJson(response);
             Console.WriteLine("didDoc: " + didDoc.ToJson());
+
+            string text64 = Helper.Base64Encode(didDoc.ToJson());
+            AttachmentData ad = new AttachmentData("", "", "", text64, "");
+            Attachment didDocAttachment = new Attachment(
+                                Helper.DID_ATTACHMENTID + Guid.NewGuid().ToString(),
+                didDoc.comment,
+                "diddocument.json",
+                "application/json",
+                "application/didcomm-encrypted+json",
+                Helper.UNIX_time(DateTime.Now),
+                ad,
+                text64.Length
+            );
+            response = agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_DIDREGISTRYAGENT2222, encrypterDIDRegistryAgent, MessageProcessor.MESSAGE_UPDATEDIDDOC, Helper.DID_BOB,
+                new List<Attachment> { didDocAttachment } );
+            Console.WriteLine("response: " + response);
 
             if (agent.QueueMessages)
             {

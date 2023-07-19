@@ -42,7 +42,7 @@ namespace Web7.TrustedPersonalAgent1
             if (message.attachments.Count > 0)
             {
                 AttachmentData ad = message.attachments[0].data;
-                string data = Helper.Base64Decode64ToString(ad.body64);
+                string data = Helper.Base64Decode64ToString(ad.text64);
                 Console.WriteLine("9: attachment: " + data);
             }
             Console.WriteLine();

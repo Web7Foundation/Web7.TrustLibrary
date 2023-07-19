@@ -27,28 +27,24 @@ namespace Web7.TrustLibrary.Transports
             DIDCommMessageRequest requestDIDComm = new DIDCommMessageRequest(envDIDComm);
             var task = Task.Run(() => SendHttpMessage(envelope.ReceiverServiceEndpointUrl, requestDIDComm.ToString()));
             var result = task.Result;
-            //DIDCommResponse responseDIDComm = new DIDCommResponse(result);
             DIDCommResponse responseDIDComm = JsonSerializer.Deserialize<DIDCommResponse>(result,
                 new JsonSerializerOptions { IncludeFields = true, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });
-            string response = responseDIDComm.resp.ToString();
+            string response = responseDIDComm.resp;
             return response;
         }
 
         private static string SendHttpMessage(string url, string jsonMessageRequest)
         {
-            string jsonResponse = "{ }";
+            string jsonResponse = "";
 
-            //Console.WriteLine(">>>Agent Url:" + url);
             using (var requestMessage = new HttpRequestMessage(new HttpMethod("POST"), url))
             {
                 requestMessage.Headers.TryAddWithoutValidation("Accept", "application/json");
-                //Console.WriteLine(">>>Request:" + jsonMessageRequest);
                 requestMessage.Content = new StringContent(jsonMessageRequest);
                 var task = httpClient.SendAsync(requestMessage);
-                task.Wait();  // if an exception is thrown here, you likely forgot to run Visual Studio in "Run as Administrator" mode
+                task.Wait();  // if exception is thrown here, you forgot to run Visual Studio in "Run as Administrator" mode
                 var result = task.Result;
                 jsonResponse = result.Content.ReadAsStringAsync().Result;
-                //Console.WriteLine(">>>Response:" + jsonResponse);
             }
 
             return jsonResponse;

@@ -13,9 +13,6 @@ namespace Web7.DIDRegistryGatewayAgent
 {
     public class MessageSender : IMessageSender
     {
-        public const string MESSAGE_GETDIDDOC = "https://example.org/example/1.0/getdiddoc";
-        public const string MESSAGE_UPDATEDIDDOC = "https://example.org/example/1.0/updatediddoc";
-
         public enum PRESENCE_VALUES
         { 
             IDLE,

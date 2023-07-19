@@ -13,6 +13,9 @@ namespace Web7.DIDRegistryGatewayAgent
 {
     public class MessageProcessor : IMessageProcessor
     {
+        public const string MESSAGE_GETDIDDOC = "https://example.org/example/1.0/getdiddoc";
+        public const string MESSAGE_UPDATEDIDDOC = "https://example.org/example/1.0/updatediddoc";
+
         public Message AuthenticateMessage(Envelope envelope)
         {
             Message message = null;
@@ -42,22 +45,68 @@ namespace Web7.DIDRegistryGatewayAgent
         public string ProcessMessage(Message message)
         {
             string response = ""; // for non-queued message requests
-            string subjectID = Helper.Base64Decode64ToString(message.body);
-            Console.WriteLine("44. " + message.type + " " + subjectID);
+            string textAttachment = null;
+
+            string messageBody = Helper.Base64Decode64ToString(message.body);
+            Console.WriteLine("44. " + message.type + " " + messageBody);
             if (message.attachments.Count > 0)
             {
                 AttachmentData ad = message.attachments[0].data;
-                string data = Helper.Base64Decode64ToString(ad.body64);
-                Console.WriteLine("9: attachment: " + data);
+                textAttachment = Helper.Base64Decode64ToString(ad.text64);
             }
-            response = GetDIDDocument(subjectID);
+            switch(message.type)
+            {
+                case MESSAGE_GETDIDDOC:
+                    {
+                        response = GetDIDDocumentAsJson(messageBody);
+                        break;
+                    }
+                case MESSAGE_UPDATEDIDDOC:
+                    {
+                        DIDDocument didDoc = new DIDDocument().FromJson(textAttachment);
+                        response = UpdateDIDDocument(message.from, didDoc);
+                        break;
+                    }
+            }
             
             return response;
         }
 
-        string GetDIDDocument(string subjectID) // TODO
+        string GetDIDDocumentAsJson(string subjectID) // TODO
         {
-            return Helper.GetTemplate(assembly, "Web7.DIDRegistryGatewayAgent.resources.DIDDocument-sample1.json");
+            return Helper.GetTemplate(assembly, "Web7.DIDRegistryGatewayAgent.resources.DIDDocument-sample1.json"); // TODO
+        }
+
+        bool AuthenticateSubjectID(string subjectID)
+        {
+            return true; // TODO
+        }
+
+        string UpdateDIDDocument(string senderID, DIDDocument didDoc)
+        {
+            if (senderID != didDoc.controller[0])
+            {
+                return "INVALIDSENDER";
+            }
+
+            if (!AuthenticateSubjectID(senderID))
+            {
+                return "UNATHENTICATABLESENDER";
+            }
+
+            string existingDIDDocString = GetDIDDocumentAsJson(didDoc.id);
+            if (!String.IsNullOrEmpty(existingDIDDocString))
+            {
+                DIDDocument existingDIDDoc = new DIDDocument(senderID).FromJson(existingDIDDocString);
+                if (senderID != existingDIDDoc.controller[0])
+                {
+                    return "MISMATCHEDCONTROLLER";
+                }
+
+                // TODO - Create/replace DID Document in DID Registry
+            }
+
+            return "OK";
         }
     }
 }

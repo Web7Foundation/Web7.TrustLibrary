@@ -29,7 +29,7 @@ namespace Web7.TrustLibrary.Base
         public const string DID_ATTACHMENTID = DID_DIDCOMM + "attachmentid:";
         public const string DID_THID = DID_DIDCOMM + "thid:";
 
-        // https://stackoverflow.com/questions/11743160/how-do-i-encode-and-decode-a-body64-string
+        // https://stackoverflow.com/questions/11743160/how-do-i-encode-and-decode-a-text64-string
         public static string Base64Encode(string s)
         {
             byte[] bytes = Encoding.UTF8.GetBytes(s);
