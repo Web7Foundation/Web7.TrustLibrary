@@ -6,6 +6,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Web7.TrustLibrary.Did;
 using Web7.TrustLibrary.Did.DIDComm;
 
 namespace Web7.TrustLibrary.Transports
@@ -20,11 +21,17 @@ namespace Web7.TrustLibrary.Transports
         // https://www.thecodebuzz.com/using-httpclient-best-practices-and-anti-patterns/
         static readonly HttpClient httpClient = new HttpClient();
 
-        public void SendDIDCommEnvelope(Envelope envelope)
+        public string SendDIDCommEnvelope(Envelope envelope)
         {
             DIDCommMessageEnvelope envDIDComm = new DIDCommMessageEnvelope(envelope.SenderID, envelope.ReceiverID, envelope.ReceiverServiceEndpointUrl, envelope.MessageJWE);
             DIDCommMessageRequest requestDIDComm = new DIDCommMessageRequest(envDIDComm);
             var task = Task.Run(() => SendHttpMessage(envelope.ReceiverServiceEndpointUrl, requestDIDComm.ToString()));
+            var result = task.Result;
+            //DIDCommResponse responseDIDComm = new DIDCommResponse(result);
+            DIDCommResponse responseDIDComm = JsonSerializer.Deserialize<DIDCommResponse>(result,
+                new JsonSerializerOptions { IncludeFields = true, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });
+            string response = responseDIDComm.resp.ToString();
+            return response;
         }
 
         private static string SendHttpMessage(string url, string jsonMessageRequest)

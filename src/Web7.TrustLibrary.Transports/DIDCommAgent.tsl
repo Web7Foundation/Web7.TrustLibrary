@@ -27,7 +27,7 @@ struct DIDCommMessageRequest
 
 struct DIDCommResponse 
 {
-	long rc;
+	string resp;
 }
 
 protocol DIDCommEndpoint

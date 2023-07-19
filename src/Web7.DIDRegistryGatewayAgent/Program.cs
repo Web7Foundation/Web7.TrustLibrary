@@ -37,12 +37,16 @@ namespace Web7.DIDRegistryGatewayAgent
             SubjectCryptoActorsTable.Add(Helper.DID_ALICE, new SubjectCryptoActors( signerAlice, null ));
             SubjectCryptoActorsTable.Add(Helper.DID_DIDREGISTRYAGENT2222, new SubjectCryptoActors(null, encrypterDIDRegistryAgent));
 
-            DIDCommAgentImplementation agent = new DIDCommAgentImplementation();
+            DIDCommAgentImplementation agent = new DIDCommAgentImplementation(false);
             agent.Start(new MessageSender(), new MessageProcessor());
 
-            agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_DIDREGISTRYAGENT2222, encrypterDIDRegistryAgent, MessageSender.MESSAGE_GETDIDDOC, Helper.DID_BOB);
+            string response = agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_DIDREGISTRYAGENT2222, encrypterDIDRegistryAgent, MessageSender.MESSAGE_GETDIDDOC, Helper.DID_BOB);
+            Console.WriteLine("response: " + response);
 
-            agent.ProcessMessageQueues();   
+            if (agent.QueueMessages)
+            {
+                agent.ProcessMessageQueues();
+            }
 
             Console.WriteLine("Press ENTER to exit...");
             Console.ReadLine();

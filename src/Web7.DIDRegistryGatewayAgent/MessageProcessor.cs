@@ -37,18 +37,19 @@ namespace Web7.DIDRegistryGatewayAgent
             return message;
         }
 
-        public void ProcessMessage(Message message)
+        public string ProcessMessage(Message message)
         {
+            string response = ""; // for non-queued message requests
             string body = Helper.Base64Decode64ToString(message.body);
-            Console.WriteLine(message.type + " " + body);
+            Console.WriteLine("44. " + message.type + " " + body);
             if (message.attachments.Count > 0)
             {
                 AttachmentData ad = message.attachments[0].data;
                 string data = Helper.Base64Decode64ToString(ad.body64);
                 Console.WriteLine("9: attachment: " + data);
             }
-            Console.WriteLine();
-
+            response = "ACK " + message.type + " " + body; // TODO
+            return response;
         }
     }
 }

@@ -27,12 +27,12 @@ namespace Web7.DIDRegistryGatewayAgent
         // https://www.thecodebuzz.com/using-httpclient-best-practices-and-anti-patterns/
         static readonly HTTPTransporter client = new HTTPTransporter();
 
-        public void SendMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter, string messageType, string body)
+        public string SendMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter, string messageType, string body)
         {
-            SendMessage(signerID, signer, encrypterID, encrypter, messageType, body, new List<Attachment>());
+            return SendMessage(signerID, signer, encrypterID, encrypter, messageType, body, new List<Attachment>());
         }
 
-        public void SendMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter, string messageType, string body, List<Attachment> attachments)
+        public string SendMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter, string messageType, string body, List<Attachment> attachments)
         { 
             // 0. DIDComm namespace
             DateTime now = DateTime.Now;
@@ -51,7 +51,9 @@ namespace Web7.DIDRegistryGatewayAgent
             Console.WriteLine("0. msgJson: " + message.ToJson());
             Console.WriteLine();
 
-            foreach (string toID in message.to)
+            string toID = message.to[0];
+            string response = "";
+            //foreach (string toID in message.to)
             {
                 JWEMessagePacker messagePacker = new JWEMessagePacker(
                 message.from, Program.SubjectCryptoActorsTable[message.from].Signer,
@@ -66,8 +68,10 @@ namespace Web7.DIDRegistryGatewayAgent
                 Console.WriteLine();
 
                 // 17. Use HTTPTransporter to send the message
-                client.SendDIDCommEnvelope(envelope);
+                response = client.SendDIDCommEnvelope(envelope);
             }
+
+            return response;
         }
     }
 }
