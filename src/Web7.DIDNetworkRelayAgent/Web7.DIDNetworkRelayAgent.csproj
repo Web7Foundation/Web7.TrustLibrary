@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="resources\DIDDocument-sample1.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Web7.TrustLibrary.Base\Web7.TrustLibrary.Base.csproj" />
+    <ProjectReference Include="..\Web7.TrustLibrary.Did\Web7.TrustLibrary.Did.csproj" />
+    <ProjectReference Include="..\Web7.TrustLibrary.Registries\Web7.TrustLibrary.Registries.csproj" />
+    <ProjectReference Include="..\Web7.TrustLibrary.Transports\Web7.TrustLibrary.Transports.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="resources\DIDDocument-sample1.json" />
+  </ItemGroup>
+
+</Project>

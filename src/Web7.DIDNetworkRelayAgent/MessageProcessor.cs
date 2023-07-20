@@ -13,8 +13,11 @@ namespace Web7.DIDNetworkRelayAgent
 {
     public class MessageProcessor : IMessageProcessor
     {
-        public const string MESSAGE_GETDIDDOC = "https://example.org/example/1.0/getdiddoc";
-        public const string MESSAGE_UPDATEDIDDOC = "https://example.org/example/1.0/updatediddoc";
+        public const string MESSAGE_HELLO = "https://example.org/example/1.0/hello";
+        public const string MESSAGE_RELAYPUSH = "https://example.org/example/1.0/relaypush";
+        public const string MESSAGE_RELAYPOP = "https://example.org/example/1.0/relaypop";
+        public const string MESSAGE_RELAYQUERY = "https://example.org/example/1.0/relayquery";
+        public const string MESSAGE_RELAYCLEAR = "https://example.org/example/1.0/relayclear";
 
         public Message AuthenticateMessage(Envelope envelope)
         {
@@ -54,15 +57,29 @@ namespace Web7.DIDNetworkRelayAgent
             }
             switch(message.type)
             {
-                case MESSAGE_GETDIDDOC:
+                case MESSAGE_HELLO:
                     {
-                        response = GetDIDDocumentAsJson(messageBody);
+                        response = "ACK";
                         break;
                     }
-                case MESSAGE_UPDATEDIDDOC:
+                case MESSAGE_RELAYPUSH:
                     {
-                        DIDDocument didDoc = new DIDDocument().FromJson(textAttachment);
-                        response = UpdateDIDDocument(message.from, didDoc);
+                        response = PushMessage();
+                        break;
+                    }
+                case MESSAGE_RELAYPOP:
+                    {
+                        response = PopMessage();
+                        break;
+                    }
+                case MESSAGE_RELAYQUERY:
+                    {
+                        response = Query();
+                        break;
+                    }
+                case MESSAGE_RELAYCLEAR:
+                    {
+                        response = ClearMessages();
                         break;
                     }
             }
@@ -72,40 +89,27 @@ namespace Web7.DIDNetworkRelayAgent
 
         string GetDIDDocumentAsJson(string subjectID) // TODO
         {
-
             System.Reflection.Assembly assembly = typeof(Program).Assembly;
             return Helper.GetTemplate(assembly, "Web7.DIDNetworkRelayAgent.resources.DIDDocument-sample1.json"); // TODO
         }
 
-        bool AuthenticateSubjectID(string subjectID)
+        string PushMessage()
         {
-            return true; // TODO
+            return "OK";
         }
 
-        string UpdateDIDDocument(string senderID, DIDDocument didDoc)
+        string PopMessage()
         {
-            if (senderID != didDoc.controller[0])
-            {
-                return "INVALIDSENDER";
-            }
+            return "OK";
+        }
 
-            if (!AuthenticateSubjectID(senderID))
-            {
-                return "UNATHENTICATABLESENDER";
-            }
+        string Query()
+        {
+            return "OK";
+        }
 
-            string existingDIDDocString = GetDIDDocumentAsJson(didDoc.id);
-            if (!String.IsNullOrEmpty(existingDIDDocString))
-            {
-                DIDDocument existingDIDDoc = new DIDDocument(senderID).FromJson(existingDIDDocString);
-                if (senderID != existingDIDDoc.controller[0])
-                {
-                    return "MISMATCHEDCONTROLLER";
-                }
-
-                // TODO - Create/replace DID Document in DID Registry
-            }
-
+        string ClearMessages()
+        {
             return "OK";
         }
     }

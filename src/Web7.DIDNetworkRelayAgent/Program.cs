@@ -17,7 +17,7 @@ namespace Web7.DIDNetworkRelayAgent
 {
     internal class Program
     {
-        const int masterPort = 8888;
+        const int masterPort = 8889;
         const string STORAGE_ROOT = "c:\\temp\\DIDMaster\\storage";
 
         public static Dictionary<string, SubjectCryptoActors> SubjectCryptoActorsTable = new Dictionary<string, SubjectCryptoActors>();
@@ -37,29 +37,33 @@ namespace Web7.DIDNetworkRelayAgent
             SubjectCryptoActorsTable.Add(Helper.DID_ALICE, new SubjectCryptoActors( signerAlice, null ));
             SubjectCryptoActorsTable.Add(Helper.DID_DIDREGISTRYAGENT2222, new SubjectCryptoActors(null, encrypterDIDRegistryAgent));
 
-            DIDCommAgentImplementation agent = new DIDCommAgentImplementation(false);
+            DIDCommAgentImplementation agent = new DIDCommAgentImplementation(true);
             agent.Start(new MessageSender(), new MessageProcessor());
 
-            string response = agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_DIDREGISTRYAGENT2222, encrypterDIDRegistryAgent, MessageProcessor.MESSAGE_GETDIDDOC, Helper.DID_BOB);
-            Console.WriteLine("response: " + response);
-            DIDDocument didDoc = new DIDDocument().FromJson(response);
-            Console.WriteLine("didDoc: " + didDoc.ToJson());
+            string response;
 
-            string text64 = Helper.Base64Encode(didDoc.ToJson());
-            AttachmentData ad = new AttachmentData("", "", "", text64, "");
-            Attachment didDocAttachment = new Attachment(
-                                Helper.DID_ATTACHMENTID + Guid.NewGuid().ToString(),
-                didDoc.comment,
-                "diddocument.json",
-                "application/json",
-                "application/didcomm-encrypted+json",
-                Helper.UNIX_time(DateTime.Now),
-                ad,
-                text64.Length
-            );
-            response = agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_DIDREGISTRYAGENT2222, encrypterDIDRegistryAgent, MessageProcessor.MESSAGE_UPDATEDIDDOC, Helper.DID_BOB,
-                new List<Attachment> { didDocAttachment } );
-            Console.WriteLine("response: " + response);
+            //    string text64 = Helper.Base64Encode(didDoc.ToJson());
+            //    AttachmentData ad = new AttachmentData("", "", "", text64, "");
+            //    Attachment didDocAttachment = new Attachment(
+            //                        Helper.DID_ATTACHMENTID + Guid.NewGuid().ToString(),
+            //        didDoc.comment,
+            //        "diddocument.json",
+            //        "application/json",
+            //        "application/didcomm-encrypted+json",
+            //        Helper.UNIX_time(DateTime.Now),
+            //        ad,
+            //        text64.Length
+            //    );
+            //    response = agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_DIDREGISTRYAGENT2222, encrypterDIDRegistryAgent, MessageProcessor.MESSAGE_RELAYPUSH, Helper.DID_BOB,
+            //        new List<Attachment> { didDocAttachment });
+            //    Console.WriteLine("response: " + response);
+            //}
+
+            if (Global.LocalStorage.Count() == 0) for (int i = 0; i < 10; i++)
+                {
+                    response = agent.SendMessage(Helper.DID_ALICE, signerAlice, Helper.DID_DIDREGISTRYAGENT2222, encrypterDIDRegistryAgent, MessageProcessor.MESSAGE_HELLO, "Hello world! " + i.ToString());
+                    Console.WriteLine("response: " + response);
+                }
 
             if (agent.QueueMessages)
             {

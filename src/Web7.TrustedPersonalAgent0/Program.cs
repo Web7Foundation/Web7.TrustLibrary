@@ -62,12 +62,12 @@ namespace Web7.TrustedPersonalAgent0
         // https://www.thecodebuzz.com/using-httpclient-best-practices-and-anti-patterns/
         static readonly HTTPTransporter client = new HTTPTransporter();
 
-        public void SendMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter, string messageType, string body)
+        public string SendMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter, string messageType, string body)
         {
-            SendMessage(signerID, signer, encrypterID, encrypter, messageType, body, new List<Attachment>());
+            return SendMessage(signerID, signer, encrypterID, encrypter, messageType, body, new List<Attachment>());
         }
 
-        public void SendMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter, string messageType, string body, List<Attachment> attachments)
+        public string SendMessage(string signerID, Signer signer, string encrypterID, Encrypter encrypter, string messageType, string body, List<Attachment> attachments)
         {
             // 0. DIDComm namespace
             DateTime now = DateTime.Now;
@@ -96,7 +96,8 @@ namespace Web7.TrustedPersonalAgent0
             Console.WriteLine();
 
             // 17. Use HTTPTransporter to send the message
-            client.SendDIDCommEnvelope(envelope);
+            string response = client.SendDIDCommEnvelope(envelope);
+            return response;
         }
     }
 
@@ -124,12 +125,12 @@ namespace Web7.TrustedPersonalAgent0
             return message;
         }
 
-        public void ProcessMessage(Message message)
+        public string ProcessMessage(Message message)
         {
             string body = Helper.Base64Decode64ToString(message.body);
             Console.WriteLine("9: body: " + body);
             Console.WriteLine();
-
+            return body;
         }
     }
 }

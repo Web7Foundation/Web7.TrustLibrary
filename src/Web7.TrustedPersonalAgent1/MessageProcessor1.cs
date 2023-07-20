@@ -35,8 +35,9 @@ namespace Web7.TrustedPersonalAgent1
             return message;
         }
 
-        public void ProcessMessage(Message message)
+        public string ProcessMessage(Message message)
         {
+            string response = ""; // for non-queued message requests
             string body = Helper.Base64Decode64ToString(message.body);
             Console.WriteLine("9: body: " + body);
             if (message.attachments.Count > 0)
@@ -45,7 +46,9 @@ namespace Web7.TrustedPersonalAgent1
                 string data = Helper.Base64Decode64ToString(ad.text64);
                 Console.WriteLine("9: attachment: " + data);
             }
-            Console.WriteLine();
+
+            response = message.type + " " + body;
+            return response;
 
         }
     }
