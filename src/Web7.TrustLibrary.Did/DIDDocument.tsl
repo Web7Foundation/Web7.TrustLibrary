@@ -75,6 +75,7 @@ struct DIDDocument
 	string id;
 	optional string purpose;                                    // DIDPURP
 	optional string comment;                                    // DIDCOMM
+	optional string signature;                                  // DIDSIG
 
 	optional List<string> context;                              // DIDCTXT
 	optional List<string> alsoKnownAs;                          // DIDAKA
