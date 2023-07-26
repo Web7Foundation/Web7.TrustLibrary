@@ -89,5 +89,5 @@ struct DIDDocument
 	optional List<VerificationMethodMap> capabilityDelegation;  // DIDCD
 
 	optional List<ServiceMap> service;                          // DIDSVC
-	optional List<ServiceMap> relationship;                     // DIDREL Web 3.0 TrustReg Documents
+	optional List<ServiceMap> relationship;                     // DIDREL Web 7.0 TrustReg Documents 
 }
