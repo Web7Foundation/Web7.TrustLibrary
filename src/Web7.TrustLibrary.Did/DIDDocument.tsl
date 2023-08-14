@@ -53,10 +53,10 @@ struct VerificationMethodMap
 	string id;
 	string controller;
 	string type_; 
-	optional JsonWebKeyDotnet6 keyPublicJsonWebKey; // used by Web7.TrustLibrary.Did.DIDDocumenter()
-	optional string keyPublicJsonWebKeyString;
-	optional string publicKeyMultibase;
-	optional JSONKeyMap publicKeyJwk;
+	optional JsonWebKeyDotnet6 keyPublicJsonWebKey; // STRING (Json Text) used by Web7.TrustLibrary.Did.DIDDocumenter()
+	optional string keyPublicJsonWebKeyString;      // STRING (Json Text)
+	optional string publicKeyMultibase;             // STRING (Json Text)
+	optional JSONKeyMap publicKeyJwk;               // STRING (Json Text)
 }
 
 // https://www.w3.org/TR/did-core/#service-properties
