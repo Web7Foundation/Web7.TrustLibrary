@@ -158,7 +158,7 @@ namespace Web7.TrustLibrary.Base
             Console.WriteLine();
 
             // 12. Deserialize Signer public key from deserialized DID Document
-            JsonWebKeyDotnet6 signerKeyPublicJsonWebKey6 = (JsonWebKeyDotnet6)diddoc2.verificationMethod[0].keyPublicJsonWebKey;
+            JsonWebKeyDotnet6 signerKeyPublicJsonWebKey6 = JsonWebKeyDotnet6.Parse(diddoc2.verificationMethod[0].keyPublicJsonWebKey);
             JsonWebKey signerKeyPublicJsonWebKey = signerKeyPublicJsonWebKey6.ToJsonWebKey();
             Signer signerPublicKey2 = new Signer(signerKeyPublicJsonWebKey, false);
             Console.WriteLine("12. Deserialize Signer public key from deserialized DID Document");
@@ -171,7 +171,7 @@ namespace Web7.TrustLibrary.Base
             Console.WriteLine();
 
             // 14. Deserialize Encrypter public key from deserialized DID Document
-            JsonWebKeyDotnet6 encrypterKeyPublicJsonWebKey6 = (JsonWebKeyDotnet6)diddoc2.keyAgreement[0].keyPublicJsonWebKey;
+            JsonWebKeyDotnet6 encrypterKeyPublicJsonWebKey6 = JsonWebKeyDotnet6.Parse(diddoc2.keyAgreement[0].keyPublicJsonWebKey);
             JsonWebKey encrypterKeyPublicJsonWebKey = encrypterKeyPublicJsonWebKey6.ToJsonWebKey();
             Encrypter encrypterPublicKey2 = new Encrypter(encrypterKeyPublicJsonWebKey, false);
             Console.WriteLine("14. Deserialize Encrypter public key from deserialized DID Document");

@@ -55,8 +55,8 @@ namespace Web7.TrustLibrary.Did.DIDDocumemt
                 encrypterKeyPublicPWK.X5c == null ? null : new List<string>(encrypterKeyPublicPWK.X5c), 
                 encrypterKeyPublicPWK.X5t, encrypterKeyPublicPWK.X5tS256, encrypterKeyPublicPWK.X5u, encrypterKeyPublicPWK.Y);
 
-            VerificationMethodMap verificationMethod0 = new VerificationMethodMap("Web 7.0 PTL Signer Public Key", signer.KeyID, signer.KeyID, "JsonWebKeyWeb7PTL", signerKeyPublicJsonWebKeyDotnet6);
-            VerificationMethodMap keyAgreement0 = new VerificationMethodMap("Web 7.0 PTL Encrypter Public Key", encrypter.KeyID, encrypter.KeyID, "JsonWebKeyWeb7PTL", encrypterKeyPublicJsonWebKeyDotnet6);
+            VerificationMethodMap verificationMethod0 = new VerificationMethodMap("Web 7.0 PTL Signer Public Key", signer.KeyID, signer.KeyID, "JsonWebKeyWeb7PTL", signerKeyPublicJsonWebKeyDotnet6.ToString());
+            VerificationMethodMap keyAgreement0 = new VerificationMethodMap("Web 7.0 PTL Encrypter Public Key", encrypter.KeyID, encrypter.KeyID, "JsonWebKeyWeb7PTL", encrypterKeyPublicJsonWebKeyDotnet6.ToString());
 
             List<VerificationMethodMap> verificationMethod = new List<VerificationMethodMap>() { verificationMethod0 };
             List<VerificationMethodMap> keyAgreement = new List<VerificationMethodMap>() { keyAgreement0 };
